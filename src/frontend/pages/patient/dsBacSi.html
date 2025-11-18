@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đội Ngũ Bác Sĩ Chuyên Môn</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(102, 126, 234, 0.06), transparent 50%);
+      animation: rotate 25s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Header Section */
+    .header-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 80px 0 100px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: -50px;
+    }
+
+    .header-section::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      top: -200px;
+      right: -150px;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-30px);
+      }
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 8px 24px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      color: white;
+      font-weight: 800;
+      font-size: 3rem;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-subtitle {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Search & Filter Box */
+    .search-filter-box {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 10;
+      border: 2px solid #f0f0f0;
+    }
+
+    .input-group .form-control,
+    .form-select {
+      border: 2px solid #e8eef5;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+    }
+
+    .input-group .form-control:focus,
+    .form-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .input-group-text {
+      background: transparent;
+      border: 2px solid #e8eef5;
+      border-right: none;
+      border-radius: 12px 0 0 12px;
+    }
+
+    .input-group .form-control {
+      border-left: none;
+      border-radius: 0 12px 12px 0;
+    }
+
+    /* Card bác sĩ */
+    .doctor-card-item {
+      background-color: #fff;
+      border: 1px solid #f0f0f0;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .doctor-card-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(0, 123, 255, 0.2);
+      border-color: #007bff;
+    }
+
+    /* Ảnh bác sĩ */
+    .doctor-img-container {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 3px solid transparent;
+      transition: all 0.35s ease;
+    }
+
+    .doctor-card-item:hover .doctor-img-container {
+      border-color: #007bff;
+      transform: rotate(-2deg) scale(1.03);
+      box-shadow: 0 0 18px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Nội dung */
+    .doctor-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #1f2937;
+    }
+
+    .doctor-title-text {
+      color: #007bff;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .tag-chuyen-khoa {
+      background-color: #e3f2fd;
+      color: #007bff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .tag-time {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .profile-link {
+      color: #007bff;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .profile-link:hover {
+      color: #0056b3;
+      transform: translateX(4px);
+    }
+
+    /* Bố cục canh đều */
+    .doctor-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .doctor-info {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .doctor-img-container {
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header-section text-center">
+    <div class="container position-relative">
+      <span class="header-badge">
+        <i class="fas fa-user-md me-2"></i>Chuyên gia y tế
+      </span>
+      <h2 class="section-title">Đội Ngũ Bác Sĩ Chuyên Môn</h2>
+      <p class="section-subtitle">Đội ngũ bác sĩ giàu kinh nghiệm, tận tâm và được đào tạo bài bản</p>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="container">
+      <!-- search -->
+      <div class="search-filter-box">
+        <div class="row g-3 align-items-center">
+          <div class="col-lg-4 col-md-6">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-primary"></i></span>
+              <input type="text" id="searchInput" class="form-control"
+                placeholder="Tìm theo tên bác sĩ hoặc chuyên khoa...">
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <select id="filterSelect" class="form-select">
+              <option value="">Tất cả chuyên khoa</option>
+              <option value="Nội Tiết">Nội tiết</option>
+              <option value="Truyền Nhiễm">Truyền nhiễm</option>
+              <option value="Chấn Thương">Chấn thương chỉnh hình</option>
+              <option value="Tiểu Đường">Tiểu đường</option>
+            </select>
+          </div>
+          <div class="col-lg-4 col-md-12">
+            <select id="timeSelect" class="form-select">
+              <option value="">Tất cả khung giờ</option>
+              <option value="Sáng">Buổi sáng (7:00 - 11:00)</option>
+              <option value="Chiều">Buổi chiều (13:00 - 17:00)</option>
+              <option value="Tối">Buổi tối (18:00 - 21:00)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4" id="doctorList"></div>
+    </div>
+  </div>
+
+
+  <script>
+    const doctors = [
+      {
+        id: "KJP101",
+        name: "Đỗ Tất Cường",
+        title: "Chuyên gia Tư vấn",
+        interests: "Bệnh thận, Béo phì, Rối loạn Lipid",
+        specialty: "Nội Tiết",
+        time: "Sáng",
+        timeDetail: "Buổi sáng (7:00 - 11:00)",
+        img: "../../assets/images/doctor1.jpg",
+        profile: "profileBS.html"
+      },
+      {
+        id: "SKM202",
+        name: "Đỗ Tất Cường",
+        title: "Chuyên gia Tư vấn Cao cấp",
+        interests: "Bệnh truyền nhiễm, Viêm phổi",
+        specialty: "Truyền Nhiễm",
+        time: "Chiều",
+        timeDetail: "Buổi chiều (13:00 - 17:00)",
+        img: "../../assets/images/doctor1.jpg",
+        profile: "profileBS.html"
+      },
+      {
+        id: "JKS303",
+        name: "Đỗ Tất Cường",
+        title: "Chuyên gia Tư vấn Cao cấp",
+        interests: "Phẫu thuật Chấn thương, Chỉnh hình",
+        specialty: "Chấn Thương",
+        time: "Tối",
+        timeDetail: "Buổi tối (18:00 - 21:00)",
+        img: "../../assets/images/doctor1.jpg",
+        profile: "profileBS.html"
+      },
+      {
+        id: "KPC404",
+        name: "BS. Kek Peng Chin",
+        title: "Chuyên gia Tư vấn Cao cấp",
+        interests: "Tiểu đường, Nội tiết tổng quát",
+        specialty: "Tiểu Đường",
+        time: "Sáng",
+        timeDetail: "Buổi sáng (7:00 - 11:00)",
+        img: "../../assets/images/doctor1.jpg",
+        profile: "profileBS.html"
+      }
+    ];
+
+    const list = document.getElementById("doctorList");
+    const searchInput = document.getElementById("searchInput");
+    const filterSelect = document.getElementById("filterSelect");
+    const timeSelect = document.getElementById("timeSelect");
+
+    function renderDoctors(data) {
+      list.innerHTML = "";
+      if (data.length === 0) {
+        list.innerHTML = `<div class="col-12"><div class="alert alert-warning text-center">Không tìm thấy bác sĩ nào phù hợp.</div></div>`;
+        return;
+      }
+
+      data.forEach(doc => {
+        list.innerHTML += `
+      <div class="col-lg-6">
+        <div class="doctor-card-item p-4">
+          <div class="doctor-info">
+            <img src="${doc.img}" class="doctor-img-container" alt="${doc.name}">
+            <div class="flex-grow-1">
+              <h5 class="doctor-name mb-1">${doc.name}</h5>
+              <p class="doctor-title-text mb-2">${doc.title}</p>
+              <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <span class="tag-chuyen-khoa"><i class="fas fa-stethoscope me-1"></i>${doc.specialty}</span>
+                <span class="tag-time"><i class="fas fa-clock me-1"></i>${doc.timeDetail}</span>
+              </div>
+              <p class="small fw-bold mb-1">Lĩnh vực chuyên môn:</p>
+              <p class="small text-secondary mb-3">${doc.interests}</p>
+              <a href="${doc.profile}" class="profile-link d-flex align-items-center justify-content-end">
+                Xem Hồ Sơ <i class="fas fa-arrow-right ms-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>`;
+      });
+    }
+
+    function applyFilters() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const specialtyFilter = filterSelect.value;
+      const timeFilter = timeSelect.value;
+
+      const filteredDoctors = doctors.filter(doc => {
+        const matchesSearch = doc.name.toLowerCase().includes(searchTerm) ||
+          doc.specialty.toLowerCase().includes(searchTerm);
+        const matchesSpecialty = specialtyFilter === "" || doc.specialty === specialtyFilter;
+        const matchesTime = timeFilter === "" || doc.time === timeFilter;
+        return matchesSearch && matchesSpecialty && matchesTime;
+      });
+
+      renderDoctors(filteredDoctors);
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    filterSelect.addEventListener("change", applyFilters);
+    timeSelect.addEventListener("change", applyFilters);
+
+    renderDoctors(doctors);
+  </script>
+</body>
+
+</html>

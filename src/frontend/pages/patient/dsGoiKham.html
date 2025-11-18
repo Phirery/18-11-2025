@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chọn Gói Khám Bệnh</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f0f7ff, #e8f0fe);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .text-custom{
+        color: #764ba2 !important;
+    }
+    .text-primary{
+        color: #764ba2 !important;
+    }
+    .container { padding-top: 50px; padding-bottom: 50px; }
+
+    .clinic-info-bar {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 15px 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 5px solid #764ba2;
+    }
+
+    .sidebar-left-new { position: sticky; top: 60px; align-self: flex-start; }
+
+    .package-summary-box {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #cce5ff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .main-content-box {
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      border: none;
+    }
+
+    .service-header {
+      background: linear-gradient(120deg, #667eea, #764ba2);
+      color: white;
+      padding: 20px 25px;
+      font-weight: 700;
+      font-size: 1.35rem;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .service-list-header {
+      font-weight: 600;
+      color: #495057;
+      padding: 12px 15px;
+      border-bottom: 1px solid #dee2e6;
+      background-color: #f8f9fa;
+    }
+
+    .service-item {
+      padding: 18px 15px;
+      border-bottom: 1px solid #f2f2f2;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .service-item:hover {
+      background-color: #f8fbff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,123,255,0.08);
+      z-index: 5;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #adb5bd;
+      font-size: 0.85rem;
+    }
+
+    .btn-dat-kham {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-info {
+      border: 1px solid #764ba2;
+      color: #764ba2;
+      font-weight: 600;
+    }
+
+    .btn-outline-info:hover {
+      background: #667eea;
+      color: white;
+      border: 1px solid #667eea;
+    }
+
+    /* Pagination */
+    .pagination { justify-content: center; padding: 20px 0; }
+    .page-item.active .page-link {
+      background-color: #764ba2;
+      border-color: #667eea;
+    }
+    .page-link {
+      border-radius: 6px;
+      margin: 0 3px;
+      color: #667eea;
+    }
+    .page-link:hover {
+      background-color: #764ba2;
+      color: white;
+      transition: 0.2s;
+    }
+
+    .page-info {
+      text-align: right;
+      color: #764ba2;
+      font-size: 0.9rem;
+      margin-top: -10px;
+      margin-right: 10px;
+    }
+
+    .service-item {
+      opacity: 1;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .service-item.fade-out {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+    <div class="sticky-top">
+        <div id="navbar"></div>
+    </div>
+    
+
+  <div class="container">
+    <!-- Thanh thông tin -->
+    <!-- <div class="clinic-info-bar">
+      <div>
+        <i class="fas fa-hospital me-2 text-primary"></i>
+        <span class="fw-bold">Bệnh viện Đa khoa Quốc tế Nam Sài Gòn</span>
+      </div>
+      <small class="text-secondary">
+        <i class="fas fa-map-marker-alt me-1"></i> Số 88, Đường số 8, KDC Trung Sơn, TP Hồ Chí Minh
+      </small>
+    </div> -->
+
+    <div class="row g-4">
+      <!-- Cột bên trái -->
+      <div class="col-md-4">
+        <div class="sidebar-left-new">
+          <div id="package-description-box" class="package-summary-box mb-4">
+            <div id="current-package-name">
+              <h6 class="text-primary mb-2">Chưa chọn gói khám</h6>
+              <p class="small text-muted mb-0">Click vào một gói để xem mô tả chi tiết.</p>
+            </div>
+          </div>
+
+          <div class="package-summary-box">
+            <h6 class="text-primary mb-3"><i class="fas fa-filter me-2"></i>Tìm kiếm & Lọc</h6>
+            <div class="d-flex flex-column gap-3">
+              <div class="input-group">
+                <span class="input-group-text bg-white text-primary"><i class="fas fa-search"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm gói khám...">
+              </div>
+              <select id="filterSelect" class="form-select">
+                <option value="">Tất cả loại gói</option>
+                <option value="Cơ bản">Gói cơ bản</option>
+                <option value="Nâng cao">Gói nâng cao</option>
+                <option value="VIP">Gói VIP</option>
+              </select>
+            </div>
+          </div>
+
+          <a href="#" class="btn btn-outline-secondary mt-4 w-100"><i class="fas fa-undo me-1"></i> Quay lại</a>
+        </div>
+      </div>
+
+      <!-- Cột bên phải -->
+      <div class="col-md-8">
+        <div class="main-content-box">
+          <div class="service-header">Danh sách gói khám</div>
+
+          <div class="row service-list-header px-3 fw-bold text-secondary">
+            <div class="col-1">#</div>
+            <div class="col-7">Tên dịch vụ</div>
+            <div class="col-4 text-end">Giá tiền</div>
+          </div>
+
+          <div id="service-list"></div>
+          <div class="page-info" id="pageInfo"></div>
+          <nav><ul id="pagination" class="pagination"></ul></nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- DỮ LIỆU GIẢ (sau này thay bằng fetch('api/packages.php')) ---
+    const packagesData = Array.from({ length: 25 }, (_, i) => {
+      const type = i % 3 === 0 ? "VIP" : (i % 2 === 0 ? "Nâng cao" : "Cơ bản");
+      return {
+        id: i + 1,
+        name: `Gói khám sức khỏe ${type} số ${i + 1}`,
+        desc: `Gói ${type.toLowerCase()} bao gồm khám tổng quát, xét nghiệm máu, siêu âm và tư vấn chuyên khoa.`,
+        type,
+        price: (3000000 + (i % 3) * 1000000).toLocaleString() + " đ",
+        original: (3500000 + (i % 3) * 1000000).toLocaleString() + " đ"
+      };
+    });
+
+    const serviceList = document.getElementById('service-list');
+    const pagination = document.getElementById('pagination');
+    const pageInfo = document.getElementById('pageInfo');
+    const currentPackageName = document.getElementById('current-package-name');
+    const searchInput = document.getElementById('searchInput');
+    const filterSelect = document.getElementById('filterSelect');
+
+    const itemsPerPage = 10;
+    let currentPage = 1;
+    let filteredData = [...packagesData];
+
+    function renderList() {
+      serviceList.innerHTML = "";
+      const start = (currentPage - 1) * itemsPerPage;
+      const pageData = filteredData.slice(start, start + itemsPerPage);
+
+      pageData.forEach(pkg => {
+        const item = document.createElement('div');
+        item.className = "row service-item align-items-center px-3 fade-out";
+        item.dataset.name = pkg.name;
+        item.dataset.desc = pkg.desc;
+        item.dataset.type = pkg.type;
+
+        item.innerHTML = `
+          <div class="col-1 fw-bold text-custom">${pkg.id}</div>
+          <div class="col-7">
+            <span class="fw-bold d-block text-custom">${pkg.name}</span>
+            <small class="text-muted d-block">Loại: ${pkg.type}</small>
+          </div>
+          <div class="col-4 text-end d-flex justify-content-end align-items-center">
+            <div>
+              <span class="fw-bold text-dark d-block">${pkg.price}</span>
+              <small class="original-price text-end d-block">${pkg.original}</small>
+            </div>
+            <a href="chitietgoikham.html" class="text-decoration-none text-dark">
+            <button class="btn btn-sm btn-outline-info ms-3">Chi tiết</button>
+            </a>
+            <button class="btn btn-sm btn-dat-kham ms-2">Đặt khám</button>
+          </div>`;
+
+        item.addEventListener('click', () => {
+          currentPackageName.innerHTML = `
+            <h6 class="text-primary mb-2">${pkg.name}</h6>
+            <p class="small text-muted mb-0">${pkg.desc}</p>`;
+          document.querySelectorAll('.service-item').forEach(i => i.style.backgroundColor = '');
+          item.style.backgroundColor = '#f8fbff';
+        });
+
+        serviceList.appendChild(item);
+        setTimeout(() => item.classList.remove('fade-out'), 30);
+      });
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      pagination.innerHTML = "";
+      pageInfo.textContent = `Trang ${currentPage} / ${totalPages}`;
+
+      const prev = `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                      <a class="page-link" href="#">&laquo;</a></li>`;
+      pagination.insertAdjacentHTML('beforeend', prev);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const active = i === currentPage ? 'active' : '';
+        pagination.insertAdjacentHTML('beforeend',
+          `<li class="page-item ${active}"><a class="page-link" href="#">${i}</a></li>`);
+      }
+
+      const next = `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                      <a class="page-link" href="#">&raquo;</a></li>`;
+      pagination.insertAdjacentHTML('beforeend', next);
+
+      document.querySelectorAll('.page-item a').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          const text = e.target.textContent;
+          const total = Math.ceil(filteredData.length / itemsPerPage);
+          if (text === '«' && currentPage > 1) currentPage--;
+          else if (text === '»' && currentPage < total) currentPage++;
+          else if (!isNaN(text)) currentPage = parseInt(text);
+          renderList();
+        });
+      });
+    }
+
+    function applyFilter() {
+      const keyword = searchInput.value.toLowerCase();
+      const type = filterSelect.value;
+      filteredData = packagesData.filter(pkg =>
+        pkg.name.toLowerCase().includes(keyword) &&
+        (type === '' || pkg.type === type)
+      );
+      currentPage = 1;
+      renderList();
+    }
+
+    searchInput.addEventListener('input', applyFilter);
+    filterSelect.addEventListener('change', applyFilter);
+
+    renderList();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../assets/js/navbar.js"></script>
+</body>
+</html>

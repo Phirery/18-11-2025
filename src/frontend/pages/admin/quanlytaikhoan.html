@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Tài Khoản</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+            --primary-blue: #00AEEF;
+            --light-bg: #f8f9fa;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 10%, #f8f9fa 100%);
+            min-height: 100vh;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .sidebar-header h4 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin: 5px 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid white;
+            padding-left: 16px;
+        }
+
+        .sidebar-menu a i {
+            width: 25px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            right: 20px;
+            background: #ff3b3b;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-logout-item {
+            display: none;
+        }
+
+        .user-info-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            margin-bottom: 0;
+        }
+
+        .logout-btn-sidebar {
+            width: auto;
+            padding: 8px 15px;
+            background: #00b3ff;
+            color: white;
+            border: 1px solid #1f79ae;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-btn-sidebar:hover {
+            background: #0a95d0;
+            border-color: #0096ec;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left 0.3s;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 998;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-bar h5 {
+            margin: 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--primary-purple);
+            padding: 5px 10px;
+        }
+
+        .notification-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            background: #ff3b3b;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 16px;
+        }
+
+        .logout-header {    
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-details {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .logout-btn-desktop {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .logout-btn-desktop:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .content-area {
+            padding: 30px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 0 0 0 100%;
+            opacity: 0.1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-card.all::after {background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));}
+        .stat-card.patients::after {background: linear-gradient(135deg, #00AEEF, #0088cc);}
+        .stat-card.doctors::after {background: linear-gradient(135deg, #28a745, #20c997);}
+        .stat-card.admins::after {background: linear-gradient(135deg, #ffc107, #ff9800);}
+        .stat-card.all::before {background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));}
+        .stat-card.patients::before {background: linear-gradient(135deg, #00AEEF, #0088cc);}
+        .stat-card.doctors::before {background: linear-gradient(135deg, #28a745, #20c997);}
+        .stat-card.admins::before {background: linear-gradient(135deg, #ffc107, #ff9800);}
+        
+        .stat-card.all .stat-icon {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+        }
+
+        .stat-card.patients .stat-icon {
+            background: linear-gradient(135deg, #00AEEF, #0088cc);
+            color: white;
+        }
+
+        .stat-card.doctors .stat-icon {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .stat-card.admins .stat-icon {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .role-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .role-tab {
+            padding: 10px 25px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .role-tab:hover {
+            border-color: var(--primary-purple);
+            color: var(--primary-purple);
+        }
+
+        .role-tab.active {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            border-color: transparent;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0px;
+        }
+
+        .custom-table thead th {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #495057;
+            font-weight: 600;
+            padding: 15px;
+            border: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .custom-table tbody tr {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;   
+        }
+
+        .custom-table tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .role-badge {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .role-badge.benhnhan {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .role-badge.bacsi {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .role-badge.quantri {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.locked {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0 3px;
+            transition: all 0.3s;
+        }
+
+        .btn-view {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-view:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-lock {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-lock:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-unlock {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .btn-unlock:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 20px 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+        .page-link {
+            color: var(--primary-purple);
+            border: 1px solid #dee2e6;
+            margin: 0 3px;
+            border-radius: 6px;
+        }
+
+        .page-link:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        .page-item.active .page-link {
+            background: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            font-size: 26px;
+            font-weight: bold;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 997;
+        }
+
+        #scrollTopBtn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        #scrollTopBtn span {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                right: 0;
+                left: auto;
+                transform: translateX(100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .top-bar {
+                padding: 12px 15px;
+            }
+
+            .top-bar h5 {
+                font-size: 1rem;
+            }
+
+            .user-details,
+            .logout-btn-desktop {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .logout-header {
+                display: none;
+            }
+
+            .user-logout-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 20px;
+                margin: 5px 0;
+                transition: all 0.3s;
+            }
+
+            .content-area {
+                padding: 20px 15px;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .filter-section {
+                padding: 15px;
+            }
+
+            .role-tabs {
+                gap: 8px;
+            }
+
+            .role-tab {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+
+            .table-section {
+                padding: 15px;
+            }
+
+            .custom-table {
+                font-size: 0.85rem;
+            }
+
+            .custom-table thead th,
+            .custom-table tbody td {
+                padding: 10px 8px;
+            }
+
+            #scrollTopBtn {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header" onclick="window.location.href='../patient/index.html'">
+            <h4><i class="fas fa-hospital-alt"></i> Eden Admin</h4>
+            <p>Hệ thống quản trị</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-chart-line"></i><span>Dashboard</span></a></li>
+            <li><a href="quanlylichkham.html"><i class="fas fa-calendar-check"></i><span>Quản lý lịch khám</span></a></li>
+            <li><a href="quanlykhoa.html"><i class="fas fa-hospital"></i><span>Quản lý khoa</span></a></li>
+            <li><a href="quanlybenhnhan.html"><i class="fas fa-user-injured"></i><span>Quản lý bệnh nhân</span></a></li>
+            <li><a href="quanlybacsi.html"><i class="fas fa-user-md"></i><span>Quản lý bác sĩ</span></a></li>
+            <li><a href="thongke.html"><i class="fas fa-chart-bar"></i><span>Thống kê</span></a></li>
+            <li><a href="quanlytaikhoan.html" class="active"><i class="fas fa-users-cog"></i><span>Quản lý tài khoản</span></a></li>
+            <li><a href="thongbao.html"><i class="fas fa-bell"></i><span>Thông báo</span><span class="notification-badge" id="sidebarNotifBadge" style="display:none;">0</span></a></li>
+            <li class="user-logout-item">
+                <div class="user-info-sidebar">
+                    <div class="user-avatar">A</div>                
+                    <div class="user-details">
+                        <div class="user-name" id="sidebarUserName">Admin</div>
+                    </div>
+                </div>
+                <button class="logout-btn-sidebar" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h5><i class="fas fa-users-cog me-2"></i>Quản Lý Tài Khoản</h5>
+            </div>
+            <div class="top-bar-right">
+                <a href="thongbao.html" class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="topNotifBadge" style="display:none;">0</span>
+                </a>
+            </div>
+            <div class="logout-header">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name" id="adminName">Đang tải...</div>
+                    <div class="user-role">Quản trị viên</div>
+                </div>
+                <button class="logout-btn-desktop" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                </button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="stats-row">
+                <div class="stat-card all">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-number" id="totalAccounts">0</div>
+                    <div class="stat-label">Tổng tài khoản</div>
+                </div>
+                <div class="stat-card patients">
+                    <div class="stat-icon"><i class="fas fa-user-injured"></i></div>
+                    <div class="stat-number" id="totalPatients">0</div>
+                    <div class="stat-label">Bệnh nhân</div>
+                </div>
+                <div class="stat-card doctors">
+                    <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+                    <div class="stat-number" id="totalDoctors">0</div>
+                    <div class="stat-label">Bác sĩ</div>
+                </div>
+                <div class="stat-card admins">
+                    <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+                    <div class="stat-number" id="totalAdmins">0</div>
+                    <div class="stat-label">Quản trị viên</div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h6 class="fw-bold mb-3"><i class="fas fa-filter me-2"></i>Lọc theo vai trò</h6>
+                <div class="role-tabs">
+                    <button class="role-tab active" onclick="filterByRole('all')">
+                        <i class="fas fa-users me-2"></i>Tất cả
+                    </button>
+                    <button class="role-tab" onclick="filterByRole('benhnhan')">
+                        <i class="fas fa-user-injured me-2"></i>Bệnh nhân
+                    </button>
+                    <button class="role-tab" onclick="filterByRole('bacsi')">
+                        <i class="fas fa-user-md me-2"></i>Bác sĩ
+                    </button>
+                    <button class="role-tab" onclick="filterByRole('quantri')">
+                        <i class="fas fa-user-shield me-2"></i>Quản trị viên
+                    </button>
+                </div>
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label">Tìm kiếm</label>
+                        <input type="text" class="form-control" id="searchInput" 
+                               placeholder="Tên đăng nhập, họ tên, số điện thoại..." 
+                               oninput="applyFilters()">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" id="statusFilter" onchange="applyFilters()">
+                            <option value="">Tất cả</option>
+                            <option value="active">Hoạt động</option>
+                            <option value="locked">Đã khóa</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-secondary w-100" onclick="resetFilters()">
+                            <i class="fas fa-redo me-2"></i>Đặt lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <h5><i class="fas fa-list me-2"></i>Danh sách tài khoản</h5>
+                    <button class="btn-add" onclick="openAddModal()">
+                        <i class="fas fa-plus me-2"></i>Thêm tài khoản
+                    </button>
+                </div>
+
+                <div id="loadingIndicator" class="loading" style="display: none;">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-3">Đang tải dữ liệu...</p>
+                </div>
+
+                <div class="table-responsive" id="tableContainer">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ tên</th>
+                                <th>Số điện thoại</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accountTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container">
+                    <div class="text-muted" id="recordInfo">Hiển thị 0 - 0 của 0 bản ghi</div>
+                    <nav>
+                        <ul class="pagination" id="paginationContainer"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="accountModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm tài khoản mới</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="accountForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Vai trò <span class="text-danger">*</span></label>
+                                <select class="form-select" id="roleSelect" required onchange="toggleRoleFields()">
+                                    <option value="">-- Chọn vai trò --</option>
+                                    <option value="benhnhan">Bệnh nhân</option>
+                                    <option value="bacsi">Bác sĩ</option>
+                                    <option value="quantri">Quản trị viên</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="phone" required pattern="[0-9]{10}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+
+                            <div id="patientFields" style="display: none;">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Ngày sinh</label>
+                                        <input type="date" class="form-control" id="birthDate">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Giới tính</label>
+                                        <select class="form-select" id="gender">
+                                            <option value="nam">Nam</option>
+                                            <option value="nu">Nữ</option>
+                                            <option value="khac">Khác</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Số thẻ BHYT</label>
+                                        <input type="text" class="form-control" id="insuranceNumber" maxlength="15">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="doctorFields" style="display: none;">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Khoa <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="departmentSelect" onchange="loadSpecialtiesByDept()">
+                                            <option value="">-- Chọn khoa --</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Chuyên khoa <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="specialtySelect">
+                                            <option value="">-- Chọn chuyên khoa --</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Mô tả</label>
+                                        <textarea class="form-control" id="doctorDescription" rows="3" placeholder="Nhập mô tả về bác sĩ (tùy chọn)"></textarea>
+                                        <small class="text-muted">Thông tin về kinh nghiệm, chuyên môn...</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit mt-4">
+                            <i class="fas fa-save me-2"></i>Tạo tài khoản
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông tin tài khoản</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="viewModalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <span>▲</span>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/admin';
+
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let allAccounts = [];
+        let filteredAccounts = [];
+        let currentRoleFilter = 'all';
+        let allDepartments = [];
+        let allSpecialties = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminInfo();
+            loadStatistics();
+            loadAccounts();
+            loadDepartments();
+            loadSpecialties();
+            loadUnreadNotificationsCount();
+            
+            document.getElementById('accountForm').addEventListener('submit', handleFormSubmit);
+            
+            // Mobile menu
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                mobileOverlay.classList.toggle('active');
+            });
+
+            mobileOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+            });
+
+            sidebar.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Scroll to top
+            window.onscroll = function() {
+                const btn = document.getElementById('scrollTopBtn');
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    btn.style.display = 'flex';
+                } else {
+                    btn.style.display = 'none';
+                }
+            };
+            
+            // Auto refresh notification count
+            setInterval(loadUnreadNotificationsCount, 3000);
+        });
+
+        async function loadAdminInfo() {
+            try {
+                const response = await fetch(`${API_BASE}/get-admin-info.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    const userName = data.data.tenDangNhap || 'Admin';
+                    document.getElementById('adminName').textContent = userName;
+                    document.getElementById('sidebarUserName').textContent = userName;
+
+                    const firstLetter = userName.charAt(0).toUpperCase();
+                    document.querySelectorAll('.user-avatar').forEach(el => {
+                        el.textContent = firstLetter;
+                    });
+                } else {
+                    handleSessionExpired(data.message);
+                }
+            } catch (error) {
+                console.error('Error loading admin info:', error);
+                handleSessionExpired("fetch_failed");
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch(`${API_BASE}/account-stats.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    animateNumber('totalAccounts', data.total);
+                    animateNumber('totalPatients', data.patients);
+                    animateNumber('totalDoctors', data.doctors);
+                    animateNumber('totalAdmins', data.admins);
+                } else {
+                    handleSessionExpired(data.message);
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                handleSessionExpired("fetch_failed");
+            }
+        }
+
+        async function loadUnreadNotificationsCount() {
+            try {
+                const response = await fetch(`${API_BASE}/get-unread-notifications-count.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success && data.count > 0) {
+                    document.getElementById('topNotifBadge').textContent = data.count;
+                    document.getElementById('topNotifBadge').style.display = 'inline-block';
+                    document.getElementById('sidebarNotifBadge').textContent = data.count;
+                    document.getElementById('sidebarNotifBadge').style.display = 'inline-block';
+                } else {
+                    document.getElementById('topNotifBadge').style.display = 'none';
+                    document.getElementById('sidebarNotifBadge').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading notification count:', error);
+            }
+        }
+
+        function animateNumber(elementId, targetNumber) {
+            const element = document.getElementById(elementId);
+            let currentNumber = 0;
+            const increment = targetNumber / 50;
+            const duration = 1000;
+            const stepTime = duration / 50;
+            
+            const timer = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= targetNumber) {
+                    element.textContent = targetNumber.toLocaleString('vi-VN');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(currentNumber).toLocaleString('vi-VN');
+                }
+            }, stepTime);
+        }
+
+        async function loadAccounts() {
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('tableContainer').style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE}/get-all-accounts.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    allAccounts = data.data;
+                    filteredAccounts = [...allAccounts];
+                    displayAccounts();
+                } else {
+                    showAlert('error', 'Không thể tải dữ liệu: ' + data.message);
+                    handleSessionExpired(data.message);
+                }
+            } catch (error) {
+                console.error('Error loading accounts:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+                handleSessionExpired("fetch_failed");
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+                document.getElementById('tableContainer').style.display = 'block';
+            }
+        }
+
+        function displayAccounts() {
+            const tbody = document.getElementById('accountTableBody');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredAccounts.slice(start, end);
+
+            if (filteredAccounts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-5">Không có tài khoản nào</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = pageData.map(acc => {
+                const roleText = {
+                    'benhnhan': 'Bệnh nhân',
+                    'bacsi': 'Bác sĩ',
+                    'quantri': 'Quản trị viên'
+                }[acc.vaiTro];
+                
+                const isLocked = acc.trangThai === 'Khóa';
+                const statusClass = isLocked ? 'locked' : 'active';
+                const statusLabel = isLocked ? 'Đã khóa' : 'Hoạt động';
+                
+                return `
+                    <tr>
+                        <td><strong>${acc.tenDangNhap}</strong></td>
+                        <td>${acc.hoTen || 'N/A'}</td>
+                        <td>${acc.soDienThoai || 'N/A'}</td>
+                        <td><span class="role-badge ${acc.vaiTro}">${roleText}</span></td>
+                        <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+                        <td class="text-center">
+                            <button class="btn-action btn-view" onclick="viewAccount(${acc.id})" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${isLocked ? `
+                                <button class="btn-action btn-unlock" onclick="toggleLockAccount(${acc.id}, false)" title="Mở khóa">
+                                    <i class="fas fa-unlock"></i>
+                                </button>
+                            ` : `
+                                <button class="btn-action btn-lock" onclick="toggleLockAccount(${acc.id}, true)" title="Khóa">
+                                    <i class="fas fa-lock"></i>
+                                </button>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            updatePagination();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredAccounts.length / itemsPerPage);
+            const container = document.getElementById('paginationContainer');
+            const start = (currentPage - 1) * itemsPerPage + 1;
+            const end = Math.min(currentPage * itemsPerPage, filteredAccounts.length);
+            
+            document.getElementById('recordInfo').textContent = 
+                `Hiển thị ${start} - ${end} của ${filteredAccounts.length} bản ghi`;
+            
+            let html = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+                    </li>`;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredAccounts.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayAccounts();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function filterByRole(role) {
+            currentRoleFilter = role;
+            
+            document.querySelectorAll('.role-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            
+            filteredAccounts = allAccounts.filter(acc => {
+                let match = true;
+                
+                if (currentRoleFilter !== 'all' && acc.vaiTro !== currentRoleFilter) {
+                    match = false;
+                }
+                
+                if (search) {
+                    const searchFields = `${acc.tenDangNhap} ${acc.hoTen || ''} ${acc.soDienThoai || ''}`.toLowerCase();
+                    if (!searchFields.includes(search)) match = false;
+                }
+                
+                if (status === 'active' && acc.trangThai === 'Khóa') match = false;
+                if (status === 'locked' && acc.trangThai !== 'Khóa') match = false;
+                
+                return match;
+            });
+            
+            currentPage = 1;
+            displayAccounts();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            currentRoleFilter = 'all';
+            
+            document.querySelectorAll('.role-tab').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.role-tab').classList.add('active');
+            
+            filteredAccounts = [...allAccounts];
+            currentPage = 1;
+            displayAccounts();
+        }
+
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_BASE}/get-departments.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    allDepartments = data.data;
+                    
+                    const select = document.getElementById('departmentSelect');
+                    select.innerHTML = '<option value="">-- Chọn khoa --</option>' +
+                        data.data.map(d => `<option value="${d.maKhoa}">${d.tenKhoa}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        async function loadSpecialties() {
+            try {
+                const response = await fetch(`${API_BASE}/get-all-specialties.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    allSpecialties = data.data;
+                }
+            } catch (error) {
+                console.error('Error loading specialties:', error);
+            }
+        }
+
+        function loadSpecialtiesByDept() {
+            const maKhoa = document.getElementById('departmentSelect').value;
+            const specialtySelect = document.getElementById('specialtySelect');
+            
+            if (!maKhoa) {
+                specialtySelect.innerHTML = '<option value="">-- Chọn chuyên khoa --</option>';
+                return;
+            }
+            
+            const filtered = allSpecialties.filter(s => s.maKhoa === maKhoa);
+            specialtySelect.innerHTML = '<option value="">-- Chọn chuyên khoa --</option>' +
+                filtered.map(s => `<option value="${s.maChuyenKhoa}">${s.tenChuyenKhoa}</option>`).join('');
+        }
+
+        function toggleRoleFields() {
+            const role = document.getElementById('roleSelect').value;
+            const patientFields = document.getElementById('patientFields');
+            const doctorFields = document.getElementById('doctorFields');
+            
+            patientFields.style.display = 'none';
+            doctorFields.style.display = 'none';
+            
+            if (role === 'benhnhan') {
+                patientFields.style.display = 'block';
+            } else if (role === 'bacsi') {
+                doctorFields.style.display = 'block';
+            }
+        }
+
+        function openAddModal() {
+            document.getElementById('accountForm').reset();
+            document.getElementById('patientFields').style.display = 'none';
+            document.getElementById('doctorFields').style.display = 'none';
+            
+            new bootstrap.Modal(document.getElementById('accountModal')).show();
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        async function viewAccount(id) {
+            const account = allAccounts.find(a => a.id == id);
+            if (!account) return;
+            
+            const roleText = {
+                'benhnhan': 'Bệnh nhân',
+                'bacsi': 'Bác sĩ',
+                'quantri': 'Quản trị viên'
+            }[account.vaiTro];
+            
+            const isLocked = account.trangThai === 'Khóa';
+            
+            let detailsHtml = `
+                <div class="row g-3">
+                    <div class="col-12 text-center mb-3">
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700;">
+                            ${account.tenDangNhap.charAt(0).toUpperCase()}
+                        </div>
+                    </div>
+                    <div class="col-12"><strong>Tên đăng nhập:</strong> ${account.tenDangNhap}</div>
+                    <div class="col-12"><strong>Họ và tên:</strong> ${account.hoTen || 'N/A'}</div>
+                    <div class="col-12"><strong>Số điện thoại:</strong> ${account.soDienThoai || 'N/A'}</div>
+                    <div class="col-12">
+                        <strong>Vai trò:</strong> 
+                        <span class="role-badge ${account.vaiTro}">${roleText}</span>
+                    </div>
+                    <div class="col-12">
+                        <strong>Trạng thái:</strong> 
+                        <span class="status-badge ${isLocked ? 'locked' : 'active'}">
+                            ${isLocked ? 'Đã khóa' : 'Hoạt động'}
+                        </span>
+                    </div>
+            `;
+            
+            if (account.vaiTro === 'benhnhan' && account.ngaySinh) {
+                detailsHtml += `
+                    <div class="col-12"><strong>Ngày sinh:</strong> ${formatDate(account.ngaySinh)}</div>
+                    <div class="col-12"><strong>Giới tính:</strong> ${
+                        account.gioiTinh === 'nam' ? 'Nam' : 
+                        account.gioiTinh === 'nu' ? 'Nữ' : 'Khác'
+                    }</div>
+                    <div class="col-12"><strong>Số thẻ BHYT:</strong> ${account.soTheBHYT || 'Chưa có'}</div>
+                `;
+            } else if (account.vaiTro === 'bacsi') {
+                detailsHtml += `
+                    <div class="col-12"><strong>Mã bác sĩ:</strong> ${account.maBacSi || 'N/A'}</div>
+                    <div class="col-12"><strong>Chuyên khoa:</strong> ${account.tenChuyenKhoa || 'N/A'}</div>
+                `;
+            }
+            
+            detailsHtml += `</div>`;
+            
+            document.getElementById('viewModalBody').innerHTML = detailsHtml;
+            new bootstrap.Modal(document.getElementById('viewModal')).show();
+        }
+
+        async function toggleLockAccount(id, lock) {
+            const action = lock ? 'khóa' : 'mở khóa';
+            if (!confirm(`Bạn có chắc chắn muốn ${action} tài khoản này?`)) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/toggle-lock-account.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ id: id, lock: lock })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', `${lock ? 'Khóa' : 'Mở khóa'} tài khoản thành công!`);
+                    
+                    const account = allAccounts.find(a => a.id == id);
+                    if (account) {
+                        account.trangThai = lock ? 'Khóa' : 'Hoạt Động';
+                    }
+                    
+                    applyFilters();
+                    loadStatistics();
+                } else {
+                    showAlert('error', data.message || `Không thể ${action} tài khoản`);
+                }
+            } catch (error) {
+                console.error('Error toggling account lock:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+            }
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const role = document.getElementById('roleSelect').value;
+            
+            const data = {
+                vaiTro: role,
+                tenDangNhap: document.getElementById('username').value,
+                matKhau: document.getElementById('password').value,
+                soDienThoai: document.getElementById('phone').value,
+                hoTen: document.getElementById('fullName').value
+            };
+            
+            if (role === 'benhnhan') {
+                data.ngaySinh = document.getElementById('birthDate').value;
+                data.gioiTinh = document.getElementById('gender').value;
+                data.soTheBHYT = document.getElementById('insuranceNumber').value;
+            } else if (role === 'bacsi') {
+                data.maChuyenKhoa = document.getElementById('specialtySelect').value;
+                data.moTa = document.getElementById('doctorDescription').value;
+                
+                if (!data.maChuyenKhoa) {
+                    showAlert('error', 'Vui lòng chọn chuyên khoa cho bác sĩ!');
+                    return;
+                }
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/create-account.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', 'Tạo tài khoản thành công!');
+                    bootstrap.Modal.getInstance(document.getElementById('accountModal')).hide();
+                    loadAccounts();
+                    loadStatistics();
+                } else {
+                    showAlert('error', result.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Error creating account:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        async function logout() {
+            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+
+            try {
+                const response = await fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = '../auth/login.html';
+                } else {
+                    alert('Không thể đăng xuất. Vui lòng thử lại.');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Lỗi khi đăng xuất');
+            }
+        }
+
+        function handleSessionExpired(msg) {
+            if (
+                !msg ||
+                msg === "fetch_failed" ||
+                msg.includes('Phiên đăng nhập') ||
+                msg.includes('Không có quyền') ||
+                msg.includes('Chưa đăng nhập')
+            ) {
+                showAlert('error', 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.');
+                setTimeout(() => window.location.href = '../auth/login.html', 500);
+            }
+        }
+    </script>
+</body>
+</html>

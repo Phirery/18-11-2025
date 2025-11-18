@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gói Khám Sức Khỏe Toàn Diện Premium</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea, #764ba2);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .gradient-bg {
+            background: var(--primary-gradient);
+        }
+
+        .gradient-text {
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .nav-tabs .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-tabs {
+            border: none;
+        }
+
+        .doctor-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid transparent;
+            background: var(--primary-gradient);
+            padding: 3px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .doctor-card:hover .doctor-img {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .specialty-tag {
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 30px;
+            padding: 8px 18px;
+            text-decoration: none;
+            margin: 5px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .specialty-tag:hover {
+            background: var(--primary-gradient);
+            color: #fff;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            border-color: transparent;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-gradient);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .badge.bg-primary {
+            background: var(--primary-gradient) !important;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .hero-section {
+            background: var(--primary-gradient);
+            border-radius: 0 0 30px 30px;
+        }
+
+        .card {
+            border-radius: 20px;
+            border: none;
+        }
+
+        .accordion-item {
+            border: 2px solid #e2e8f0;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            filter: brightness(0) invert(1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero-section text-white py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 mb-4 mb-lg-0">
+                    <span class="badge bg-light text-primary mb-3">Gói khám phổ biến</span>
+                    <h1 class="display-4 fw-bold mb-3">Gói Khám Sức Khỏe Toàn Diện Premium</h1>
+                    <p class="lead mb-4">Gói khám sức khỏe toàn diện với các xét nghiệm và kiểm tra chuyên sâu, phù hợp cho mọi lứa tuổi từ 18 tuổi trở lên.</p>
+                    
+                    <div class="d-flex flex-wrap gap-3 mb-4 mt-4">
+                        <a href="#" class="specialty-tag text-decoration-none">
+                            <i class="bi bi-heart-pulse me-1"></i>Tim Mạch
+                        </a>
+                        <a href="#" class="specialty-tag text-decoration-none">
+                            <i class="bi bi-heart-fill me-1"></i>Nội Tiết
+                        </a>
+                        <a href="#" class="specialty-tag text-decoration-none">
+                            <i class="bi bi-ear me-1"></i>Tai mũi họng
+                        </a>
+                    </div>
+                   
+                    <div class="d-flex flex-wrap gap-3">
+                        <div class="bg-white bg-opacity-25 rounded px-4 py-2">
+                            <i class="bi bi-clock me-2"></i>3-4 giờ
+                        </div>
+                        <div class="bg-white bg-opacity-25 rounded px-4 py-2">
+                            <i class="bi bi-people me-2"></i>Từ 18 tuổi
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h2 class="display-3 fw-bold gradient-text mb-2">3.500.000 <span class="fs-4">đ</span></h2>
+                                <p class="text-muted mb-4">Giá chưa bao gồm VAT</p>
+                                <button class="btn btn-primary btn-lg w-100 mb-3">
+                                    <i class="bi bi-calendar-plus me-2"></i>Đặt lịch ngay
+                                </button>
+                                <button class="btn btn-outline-primary btn-lg w-100">
+                                    <i class="bi bi-telephone me-2"></i>Liên hệ tư vấn
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-4" id="packageTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button">
+                    <i class="bi bi-info-circle me-2"></i>Tổng quan
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button">
+                    <i class="bi bi-list-check me-2"></i>Dịch vụ bao gồm
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="doctors-tab" data-bs-toggle="tab" data-bs-target="#doctors" type="button">
+                    <i class="bi bi-person-badge me-2"></i>Đội ngũ bác sĩ
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="faq-tab" data-bs-toggle="tab" data-bs-target="#faq" type="button">
+                    <i class="bi bi-question-circle me-2"></i>Câu hỏi thường gặp
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="packageTabsContent">
+            <!-- Tổng quan -->
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-5">
+                        <h2 class="fw-bold mb-4 gradient-text">Giới thiệu gói khám</h2>
+                        <p class="text-muted mb-4">
+                            Gói khám sức khỏe toàn diện Premium được thiết kế đặc biệt để phát hiện sớm các vấn đề sức khỏe và đánh giá tổng thể tình trạng cơ thể. Với hơn 40 hạng mục kiểm tra, gói khám này phù hợp cho mọi lứa tuổi từ 18 tuổi trở lên.
+                        </p>
+                        <h4 class="fw-semibold mb-3">Lợi ích của gói khám:</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Phát hiện sớm các bệnh lý tiềm ẩn về tim mạch, tiểu đường, gan, thận
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Đánh giá toàn diện tình trạng sức khỏe hiện tại
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Được thực hiện bởi đội ngũ bác sĩ giàu kinh nghiệm
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Tư vấn chi tiết từ chuyên gia sau khi có kết quả
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                Hệ thống thiết bị hiện đại, chính xác cao
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dịch vụ bao gồm -->
+            <div class="tab-pane fade" id="services" role="tabpanel">
+                <div class="row g-4">
+                    <!-- Khám lâm sàng -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="fw-bold text-primary mb-4">
+                                    <i class="bi bi-clipboard2-pulse me-2"></i>Khám lâm sàng
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Khám nội tổng quát
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Khám tim mạch
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Khám tai mũi họng
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Khám mắt - đo thị lực
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Khám răng hàm mặt
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Xét nghiệm -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="fw-bold text-primary mb-4">
+                                    <i class="bi bi-droplet-fill me-2"></i>Xét nghiệm
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Xét nghiệm máu tổng quát (27 chỉ số)
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Xét nghiệm chức năng gan
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Xét nghiệm chức năng thận
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Xét nghiệm lipid máu
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Xét nghiệm đường huyết
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chẩn đoán hình ảnh -->
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h4 class="fw-bold text-primary mb-4">
+                                    <i class="bi bi-camera-fill me-2"></i>Chẩn đoán hình ảnh
+                                </h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Chụp X-quang phổi
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Siêu âm ổ bụng tổng quát
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Điện tâm đồ
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <i class="bi bi-check-lg text-success me-2"></i>Đo loãng xương
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Đội ngũ bác sĩ -->
+            <div class="tab-pane fade" id="doctors" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="doctor-card card-hover shadow-sm">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="BS. Nguyễn Văn An" class="doctor-img mb-3">
+                            <h5 class="fw-bold mb-2">BS. Nguyễn Văn An</h5>
+                            <span class="badge bg-primary mb-3">Nội khoa</span>
+                            <p class="text-muted mb-1">15 năm kinh nghiệm</p>
+                            <p class="text-muted small">Bác sĩ chuyên khoa II</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="doctor-card card-hover shadow-sm">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="BS. Trần Thị Bình" class="doctor-img mb-3">
+                            <h5 class="fw-bold mb-2">BS. Trần Thị Bình</h5>
+                            <span class="badge bg-primary mb-3">Tim mạch</span>
+                            <p class="text-muted mb-1">12 năm kinh nghiệm</p>
+                            <p class="text-muted small">Thạc sĩ Y học</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="doctor-card card-hover shadow-sm">
+                            <img src="https://randomuser.me/api/portraits/men/64.jpg" alt="BS. Lê Minh Cường" class="doctor-img mb-3">
+                            <h5 class="fw-bold mb-2">BS. Lê Minh Cường</h5>
+                            <span class="badge bg-primary mb-3">Tai Mũi Họng</span>
+                            <p class="text-muted mb-1">10 năm kinh nghiệm</p>
+                            <p class="text-muted small">Bác sĩ chuyên khoa I</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="doctor-card card-hover shadow-sm">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="BS. Phạm Thu Dung" class="doctor-img mb-3">
+                            <h5 class="fw-bold mb-2">BS. Phạm Thu Dung</h5>
+                            <span class="badge bg-primary mb-3">Mắt</span>
+                            <p class="text-muted mb-1">8 năm kinh nghiệm</p>
+                            <p class="text-muted small">Bác sĩ chuyên khoa I</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="tab-pane fade" id="faq" role="tabpanel">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item shadow-sm mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Tôi cần chuẩn bị gì trước khi khám?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                Bạn nên nhịn ăn 8-10 tiếng trước khi đến khám để các xét nghiệm máu cho kết quả chính xác. Mang theo CMND/CCCD và các kết quả khám cũ nếu có.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item shadow-sm mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                Mất bao lâu để có kết quả?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                Kết quả khám và xét nghiệm sẽ được tổng hợp và gửi cho bạn trong vòng 3-5 ngày làm việc. Một số kết quả cơ bản bạn có thể nhận ngay trong ngày.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item shadow-sm mb-3">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                Gói khám có bao gồm tư vấn không?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                Có, sau khi có đầy đủ kết quả, bác sĩ sẽ tư vấn chi tiết về tình trạng sức khỏe và đưa ra khuyến nghị phù hợp cho bạn.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="card border-0 shadow-lg mt-5 gradient-bg text-white">
+            <div class="card-body p-5 text-center">
+                <h2 class="display-6 fw-bold mb-3">Cần tư vấn thêm?</h2>
+                <p class="lead mb-4">Đội ngũ chuyên gia của chúng tôi sẵn sàng hỗ trợ bạn</p>
+                <div class="d-flex flex-wrap justify-content-center gap-4">
+                    <div class="bg-white bg-opacity-25 rounded px-4 py-3">
+                        <i class="bi bi-telephone-fill me-2"></i>
+                        <span class="fw-bold">1900 1234</span>
+                    </div>
+                    <div class="bg-white bg-opacity-25 rounded px-4 py-3">
+                        <i class="bi bi-envelope-fill me-2"></i>
+                        <span class="fw-bold">support@healthcare.vn</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

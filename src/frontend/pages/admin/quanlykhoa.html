@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Khoa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+            --primary-blue: #00AEEF;
+            --light-bg: #f8f9fa;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 10%, #f8f9fa 100%);
+            min-height: 100vh;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: transform 0.3s;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .sidebar-header h4 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin: 5px 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid white;
+            padding-left: 16px;
+        }
+
+        .sidebar-menu a i {
+            width: 25px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .notification-badge {
+            position: absolute;
+            right: 20px;
+            background: #ff3b3b;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-info-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            margin-bottom: 0;
+        }
+
+        .logout-btn-sidebar {
+            width: auto;
+            padding: 8px 15px;
+            background: #00b3ff;
+            color: rgb(255, 255, 255);
+            border: 1px solid #1f79ae;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-btn-sidebar:hover {
+            background: #0a95d0;
+            border-color: #0096ec;
+        }
+
+        .user-logout-item {
+            display: none;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: margin-left 0.3s;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 998;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .top-bar h5 {
+            margin: 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--primary-purple);
+            padding: 5px 10px;
+            text-decoration: none;
+        }
+
+        .notification-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            background: #ff3b3b;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 16px;
+        }
+
+        .logout-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .user-details {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .logout-btn-desktop {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .logout-btn-desktop:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .content-area {
+            padding: 30px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            border-radius: 0 0 0 100%;
+            opacity: 0.1;
+        }
+
+        .stat-card.total::before {background: linear-gradient(90deg, #667eea, #764ba2);}
+        .stat-card.specialties::before {background: linear-gradient(90deg, #28a745, #20c997);}
+        .stat-card.doctors::before {background: linear-gradient(90deg, #ffc107, #ff9800);}
+        .stat-card.total::after {background: linear-gradient(90deg, #667eea, #764ba2);}
+        .stat-card.specialties::after {background: linear-gradient(90deg, #28a745, #20c997);}
+        .stat-card.doctors::after {background: linear-gradient(90deg, #ffc107, #ff9800);}
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-card.total .stat-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .stat-card.specialties .stat-icon {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .stat-card.doctors .stat-icon {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-section input {
+            flex: 1;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: all 0.3s;
+        }
+
+        .search-section input:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+            outline: none;
+        }
+
+        .table-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .table-header h5 {
+            color: #333;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .custom-table thead th {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #495057;
+            font-weight: 600;
+            padding: 15px;
+            border: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .custom-table tbody tr {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .custom-table tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-table tbody td {
+            padding: 20px 15px;
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr td:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .custom-table tbody tr td:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .department-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.05rem;
+        }
+
+        .specialty-count {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .description-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 400px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0 3px;
+            transition: all 0.3s;
+        }
+
+        .btn-view {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-view:hover {
+            background: #1976d2;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .btn-edit:hover {
+            background: #ffc107;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .btn-delete:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            border-radius: 15px 15px 0 0;
+            padding: 20px 25px;
+        }
+
+        .modal-title {
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h5 {
+            color: #999;
+        }
+
+        .detail-row {
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .bg-primary-light {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(0, 174, 239, 0.15));
+            color: #667eea;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+        .page-link {
+            color: var(--primary-purple);
+            border: 1px solid #dee2e6;
+            margin: 0 3px;
+            border-radius: 6px;
+        }
+
+        .page-link:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        .page-item.active .page-link {
+            background: var(--primary-purple);
+            border-color: var(--primary-purple);
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            font-size: 26px;
+            font-weight: bold;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 997;
+        }
+
+        #scrollTopBtn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        #scrollTopBtn span {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                right: 0;
+                left: auto;
+                transform: translateX(100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                order: 3;
+            }
+
+            .top-bar {
+                padding: 12px 15px;
+            }
+
+            .top-bar-left {
+                flex: 1;
+            }
+
+            .top-bar-right {
+                order: 2;
+            }
+
+            .top-bar h5 {
+                font-size: 1rem;
+                order: 1;
+            }
+
+            .user-details,
+            .logout-btn-desktop {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+
+            .content-area {
+                padding: 20px 15px;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .table-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .btn-add {
+                width: 100%;
+            }
+
+            .custom-table {
+                font-size: 0.85rem;
+            }
+
+            .custom-table thead th,
+            .custom-table tbody td {
+                padding: 10px 8px;
+            }
+
+            .description-text {
+                max-width: 100%;
+            }
+
+            #scrollTopBtn {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .logout-header {
+                display: none;
+            }
+
+            .user-logout-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 20px;
+                margin: 5px 0;
+                transition: all 0.3s;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header" onclick="window.location.href='../patient/index.html'">
+            <h4><i class="fas fa-hospital-alt"></i> Eden Admin</h4>
+            <p>Hệ thống quản trị</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="quanlylichkham.html"><i class="fas fa-calendar-check"></i> Quản lý lịch khám</a></li>
+            <li><a href="quanlykhoa.html" class="active"><i class="fas fa-hospital"></i> Quản lý khoa</a></li>
+            <li><a href="quanlybenhnhan.html"><i class="fas fa-user-injured"></i> Quản lý bệnh nhân</a></li>
+            <li><a href="quanlybacsi.html"><i class="fas fa-user-md"></i> Quản lý bác sĩ</a></li>
+            <li><a href="thongke.html"><i class="fas fa-chart-bar"></i> Thống kê</a></li>
+            <li><a href="quanlytaikhoan.html"><i class="fas fa-users-cog"></i> Quản lý tài khoản</a></li>
+            <li>
+                <a href="thongbao.html">
+                    <i class="fas fa-bell"></i>
+                    <span>Thông báo</span>
+                    <span class="notification-badge" id="sidebarNotifBadge" style="display:none;">0</span>
+                </a>
+            </li>
+            <li class="user-logout-item">
+                <div class="user-info-sidebar">
+                    <div class="user-avatar">A</div>                
+                    <div class="user-details">
+                        <div class="user-name" id="sidebarUserName">Admin</div>
+                    </div>
+                </div>
+                <button class="logout-btn-sidebar" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h5><i class="fas fa-hospital me-2"></i>Quản Lý Khoa</h5>
+            </div>
+            <div class="top-bar-right">
+                <a href="thongbao.html" class="notification-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="topNotifBadge" style="display:none;">0</span>
+                </a>
+            </div>
+            <div class="logout-header">
+                <div class="user-avatar">A</div>
+                <div class="user-details">
+                    <div class="user-name" id="adminName">Đang tải...</div>
+                    <div class="user-role">Quản trị viên</div>
+                </div>
+                <button class="logout-btn-desktop" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                </button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- Statistics -->
+            <div class="stats-row">
+                <div class="stat-card total" onclick="scrollToSection('khoaSection')">
+                    <div class="stat-icon"><i class="fas fa-hospital"></i></div>
+                    <div class="stat-number" id="statDepartments">0</div>
+                    <div class="stat-label">Tổng số khoa</div>
+                </div>
+                <div class="stat-card specialties" onclick="scrollToSection('chuyenKhoaSection')">
+                    <div class="stat-icon"><i class="fas fa-stethoscope"></i></div>
+                    <div class="stat-number" id="statSpecialties">0</div>
+                    <div class="stat-label">Tổng chuyên khoa</div>
+                </div>
+                <div class="stat-card doctors" onclick="window.location.href='quanlybacsi.html'">
+                    <div class="stat-icon"><i class="fas fa-user-md"></i></div>
+                    <div class="stat-number" id="statDoctors">0</div>
+                    <div class="stat-label">Tổng bác sĩ</div>
+                </div>
+            </div>
+
+            <section id="khoaSection"></section>
+
+            <!-- Search Section for Departments -->
+            <div class="search-section">
+                <i class="fas fa-search text-muted"></i>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên khoa...">
+                <button class="btn btn-secondary" onclick="resetSearch()">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+
+            <!-- Departments Table -->
+            <div class="table-section">
+                <div class="table-header">
+                    <h5><i class="fas fa-list me-2"></i>Danh sách các khoa</h5>
+                    <button class="btn-add" onclick="openAddModal()">
+                        <i class="fas fa-plus me-2"></i>Thêm khoa mới
+                    </button>
+                </div>
+
+                <div id="loadingIndicator" class="loading" style="display: none;">
+                    <div class="spinner-border text-primary"></div>
+                    <p class="mt-3">Đang tải dữ liệu...</p>
+                </div>
+
+                <div class="table-responsive" id="tableContainer">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Tên khoa</th>
+                                <th style="width: 45%;">Mô tả</th>
+                                <th style="width: 10%;" class="text-center">Chuyên khoa</th>
+                                <th style="width: 20%;" class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="departmentTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container" id="deptPaginationSection" style="display: none;">
+                    <div class="text-muted" id="deptRecordInfo">Hiển thị 0 - 0 của 0 khoa</div>
+                    <nav>
+                        <ul class="pagination" id="deptPaginationContainer"></ul>
+                    </nav>
+                </div>
+            </div>
+
+            <section id="chuyenKhoaSection"></section>
+
+            <!-- Search Section for Specialties -->
+            <div class="mt-4">
+                <div class="search-section">
+                    <i class="fas fa-search text-muted"></i>
+                    <input type="text" id="specialtySearchInput" placeholder="Tìm kiếm theo tên chuyên khoa...">
+                    <button class="btn btn-secondary" onclick="resetSpecialtySearch()">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+
+                <!-- Specialties Table -->
+                <div class="table-section">
+                    <div class="table-header">
+                        <h5><i class="fas fa-stethoscope me-2"></i>Danh sách chuyên khoa</h5>
+                        <button class="btn-add" onclick="openAddSpecialtyModal()">
+                            <i class="fas fa-plus me-2"></i>Thêm chuyên khoa mới
+                        </button>
+                    </div>
+
+                    <div id="specialtyLoadingIndicator" class="loading" style="display: none;">
+                        <div class="spinner-border text-primary"></div>
+                        <p class="mt-3">Đang tải dữ liệu chuyên khoa...</p>
+                    </div>
+
+                    <div class="table-responsive" id="specialtyTableContainer">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;">Tên Chuyên Khoa</th>
+                                    <th style="width: 25%;">Thuộc Khoa</th>
+                                    <th style="width: 30%;">Mô tả</th>
+                                    <th style="width: 20%;" class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="specialtyTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination-container" id="specPaginationSection" style="display: none;">
+                        <div class="text-muted" id="specRecordInfo">Hiển thị 0 - 0 của 0 chuyên khoa</div>
+                        <nav>
+                            <ul class="pagination" id="specPaginationContainer"></ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department Modal -->
+    <div class="modal fade" id="departmentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Thêm khoa mới</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="departmentForm">
+                        <input type="hidden" id="maKhoa" name="maKhoa">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Tên khoa <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="tenKhoa" name="tenKhoa" required placeholder="VD: Khoa Tim mạch">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mô tả <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="moTa" name="moTa" required placeholder="Nhập mô tả về khoa..."></textarea>
+                            <small class="text-muted">Mô tả chi tiết về chức năng, nhiệm vụ của khoa</small>
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-save me-2"></i>Lưu thông tin
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Department Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalTitle">Thông tin chi tiết khoa</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="viewModalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specialty Modal -->
+    <div class="modal fade" id="specialtyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="specialtyModalTitle">Thêm Chuyên Khoa Mới</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="specialtyForm">
+                        <input type="hidden" id="specialtyMaChuyenKhoa" name="maChuyenKhoa">
+                        <input type="hidden" id="specialtyOldMaKhoa" name="oldMaKhoa">
+                        
+                        <div class="mb-3">
+                            <label for="specialtyTenChuyenKhoa" class="form-label">Tên chuyên khoa <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="specialtyTenChuyenKhoa" name="tenChuyenKhoa" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="specialtyMaKhoaSelect" class="form-label">Thuộc khoa <span class="text-danger">*</span></label>
+                            <select class="form-select" id="specialtyMaKhoaSelect" name="maKhoa" required>
+                                <option value="" disabled selected>-- Vui lòng chọn khoa --</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="specialtyMoTa" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="specialtyMoTa" name="moTa" rows="4"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-save me-2"></i>Lưu lại
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Specialty Modal -->
+    <div class="modal fade" id="specialtyViewModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="specialtyViewModalTitle">Chi Tiết Chuyên Khoa</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="specialtyViewModalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <span>▲</span>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/admin';
+
+        const STATS_API = `${API_BASE}/department-stats.php`;
+        const DEPARTMENTS_API = `${API_BASE}/get-departments-detail.php`;
+        const CREATE_DEPARTMENT_API = `${API_BASE}/create-department.php`;
+        const UPDATE_DEPARTMENT_API = `${API_BASE}/update-department.php`;
+        const DELETE_DEPARTMENT_API = `${API_BASE}/delete-department.php`;
+
+        const GET_SPECIALTIES_API = `${API_BASE}/get-all-specialties.php`;
+        const CREATE_SPECIALTY_API = `${API_BASE}/create-specialty.php`;
+        const UPDATE_SPECIALTY_API = `${API_BASE}/update-specialty.php`;
+        const DELETE_SPECIALTY_API = `${API_BASE}/delete-specialty.php`;
+
+        let allDepartments = [];
+        let filteredDepartments = [];
+        let allSpecialties = [];
+        let filteredSpecialties = [];
+        let specialtyModal;
+
+        let deptCurrentPage = 1;
+        let specCurrentPage = 1;
+        const itemsPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            loadAdminInfo();
+            loadStatistics();
+            await loadDepartments();
+            loadUnreadNotificationsCount();
+            
+            setInterval(loadUnreadNotificationsCount, 3000);
+            
+            document.getElementById('searchInput').addEventListener('input', applySearch);
+            
+            const form = document.getElementById('departmentForm');
+            form.removeEventListener('submit', handleFormSubmit);
+            form.addEventListener('submit', handleFormSubmit);
+            
+            specialtyModal = new bootstrap.Modal(document.getElementById('specialtyModal'));
+            await loadSpecialties();
+            document.getElementById('specialtySearchInput').addEventListener('input', handleSpecialtySearch);
+            
+            const specForm = document.getElementById('specialtyForm');
+            specForm.removeEventListener('submit', handleSpecialtyFormSubmit);
+            specForm.addEventListener('submit', handleSpecialtyFormSubmit);
+            
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                mobileOverlay.classList.toggle('active');
+            });
+
+            mobileOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+            });
+
+            sidebar.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                    }
+                });
+            });
+            
+            window.onscroll = function() {
+                const btn = document.getElementById('scrollTopBtn');
+                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                    btn.style.display = 'flex';
+                } else {
+                    btn.style.display = 'none';
+                }
+            };
+        });
+
+        async function loadAdminInfo() {
+            try {
+                const response = await fetch(`${API_BASE}/get-admin-info.php`, {
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const userName = data.data.tenDangNhap || 'Admin';
+                    document.getElementById('adminName').textContent = userName;
+                    document.getElementById('sidebarUserName').textContent = userName;
+
+                    const firstLetter = userName.charAt(0).toUpperCase();
+                    document.querySelectorAll('.user-avatar').forEach(el => {
+                        el.textContent = firstLetter;
+                    });
+                } else {
+                    handleSessionExpired(data.message || null);
+                }
+
+            } catch (error) {
+                console.error("loadAdminInfo fetch error:", error);
+                handleSessionExpired("fetch_failed");
+            }
+        }
+
+        async function loadUnreadNotificationsCount() {
+            try {
+                const response = await fetch(`${API_BASE}/get-unread-notifications-count.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success && data.count > 0) {
+                    const topBadge = document.getElementById('topNotifBadge');
+                    topBadge.textContent = data.count;
+                    topBadge.style.display = 'inline-block';
+                    
+                    const sidebarBadge = document.getElementById('sidebarNotifBadge');
+                    sidebarBadge.textContent = data.count;
+                    sidebarBadge.style.display = 'inline-block';
+                } else {
+                    document.getElementById('topNotifBadge').style.display = 'none';
+                    document.getElementById('sidebarNotifBadge').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading notification count:', error);
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch(STATS_API, {
+                    credentials: 'include'
+                });
+                const stats = await response.json();
+                
+                animateNumber('statDepartments', stats.departments);
+                animateNumber('statSpecialties', stats.specialties);
+                animateNumber('statDoctors', stats.doctors);
+            } catch (error) {
+                console.error('Lỗi:', error);
+                document.querySelectorAll('#statDepartments, #statSpecialties, #statDoctors')
+                    .forEach(el => el.textContent = 'Lỗi');
+            }
+        }
+
+        async function loadDepartments() {
+            showLoading('loadingIndicator', 'tableContainer');
+            
+            try {
+                const response = await fetch(DEPARTMENTS_API, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    allDepartments = data.data;
+                    filteredDepartments = [...allDepartments];
+                    displayDepartments();
+                    populateDepartmentDropdown(allDepartments);
+                } else {
+                    showAlert('error', data.message || 'Không thể tải dữ liệu khoa');
+                    handleSessionExpired(data.message || null);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối khi tải danh sách khoa');
+                handleSessionExpired("fetch_failed");
+            } finally {
+                hideLoading('loadingIndicator', 'tableContainer');
+            }
+        }
+
+        function displayDepartments() {
+            const tbody = document.getElementById('departmentTableBody');
+            const start = (deptCurrentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredDepartments.slice(start, end);
+            
+            if (pageData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <i class="fas fa-hospital"></i>
+                                <h5>Không có khoa nào</h5>
+                                <p class="text-muted">Thử thêm khoa mới hoặc thay đổi từ khóa tìm kiếm.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                document.getElementById('deptPaginationSection').style.display = 'none';
+                return;
+            }
+            
+            tbody.innerHTML = pageData.map(dept => {
+                const moTaNgan = (dept.moTa && dept.moTa.length > 100) 
+                    ? dept.moTa.substring(0, 100) + '...' 
+                    : (dept.moTa || 'Chưa có mô tả');
+                
+                return `
+                    <tr>
+                        <td><strong class="department-name">${dept.tenKhoa}</strong></td>
+                        <td><span class="description-text">${moTaNgan}</span></td>
+                        <td class="text-center">
+                            <span class="badge ${dept.soChuyenKhoa > 0 ? 'bg-primary-light' : 'bg-secondary'}">
+                                ${dept.soChuyenKhoa} chuyên khoa
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn-action btn-view" title="Xem chi tiết" onclick="openViewModal('${dept.maKhoa}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit" title="Chỉnh sửa" onclick="openEditModal('${dept.maKhoa}')">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="btn-action btn-delete" title="Xóa" onclick="confirmDelete('${dept.maKhoa}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            document.getElementById('deptPaginationSection').style.display = 'flex';
+            updateDeptPagination();
+        }
+
+        function updateDeptPagination() {
+            const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
+            const container = document.getElementById('deptPaginationContainer');
+            const start = (deptCurrentPage - 1) * itemsPerPage + 1;
+            const end = Math.min(deptCurrentPage * itemsPerPage, filteredDepartments.length);
+            
+            document.getElementById('deptRecordInfo').textContent = 
+                `Hiển thị ${start} - ${end} của ${filteredDepartments.length} khoa`;
+            
+            let html = `
+                <li class="page-item ${deptCurrentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changeDeptPage(${deptCurrentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= deptCurrentPage - 1 && i <= deptCurrentPage + 1)) {
+                    html += `<li class="page-item ${i === deptCurrentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changeDeptPage(${i}); return false;">${i}</a>
+                    </li>`;
+                } else if (i === deptCurrentPage - 2 || i === deptCurrentPage + 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            html += `
+                <li class="page-item ${deptCurrentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changeDeptPage(${deptCurrentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function changeDeptPage(page) {
+            const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                deptCurrentPage = page;
+                displayDepartments();
+                scrollToSection('khoaSection');
+            }
+        }
+
+        function applySearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!query) {
+                filteredDepartments = [...allDepartments];
+            } else {
+                filteredDepartments = allDepartments.filter(dept => 
+                    dept.tenKhoa.toLowerCase().includes(query) ||
+                    (dept.moTa && dept.moTa.toLowerCase().includes(query))
+                );
+            }
+            
+            deptCurrentPage = 1;
+            displayDepartments();
+        }
+
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            filteredDepartments = [...allDepartments];
+            deptCurrentPage = 1;
+            displayDepartments();
+        }
+
+        function openAddModal() {
+            document.getElementById('departmentForm').reset();
+            document.getElementById('maKhoa').value = '';
+            document.getElementById('modalTitle').textContent = 'Thêm Khoa Mới';
+            
+            const modal = new bootstrap.Modal(document.getElementById('departmentModal'));
+            modal.show();
+        }
+
+        function openEditModal(maKhoa) {
+            const dept = allDepartments.find(d => d.maKhoa === maKhoa);
+            if (!dept) {
+                showAlert('error', 'Không tìm thấy khoa!');
+                return;
+            }
+            
+            document.getElementById('departmentForm').reset();
+            document.getElementById('modalTitle').textContent = 'Cập Nhật Khoa';
+            
+            document.getElementById('maKhoa').value = dept.maKhoa;
+            document.getElementById('tenKhoa').value = dept.tenKhoa;
+            document.getElementById('moTa').value = dept.moTa || '';
+            
+            const modal = new bootstrap.Modal(document.getElementById('departmentModal'));
+            modal.show();
+        }
+
+        function openViewModal(maKhoa) {
+            const dept = allDepartments.find(d => d.maKhoa === maKhoa);
+            if (!dept) {
+                showAlert('error', 'Không tìm thấy khoa!');
+                return;
+            }
+            
+            const body = document.getElementById('viewModalBody');
+            body.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Tên khoa</div>
+                    <div class="detail-value"><strong style="font-size: 1.1rem; color: var(--primary-purple);">${dept.tenKhoa}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Số chuyên khoa</div>
+                    <div class="detail-value">
+                        <span class="badge ${dept.soChuyenKhoa > 0 ? 'bg-primary-light' : 'bg-secondary'}">
+                            ${dept.soChuyenKhoa} chuyên khoa
+                        </span>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Mô tả</div>
+                    <div class="detail-value">${dept.moTa ? dept.moTa.replace(/\n/g, '<br>') : '<em class="text-muted">Chưa có mô tả</em>'}</div>
+                </div>
+            `;
+            
+            document.getElementById('viewModalTitle').textContent = `Chi Tiết: ${dept.tenKhoa}`;
+            
+            const viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
+            viewModal.show();
+        }
+
+        async function confirmDelete(maKhoa) {
+            if (!confirm(`Bạn có chắc chắn muốn xóa khoa "${allDepartments.find(d => d.maKhoa === maKhoa)?.tenKhoa}"? \n\nLƯU Ý: Các chuyên khoa sẽ bị xóa, bác sĩ sẽ set null.`)) return;
+            
+            try {
+                const response = await fetch(DELETE_DEPARTMENT_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ maKhoa: maKhoa })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', 'Xóa khoa thành công!');
+                    await loadDepartments();
+                    await loadStatistics();
+                    await loadSpecialties();
+                } else {
+                    showAlert('error', result.message || 'Lỗi khi xóa');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const submitBtn = event.target.querySelector('.btn-submit');
+            submitBtn.disabled = true;
+
+            const maKhoa = document.getElementById('maKhoa').value;
+            const url = maKhoa ? UPDATE_DEPARTMENT_API : CREATE_DEPARTMENT_API;
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            if (!data.tenKhoa || !data.tenKhoa.trim()) {
+                showAlert('error', 'Vui lòng nhập tên khoa!');
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            if (!data.moTa || !data.moTa.trim()) {
+                showAlert('error', 'Vui lòng nhập mô tả!');
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', maKhoa ? 'Cập nhật khoa thành công!' : 'Thêm khoa thành công!');
+                    
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('departmentModal'));
+                    modal.hide();
+                    
+                    await loadDepartments();
+                    await loadStatistics();
+                } else {
+                    showAlert('error', result.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+            }
+            submitBtn.disabled = false;
+        }
+
+        function populateDepartmentDropdown(departments) {
+            const select = document.getElementById('specialtyMaKhoaSelect');
+            const selectedValue = select.value;
+            
+            select.innerHTML = '<option value="" disabled selected>-- Vui lòng chọn khoa --</option>';
+            
+            if (departments && departments.length > 0) {
+                departments.forEach(dept => {
+                    const option = document.createElement('option');
+                    option.value = dept.maKhoa;
+                    option.textContent = dept.tenKhoa;
+                    select.appendChild(option);
+                });
+            }
+            
+            if (selectedValue) {
+                select.value = selectedValue;
+            }
+        }
+
+        async function loadSpecialties() {
+            showLoading('specialtyLoadingIndicator', 'specialtyTableContainer');
+            
+            try {
+                const response = await fetch(GET_SPECIALTIES_API, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    allSpecialties = data.data;
+                    filteredSpecialties = [...allSpecialties];
+                    displaySpecialties();
+                } else {
+                    showAlert('error', data.message || 'Không thể tải dữ liệu chuyên khoa');
+                    handleSessionExpired(data.message || null);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối khi tải chuyên khoa');
+                handleSessionExpired("fetch_failed");
+            } finally {
+                hideLoading('specialtyLoadingIndicator', 'specialtyTableContainer');
+            }
+        }
+
+        function displaySpecialties() {
+            const tbody = document.getElementById('specialtyTableBody');
+            const start = (specCurrentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = filteredSpecialties.slice(start, end);
+            
+            if (pageData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <i class="fas fa-stethoscope"></i>
+                                <h5>Không có chuyên khoa nào</h5>
+                                <p class="text-muted">Thử thêm chuyên khoa mới hoặc thay đổi từ khóa tìm kiếm.</p>
+                            </div>
+                        </td>
+                    </tr>`;
+                document.getElementById('specPaginationSection').style.display = 'none';
+                return;
+            }
+            
+            tbody.innerHTML = pageData.map(spec => {
+                const department = allDepartments.find(d => d.maKhoa === spec.maKhoa);
+                const tenKhoa = department ? department.tenKhoa : '<span class="text-danger">N/A</span>';
+                
+                const moTaNgan = (spec.moTa && spec.moTa.length > 100) 
+                    ? spec.moTa.substring(0, 100) + '...' 
+                    : (spec.moTa || 'Chưa có mô tả');
+                
+                return `
+                    <tr>
+                        <td><strong>${spec.tenChuyenKhoa}</strong></td>
+                        <td>${tenKhoa}</td>
+                        <td><span class="description-text">${moTaNgan}</span></td>
+                        <td class="text-center">
+                            <button class="btn-action btn-view" title="Xem chi tiết" onclick="openViewSpecialtyModal('${spec.maChuyenKhoa}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit" title="Chỉnh sửa" onclick="openEditSpecialtyModal('${spec.maChuyenKhoa}')">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            <button class="btn-action btn-delete" title="Xóa" onclick="confirmDeleteSpecialty('${spec.maChuyenKhoa}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            
+            document.getElementById('specPaginationSection').style.display = 'flex';
+            updateSpecPagination();
+        }
+
+        function updateSpecPagination() {
+            const totalPages = Math.ceil(filteredSpecialties.length / itemsPerPage);
+            const container = document.getElementById('specPaginationContainer');
+            const start = (specCurrentPage - 1) * itemsPerPage + 1;
+            const end = Math.min(specCurrentPage * itemsPerPage, filteredSpecialties.length);
+            
+            document.getElementById('specRecordInfo').textContent = 
+                `Hiển thị ${start} - ${end} của ${filteredSpecialties.length} chuyên khoa`;
+            
+            let html = `
+                <li class="page-item ${specCurrentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changeSpecPage(${specCurrentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= specCurrentPage - 1 && i <= specCurrentPage + 1)) {
+                    html += `<li class="page-item ${i === specCurrentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changeSpecPage(${i}); return false;">${i}</a>
+                    </li>`;
+                } else if (i === specCurrentPage - 2 || i === specCurrentPage + 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            html += `
+                <li class="page-item ${specCurrentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changeSpecPage(${specCurrentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        function changeSpecPage(page) {
+            const totalPages = Math.ceil(filteredSpecialties.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                specCurrentPage = page;
+                displaySpecialties();
+                scrollToSection('chuyenKhoaSection');
+            }
+        }
+
+        function handleSpecialtySearch() {
+            const query = document.getElementById('specialtySearchInput').value.toLowerCase().trim();
+            
+            if (!query) {
+                filteredSpecialties = [...allSpecialties];
+            } else {
+                filteredSpecialties = allSpecialties.filter(spec => {
+                    const department = allDepartments.find(d => d.maKhoa === spec.maKhoa);
+                    const tenKhoa = department ? department.tenKhoa.toLowerCase() : '';
+                    
+                    return spec.tenChuyenKhoa.toLowerCase().includes(query) ||
+                        (spec.moTa && spec.moTa.toLowerCase().includes(query)) ||
+                        tenKhoa.includes(query);
+                });
+            }
+            
+            specCurrentPage = 1;
+            displaySpecialties();
+        }
+
+        function resetSpecialtySearch() {
+            document.getElementById('specialtySearchInput').value = '';
+            filteredSpecialties = [...allSpecialties];
+            specCurrentPage = 1;
+            displaySpecialties();
+        }
+
+        function openAddSpecialtyModal() {
+            document.getElementById('specialtyForm').reset();
+            document.getElementById('specialtyMaChuyenKhoa').value = '';
+            document.getElementById('specialtyOldMaKhoa').value = '';
+            document.getElementById('specialtyModalTitle').textContent = 'Thêm Chuyên Khoa Mới';
+            document.getElementById('specialtyMaKhoaSelect').disabled = false;
+            specialtyModal.show();
+        }
+
+        function openEditSpecialtyModal(maChuyenKhoa) {
+            const spec = allSpecialties.find(s => s.maChuyenKhoa === maChuyenKhoa);
+            if (!spec) {
+                showAlert('error', 'Không tìm thấy chuyên khoa!');
+                return;
+            }
+            
+            document.getElementById('specialtyForm').reset();
+            document.getElementById('specialtyModalTitle').textContent = 'Cập Nhật Chuyên Khoa';
+            
+            document.getElementById('specialtyMaChuyenKhoa').value = spec.maChuyenKhoa;
+            document.getElementById('specialtyOldMaKhoa').value = spec.maKhoa;
+            document.getElementById('specialtyTenChuyenKhoa').value = spec.tenChuyenKhoa;
+            document.getElementById('specialtyMoTa').value = spec.moTa || '';
+            document.getElementById('specialtyMaKhoaSelect').value = spec.maKhoa;
+            document.getElementById('specialtyMaKhoaSelect').disabled = false;
+            
+            specialtyModal.show();
+        }
+
+        function openViewSpecialtyModal(maChuyenKhoa) {
+            const spec = allSpecialties.find(s => s.maChuyenKhoa === maChuyenKhoa);
+            if (!spec) {
+                showAlert('error', 'Không tìm thấy chuyên khoa!');
+                return;
+            }
+            
+            const department = allDepartments.find(d => d.maKhoa === spec.maKhoa);
+            const tenKhoa = department ? department.tenKhoa : 'Không rõ';
+            
+            const body = document.getElementById('specialtyViewModalBody');
+            body.innerHTML = `
+                <div class="detail-row">
+                    <div class="detail-label">Tên chuyên khoa</div>
+                    <div class="detail-value"><strong style="font-size: 1.1rem; color: var(--primary-purple);">${spec.tenChuyenKhoa}</strong></div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Thuộc khoa</div>
+                    <div class="detail-value">${tenKhoa}</div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-label">Mô tả</div>
+                    <div class="detail-value">${spec.moTa ? spec.moTa.replace(/\n/g, '<br>') : '<em class="text-muted">Chưa có mô tả</em>'}</div>
+                </div>
+            `;
+            
+            document.getElementById('specialtyViewModalTitle').textContent = `Chi Tiết: ${spec.tenChuyenKhoa}`;
+            
+            const viewModal = new bootstrap.Modal(document.getElementById('specialtyViewModal'));
+            viewModal.show();
+        }
+
+        async function handleSpecialtyFormSubmit(event) {
+            event.preventDefault();
+            
+            const maChuyenKhoa = document.getElementById('specialtyMaChuyenKhoa').value;
+            const url = maChuyenKhoa ? UPDATE_SPECIALTY_API : CREATE_SPECIALTY_API;
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            if (!data.tenChuyenKhoa || !data.tenChuyenKhoa.trim()) {
+                showAlert('error', 'Vui lòng nhập tên chuyên khoa!');
+                return;
+            }
+            
+            if (!data.maKhoa) {
+                showAlert('error', 'Vui lòng chọn khoa!');
+                return;
+            }
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', maChuyenKhoa ? 'Cập nhật chuyên khoa thành công!' : 'Thêm chuyên khoa thành công!');
+                    specialtyModal.hide();
+                    await loadSpecialties();
+                    await loadStatistics();
+                    await loadDepartments();
+                } else {
+                    showAlert('error', result.message || 'Có lỗi xảy ra');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+            }
+        }
+
+        async function confirmDeleteSpecialty(maChuyenKhoa) {
+            const spec = allSpecialties.find(s => s.maChuyenKhoa === maChuyenKhoa);
+            if (!spec) {
+                showAlert('error', 'Không tìm thấy chuyên khoa!');
+                return;
+            }
+            
+            const warningMessage = `Bạn có chắc chắn muốn xóa chuyên khoa "${spec.tenChuyenKhoa}" không?\n\n⚠️ CẢNH BÁO: Các bác sĩ thuộc chuyên khoa này sẽ bị đặt về trạng thái "Chưa có chuyên khoa" (NULL).`;
+            
+            if (!confirm(warningMessage)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(DELETE_SPECIALTY_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ maChuyenKhoa: maChuyenKhoa })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', 'Xóa chuyên khoa thành công!');
+                    await loadSpecialties();
+                    await loadStatistics();
+                    await loadDepartments();
+                } else {
+                    showAlert('error', result.message || 'Lỗi khi xóa chuyên khoa');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối đến server');
+            }
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showLoading(loadingId, containerId) {
+            document.getElementById(loadingId).style.display = 'block';
+            document.getElementById(containerId).style.display = 'none';
+        }
+
+        function hideLoading(loadingId, containerId) {
+            document.getElementById(loadingId).style.display = 'none';
+            document.getElementById(containerId).style.display = 'block';
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            
+            alertDiv.className = `alert ${alertClass} alert-dismissible fade show position-fixed custom-alert`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 350px; max-width: 500px;';
+            alertDiv.innerHTML = `
+                <i class="fas ${iconClass} me-2"></i>
+                <strong>${type === 'success' ? 'Thành công!' : 'Lỗi!'}</strong>
+                <div class="mt-1">${message}</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function animateNumber(elementId, targetNumber) {
+            const element = document.getElementById(elementId);
+            let currentNumber = 0;
+            const increment = targetNumber / 50;
+            const duration = 1000;
+            const stepTime = duration / 50;
+            
+            const timer = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= targetNumber) {
+                    element.textContent = targetNumber.toLocaleString('vi-VN');
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(currentNumber).toLocaleString('vi-VN');
+                }
+            }, stepTime);
+        }
+
+        async function logout() {
+            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+
+            try {
+                const response = await fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    window.location.href = '../auth/login.html';
+                } else {
+                    alert('Không thể đăng xuất. Vui lòng thử lại.');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Lỗi khi đăng xuất');
+            }
+        }
+
+        function handleSessionExpired(msg) {
+            if (
+                !msg ||
+                msg === "fetch_failed" ||
+                msg.includes('Phiên đăng nhập') ||
+                msg.includes('Không có quyền') ||
+                msg.includes('Chưa đăng nhập')
+            ) {
+                showAlert('error', 'Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.');
+                setTimeout(() => window.location.href = '../auth/login.html', 500);
+            }
+        }
+    </script>
+</body>
+</html>

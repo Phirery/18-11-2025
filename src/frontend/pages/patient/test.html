@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hồ Sơ Bác Sĩ Chi Tiết - BS. Trần Văn Thuận</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2c3e50;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .container-custom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Section */
+        .header-banner {
+            background: linear-gradient(135deg, #0575E6 0%, #021B79 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .breadcrumb-custom {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            display: inline-block;
+        }
+
+        .breadcrumb-custom a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+            transition: all 0.3s;
+        }
+
+        .breadcrumb-custom a:hover {
+            color: #ffd700;
+        }
+
+        /* Profile Card */
+        .profile-wrapper {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .profile-sidebar {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            transition: all 0.3s;
+        }
+
+        .profile-sidebar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .profile-img-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 320px;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .verified-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,201,255,0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .doctor-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .doctor-title {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .specialty-tag {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 600;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(245,87,108,0.3);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-box i {
+            font-size: 1.8rem;
+            color: #e74c3c;
+        }
+
+        .info-box-content h6 {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .info-box-content p {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-custom {
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102,126,234,0.5);
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Main Content */
+        .profile-content {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid;
+            border-image: linear-gradient(90deg, #667eea 0%, #764ba2 100%) 1;
+            position: relative;
+        }
+
+        .section-title i {
+            color: #667eea;
+            margin-right: 10px;
+        }
+
+        .bio-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-left: 3px solid #e0e0e0;
+        }
+
+        .timeline-item:last-child {
+            border-left: none;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px white, 0 0 0 6px #667eea;
+        }
+
+        .timeline-year {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.3);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102,126,234,0.4);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(252,182,159,0.4);
+        }
+
+        .skill-item i {
+            font-size: 1.5rem;
+            color: #e74c3c;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px dashed #e0e0e0;
+        }
+
+        .review-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .review-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-name {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .rating {
+            color: #f39c12;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 25px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 25px;
+        }
+
+        .package-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .package-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(252,182,159,0.4);
+        }
+
+        .package-card h6 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .package-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #e74c3c;
+            margin-top: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .profile-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <!-- Header Banner -->
+        <div class="header-banner fade-in-up">
+            <div class="breadcrumb-custom">
+                <a href="#"><i class="fas fa-home"></i> Trang chủ</a>
+                <span>/</span>
+                <a href="#">Bác sĩ</a>
+                <span>/</span>
+                <span>Hồ sơ chi tiết</span>
+            </div>
+            <h1 style="margin-top: 20px; font-size: 2rem; font-weight: 800;">
+                <i class="fas fa-user-md me-2"></i>Hồ Sơ Bác Sĩ
+            </h1>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-wrapper">
+            <!-- Sidebar -->
+            <div class="profile-sidebar fade-in-up">
+                <div class="profile-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=500&fit=crop" class="profile-img" alt="Bác sĩ Trần Văn Thuận">
+                    <div class="verified-badge">
+                        <i class="fas fa-check-circle me-1"></i> Đã xác minh
+                    </div>
+                </div>
+
+                <div class="doctor-title">Giám đốc chuyên môn - Trưởng khoa Nội</div>
+                <div class="doctor-name">BS.CKII. TRẦN VĂN THUẬN</div>
+
+                <div class="specialty-tag">
+                    <i class="fas fa-stethoscope me-2"></i>Nội Tổng Quát
+                </div>
+
+                <div class="info-box">
+                    <i class="fas fa-briefcase"></i>
+                    <div class="info-box-content">
+                        <h6>Kinh nghiệm</h6>
+                        <p>20+ năm</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <i class="fas fa-users"></i>
+                    <div class="info-box-content">
+                        <h6>Bệnh nhân đã khám</h6>
+                        <p>5,000+</p>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <i class="fas fa-star"></i>
+                    <div class="info-box-content">
+                        <h6>Đánh giá</h6>
+                        <p>4.9/5.0 ⭐</p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="#" class="btn-custom btn-primary-custom">
+                        <i class="fas fa-calendar-check"></i> Đặt Lịch Ngay
+                    </a>
+                    <button class="btn-custom btn-secondary-custom" data-bs-toggle="modal" data-bs-target="#packageModal">
+                        <i class="fas fa-box-open"></i> Xem Gói Khám
+                    </button>
+                    <a href="#" class="btn-custom btn-secondary-custom">
+                        <i class="fas fa-phone"></i> Liên Hệ
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="profile-content fade-in-up">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-certificate"></i>
+                        <div class="stat-number">15+</div>
+                        <div class="stat-label">Chứng chỉ</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-award"></i>
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Giải thưởng</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-check"></i>
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Hài lòng</div>
+                    </div>
+                </div>
+
+                <!-- Biography -->
+                <h3 class="section-title">
+                    <i class="fas fa-user-circle"></i>Tiểu sử cá nhân
+                </h3>
+                <p class="bio-text">
+                    Bác sĩ Trần Văn Thuận có hơn 20 năm kinh nghiệm trong khám, chẩn đoán và điều trị các bệnh lý Nội khoa. Năm 2019, Bác sĩ Thuận tốt nghiệp bằng Bác sĩ Chuyên khoa II về Nội tổng quát. Hiện bác sĩ Thuận đang đảm nhiệm vai trò Giám đốc Y khoa bệnh viện, kiêm trưởng khoa Nội tại Bệnh viện Hoàn Mỹ Đồng Nai.
+                </p>
+
+                <!-- Work Experience -->
+                <h3 class="section-title">
+                    <i class="fas fa-briefcase"></i>Quá trình công tác
+                </h3>
+                <div class="timeline-item">
+                    <span class="timeline-year">2017 – Hiện tại</span>
+                    <div class="timeline-content">
+                        Bác sĩ điều trị, Trưởng khoa Nội tổng quát, Giám đốc Y khoa bệnh viện Hoàn Mỹ Đồng Nai.
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <h3 class="section-title">
+                    <i class="fas fa-graduation-cap"></i>Kinh nghiệm và đào tạo
+                </h3>
+                <div class="timeline-item">
+                    <span class="timeline-year">03/2019</span>
+                    <div class="timeline-content">
+                        Tốt nghiệp Bác sĩ Chuyên khoa II – Nội tổng quát
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2015</span>
+                    <div class="timeline-content">
+                        Tối ưu hóa điều trị nhiễm khuẩn do vi khuẩn gram dương
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-year">2013</span>
+                    <div class="timeline-content">
+                        Đề kháng sinh trong viêm phổi cộng đồng, chiến lược điều trị và phòng ngừa
+                    </div>
+                </div>
+
+                <!-- Expertise -->
+                <h3 class="section-title">
+                    <i class="fas fa-stethoscope"></i>Lĩnh vực chuyên môn
+                </h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Bệnh lý mãn tính</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-virus"></i>
+                        <span>Nhiễm khuẩn phức tạp</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-lungs"></i>
+                        <span>Vấn đề hô hấp</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-heart"></i>
+                        <span>Tim mạch</span>
+                    </div>
+                </div>
+
+                <!-- Reviews -->
+                <div class="reviews-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-comments"></i>Đánh giá từ bệnh nhân
+                    </h3>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-name">
+                                <i class="fas fa-user-circle me-2"></i>Nguyễn Thị Lan
+                            </span>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                        <p style="color: #555; line-height: 1.6;">
+                            "Bác sĩ Thuận rất tận tâm và chuyên nghiệp. Giải thích rất rõ ràng về tình trạng bệnh của tôi. Cảm ơn bác sĩ rất nhiều!"
+                        </p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-name">
+                                <i class="fas fa-user-circle me-2"></i>Trần Văn Nam
+                            </span>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                        <p style="color: #555; line-height: 1.6;">
+                            "Bác sĩ có tay nghề cao, khám bệnh kỹ lưỡng. Tôi rất hài lòng với phương pháp điều trị của bác sĩ."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Package Modal -->
+    <div class="modal fade" id="packageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fas fa-box-open me-2"></i>Gói Khám Nội Tổng Quát
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div class="package-card">
+                        <h6><i class="fas fa-user-check me-2"></i>Gói Khám Cơ Bản</h6>
+                        <p style="color: #555;">Khám tổng quát, kiểm tra huyết áp, xét nghiệm máu cơ bản.</p>
+                        <ul style="color: #555;">
+                            <li>Khám lâm sàng tổng quát</li>
+                            <li>Đo huyết áp, nhiệt độ</li>
+                            <li>Xét nghiệm máu cơ bản</li>
+                        </ul>
+                        <div class="package-price">800.000đ</div>
+                    </div>
+
+                    <div class="package-card">
+                        <h6><i class="fas fa-heart-pulse me-2"></i>Gói Khám Nâng Cao</h6>
+                        <p style="color: #555;">Thêm siêu âm ổ bụng, ECG và chẩn đoán hình ảnh chuyên sâu.</p>
+                        <ul style="color: #555;">
+                            <li>Tất cả dịch vụ gói cơ bản</li>
+                            <li>Siêu âm ổ bụng</li>
+                            <li>Điện tim (ECG)</li>
+                            <li>X-quang phổi</li>
+                        </ul>
+                        <div class="package-price">1.500.000đ</div>
+                    </div>
+
+                    <div class="package-card">
+                        <h6><i class="fas fa-hospital-user me-2"></i>Gói Khám Gia Đình</h6>
+                        <p style="color: #555;">Dành cho 2–4 thành viên trong cùng gia đình, ưu đãi 20%.</p>
+                        <ul style="color: #555;">
+                            <li>Dành cho 2-4 người</li>
+                            <li>Khám toàn diện</li>
+                            <li>Ưu đãi 20%</li>
+                            <li>Tư vấn sức khỏe gia đình</li>
+                        </ul>
+                        <div class="package-price">3.000.000đ</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button class="btn-custom btn-primary-custom">
+                        <i class="fas fa-check-circle me-2"></i>Đặt Gói Khám
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

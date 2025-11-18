@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Về Chúng Tôi - Hoàn Mỹ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {                     
+      --primary-color: #0066cc; 
+      --secondary-color: #00a8e8; 
+      --accent-color: #4CAF50;
+      --dark-color: #1a1a2e;
+      --light-color: #f8f9fa;
+    }
+    
+    * {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+    
+    /* Navbar */
+    .navbar {
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    .navbar.scrolled {
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .navbar-brand {
+      font-size: 1.5rem;
+      color: var(--primary-color) !important;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    
+    .nav-link {
+      font-weight: 500;
+      margin: 0 10px;
+      position: relative;
+      transition: color 0.3s;
+    }
+    
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%;
+      background: var(--primary-color);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    
+    .nav-link:hover:after {
+      width: 80%;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary-color) !important;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, rgba(0, 102, 204, 0.9), rgba(0, 168, 232, 0.85)), 
+                  url('https://images.unsplash.com/photo-1580281657524-0b6d1f8b1f2a?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: #fff;
+      padding: 150px 0 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    }
+    
+    .hero .container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero h1 {
+      font-weight: 700;
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .hero p {
+      font-size: 1.3rem;
+      animation: fadeInUp 1.2s ease;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Decorative waves */
+    .hero:after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z' fill='%23ffffff'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+      background-size: cover;
+    }
+    
+    /* Section Titles */
+    section h2 {
+      font-weight: 700;
+      color: var(--dark-color);
+      margin-bottom: 40px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    section h2:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      border-radius: 2px;
+    }
+    
+    /* About Section */
+    #vechungtoi {
+      padding: 100px 0;
+    }
+    
+    #vechungtoi img {
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      transition: transform 0.5s ease;
+    }
+    
+    #vechungtoi img:hover {
+      transform: scale(1.05) ;
+    }
+    
+    #vechungtoi h2 {
+      color: var(--primary-color);
+      margin-bottom: 25px;
+    }
+    
+    #vechungtoi p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    
+    /* Values Section */
+    .values {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      position: relative;
+    }
+    
+    .values:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    }
+    
+    .values .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.4s ease;
+      background: white;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .values .card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    
+    .values .card:hover:before {
+      transform: scaleX(1);
+    }
+    
+    .values .card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 20px 50px rgba(0,102,204,0.2);
+    }
+    
+    .values .card h5 {
+      color: var(--primary-color);
+      font-weight: 700;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+    
+    .values .card p {
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .values .card i {
+      font-size: 3rem;
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .values .card:hover i {
+      transform: scale(1.2) rotate(10deg);
+    }
+    
+    /* History Section */
+    #lichsu {
+      padding: 80px 0;
+    }
+    
+    #lichsu .timeline-item {
+      border: 2px solid #e9ecef;
+      border-radius: 15px;
+      padding: 30px;
+      height: 100%;
+      transition: all 0.4s ease;
+      position: relative;
+      background: white;
+      overflow: hidden;
+    }
+    
+    #lichsu .timeline-item:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,102,204,0.05), rgba(0,168,232,0.05));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
+    #lichsu .timeline-item:hover:before {
+      opacity: 1;
+    }
+    
+    #lichsu .timeline-item:hover {
+      border-color: var(--primary-color);
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0,102,204,0.15);
+    }
+    
+    #lichsu .timeline-item h5 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    #lichsu .timeline-item p {
+      color: #555;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Contact Section */
+    #lienhe {
+      padding: 80px 0;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #lienhe:before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+    
+    #lienhe:after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -5%;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+    
+    #lienhe .container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    #lienhe h2 {
+      color: white;
+    }
+    
+    #lienhe h2:after {
+      background: white;
+    }
+    
+    #lienhe p {
+      font-size: 1.1rem;
+      margin: 10px 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    #lienhe i {
+      margin-right: 10px;
+      color: #fff;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--dark-color);
+      padding: 30px 0;
+      text-align: center;
+      color: #ccc;
+      font-size: 14px;
+    }
+    
+    footer p {
+      margin: 0;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      section h2 {
+        font-size: 2rem;
+      }
+      
+      #vechungtoi img {
+        margin-bottom: 30px;
+      }
+    }
+    
+    /* Scroll animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-heartbeat"></i> Hoàn Mỹ
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#vechungtoi">Về Chúng Tôi</a></li>
+        <li class="nav-item"><a class="nav-link" href="#giatri">Giá Trị</a></li>
+        <li class="nav-item"><a class="nav-link" href="#lichsu">Lịch Sử</a></li>
+        <li class="nav-item"><a class="nav-link" href="#lienhe">Liên Hệ</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero section -->
+<section class="hero">
+  <div class="container">
+    <h1><i class="fas fa-hospital-alt"></i> Về Chúng Tôi</h1>
+    <p>Hoàn Mỹ – Nơi đặt sức khỏe và niềm tin của bạn lên hàng đầu.</p>
+  </div>
+</section>
+
+<!-- About section -->
+<section id="vechungtoi" class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 fade-in">
+        <img src="image2.jpg" class="img-fluid" alt="about">
+      </div>
+      <div class="col-md-6 fade-in">
+        <h2><i class="fas fa-users"></i> Chúng tôi là ai?</h2>
+        <p>Hoàn Mỹ là hệ thống y tế tiên phong cung cấp dịch vụ chăm sóc sức khỏe chất lượng cao, mang đến sự an tâm và hài lòng tuyệt đối cho mọi khách hàng.</p>
+        <p>Với đội ngũ bác sĩ tận tâm và hệ thống cơ sở vật chất hiện đại, chúng tôi luôn hướng tới sự hoàn hảo trong từng dịch vụ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values section -->
+<section id="giatri" class="values">
+  <div class="container text-center">
+    <h2 class="mb-5">Giá trị cốt lõi</h2>
+    <div class="row g-4">
+      <div class="col-md-3 fade-in">
+        <div class="card p-4">
+          <i class="fas fa-award"></i>
+          <h5>Chất lượng</h5>
+          <p>Luôn đặt chất lượng dịch vụ và sự hài lòng của khách hàng lên hàng đầu.</p>
+        </div>
+      </div>
+      <div class="col-md-3 fade-in">
+        <div class="card p-4">
+          <i class="fas fa-heart"></i>
+          <h5>Tận tâm</h5>
+          <p>Phục vụ với sự thấu hiểu, chia sẻ và trách nhiệm cao nhất.</p>
+        </div>
+      </div>
+      <div class="col-md-3 fade-in">
+        <div class="card p-4">
+          <i class="fas fa-user-md"></i>
+          <h5>Chuyên nghiệp</h5>
+          <p>Đội ngũ y bác sĩ được đào tạo chuyên sâu, làm việc chuyên nghiệp.</p>
+        </div>
+      </div>
+      <div class="col-md-3 fade-in">
+        <div class="card p-4">
+          <i class="fas fa-lightbulb"></i>
+          <h5>Đổi mới</h5>
+          <p>Không ngừng cải tiến và áp dụng công nghệ hiện đại trong y học.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- History section -->
+<section id="lichsu" class="py-5">
+  <div class="container text-center">
+    <h2 class="mb-5">Lịch sử hình thành</h2>
+    <div class="row g-4">
+      <div class="col-md-4 fade-in">
+        <div class="timeline-item">
+          <h5><i class="fas fa-calendar-alt"></i> 1997</h5>
+          <p>Bắt đầu hành trình với một phòng khám nhỏ, đặt nền móng cho hệ thống y tế Hoàn Mỹ.</p>
+        </div>
+      </div>
+      <div class="col-md-4 fade-in">
+        <div class="timeline-item">
+          <h5><i class="fas fa-calendar-alt"></i> 2010</h5>
+          <p>Mở rộng hệ thống bệnh viện hiện đại tại các thành phố lớn trong cả nước.</p>
+        </div>
+      </div>
+      <div class="col-md-4 fade-in">
+        <div class="timeline-item">
+          <h5><i class="fas fa-calendar-alt"></i> 2025</h5>
+          <p>Hoàn Mỹ trở thành biểu tượng y tế tư nhân hàng đầu, hướng tới quốc tế.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact section -->
+<section id="lienhe" class="py-5">
+  <div class="container text-center">
+    <h2 class="mb-4">Liên hệ với chúng tôi</h2>
+    <p><i class="fas fa-map-marker-alt"></i> Địa chỉ: Tầng 11, 31 Lê Duẩn, Quận 1, TP. Hồ Chí Minh</p>
+    <p><i class="fas fa-phone-alt"></i> Điện thoại: (028) 3820 6001 | <i class="fas fa-envelope"></i> Email: info@hoanmy.vn</p>
+  </div>
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+  
+  // Scroll animation
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+  
+  document.querySelectorAll('.fade-in').forEach(el => {
+    observer.observe(el);
+  });
+  
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

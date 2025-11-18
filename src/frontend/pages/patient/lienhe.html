@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #0066a1;
+            --accent-color: #ff6b6b;
+            --text-dark: #2c3e50;
+            --text-light: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* Header */
+        .contact-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: #fff;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .contact-header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            animation: fadeInDown 1s;
+        }
+
+        .contact-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 15px;
+            position: relative;
+        }
+
+        /* Info Cards */
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            height: 100%;
+            border: 2px solid transparent;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 160, 220, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .info-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.8rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .info-card h4 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .info-card p {
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .info-card strong {
+            color: var(--primary-color);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .contact-form h3 {
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            font-weight: bold;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .contact-form h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 20px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 160, 220, 0.1);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 12px 40px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 160, 220, 0.3);
+        }
+
+        /* Map Container */
+        .map-container {
+            height: 450px;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.5s;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 80px;
+        }
+
+        .footer h5 {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .footer a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .footer ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .footer li {
+            margin-bottom: 10px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(174, 154, 154, 0.1);
+            color: #95a5a6;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #52c234, #61d345);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            animation: slideInDown 0.5s;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .contact-header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-form {
+                padding: 25px;
+            }
+            
+            .info-card {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-heartbeat"></i>
+            VietLife Clinic
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-home"></i> Trang chủ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> Giới thiệu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-stethoscope"></i> Dịch vụ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fas fa-envelope"></i> Liên hệ</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Header -->
+<section class="contact-header">
+    <div class="container">
+        <h1><i class="fas fa-phone-alt"></i> Liên Hệ Với Chúng Tôi</h1>
+        <p>Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn</p>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section container">
+    <!-- Info Cards -->
+    <div class="row mb-5">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h4>Địa Chỉ</h4>
+                <p><strong>Chi nhánh An Hòa:</strong></p>
+                <p>Tòa nhà 317, Nguyễn Văn Cừ, Quận Ninh Kiều, TP.CT</p>
+                <p><strong>Chi nhánh An Bình:</strong></p>
+                <p>Lầu 2, VinCom Xuân Khách, Ninh Kiều, TP.CT</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h4>Liên Hệ</h4>
+                <p><strong>Hotline:</strong> 1800 6116</p>
+                <p><strong>Điện thoại:</strong> 0798576605</p>
+                <p><strong>Email:</strong> @vietlifeclinic.vn</p>
+                <div class="social-icons mt-3">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h4>Giờ Làm Việc</h4>
+                <p><strong>Thứ 2 - Thứ 7:</strong></p>
+                <p>08:00 - 17:00 (Tất cả chuyên khoa)</p>
+                <p><strong>Thứ 2 - Thứ 6:</strong></p>
+                <p>17:00 - 20:00 (CN An Hòa)</p>
+                <p><strong>Chủ nhật:</strong></p>
+                <p>08:00 - 12:00</p>
+                <p><small>Giờ nghỉ trưa: 12:00 - 13:00</small></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="contact-form">
+                <h3><i class="fas fa-paper-plane"></i> Gửi Thông Tin Liên Hệ</h3>
+                <form id="contactForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-user"></i> Họ và tên *
+                            </label>
+                            <input type="text" class="form-control" id="name" placeholder="Nhập họ và tên" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i> Email *
+                            </label>
+                            <input type="email" class="form-control" id="email" placeholder="Nhập email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">
+                                <i class="fas fa-phone"></i> Số điện thoại *
+                            </label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="subject" class="form-label">
+                                <i class="fas fa-tag"></i> Chủ đề
+                            </label>
+                            <select class="form-control" id="subject">
+                                <option>Tư vấn dịch vụ</option>
+                                <option>Đặt lịch khám</option>
+                                <option>Hợp tác</option>
+                                <option>Khiếu nại</option>
+                                <option>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">
+                            <i class="fas fa-comment-dots"></i> Nội dung *
+                        </label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Nhập nội dung liên hệ..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Gửi Liên Hệ
+                    </button>
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h5>Gửi thành công!</h5>
+                        <p>Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất!</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Map -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="text-center mb-4" style="color: var(--text-dark); font-weight: bold;">
+                <i class="fas fa-map-marked-alt"></i> Bản Đồ Chỉ Đường
+            </h3>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4835147836524!2d106.69495931527932!3d10.776801292318455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f4b3330bcc7%3A0xc92fb95c05ff7c3!2zNjYgTmFtIEvhu7MgS2jhu59pIE5naMSpYSwgQsOsbmggVGjhuqFuaCwgUXXhuq1uIDEsIFRow6BuaCBwaOG7kSBI4buTIENow60gTWluaCwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1699999999999!5m2!1svi!2s" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Quick Links -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5><i class="fas fa-link"></i> LIÊN KẾT NHANH</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Giới thiệu</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Các chuyên khoa</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tin tức</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tuyển dụng</a></li>
+                </ul>
+                <p class="mt-3" style="font-size: 0.85rem; opacity: 0.7;">
+                    Công ty TNHH VietLife Clinic<br>
+                    Số ĐKKD 0313149135 do Sở KHĐT Tp.CT cấp ngày 27/02/2015
+                </p>
+            </div>
+
+            <!-- System -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5><i class="fas fa-hospital"></i> HỆ THỐNG PHÒNG KHÁM</h5>
+                <p><strong>Phòng khám An Hòa</strong><br>
+                Tòa nhà 317, Nguyễn Văn Cừ<br>
+                <a href="#" class="text-warning"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</a></p>
+                <p><strong>Phòng khám An Bình</strong><br>
+                Lầu 2, VinCom Xuân Khách, Ninh Kiều<br>
+                <a href="#" class="text-warning"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</a></p>
+                <p><strong>Phòng khám Tân Bình</strong><br>
+                107, Đường Tân Hải, Quận Tân Bình<br>
+                <a href="#" class="text-warning"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</a></p>
+            </div>
+
+            <!-- Services -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5><i class="fas fa-notes-medical"></i> GÓI KHÁM SỨC KHỎE</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Khám tổng quát người lớn</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Khám tổng quát trẻ em</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Khám dinh dưỡng cho trẻ</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tầm soát ung thư</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tầm soát bệnh tim mạch</a></li>
+                </ul>
+                <h5 class="mt-3"><i class="fas fa-shield-alt"></i> CHÍNH SÁCH</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách hoạt động</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách bảo mật</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5><i class="fas fa-phone-volume"></i> LIÊN HỆ</h5>
+                <p>
+                    <i class="fas fa-phone-alt text-warning"></i> Hotline: <span class="text-warning">1800 6116</span><br>
+                    <i class="fas fa-envelope text-warning"></i> Email: <span class="text-warning">info@vietlifeclinic.vn</span>
+                </p>
+                <h5 class="mt-3"><i class="fas fa-business-time"></i> LỊCH LÀM VIỆC</h5>
+                <p style="font-size: 0.9rem;">
+                    <i class="fas fa-calendar-check"></i> <strong>Thứ 2 - Thứ 7</strong><br>
+                    08:00 - 17:00: Tất cả chuyên khoa<br>
+                    <i class="fas fa-calendar-week"></i> <strong>Thứ 2 - Thứ 6</strong><br>
+                    17:00 - 20:00: CN An Hòa<br>
+                    <i class="fas fa-calendar-day"></i> <strong>Chủ nhật</strong><br>
+                    08:00 - 12:00<br>
+                    <small>Giờ nghỉ trưa: 12:00 - 13:00</small>
+                </p>
+            </div>
+        </div>
+        
+        
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = this.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        
+        // Show loading
+        btn.innerHTML = '<span class="loading"></span> Đang gửi...';
+        btn.disabled = true;
+        
+        // Simulate sending
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Reset form
+            this.reset();
+            
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        }, 2000);
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Add floating animation to info cards
+    const infoCards = document.querySelectorAll('.info-card');
+    infoCards.forEach((card, index) => {
+        card.style.animation = `fadeInUp 0.8s ease ${index * 0.2}s both`;
+    });
+</script>
+</body>
+</html>
