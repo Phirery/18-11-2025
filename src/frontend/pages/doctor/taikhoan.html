@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Tài Khoản - Eden Health</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+            --primary-blue: #00AEEF;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 10%, #f8f9fa 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .account-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            margin-bottom: 20px;
+        }
+
+        .back-button a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            color: var(--primary-purple);
+            text-decoration: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .back-button a:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-header-content {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .profile-info h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .tabs-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .custom-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .custom-tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .custom-tab:hover {
+            background: rgba(102, 126, 234, 0.05);
+            color: var(--primary-purple);
+        }
+
+        .custom-tab.active {
+            color: var(--primary-purple);
+            background: white;
+        }
+
+        .custom-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-purple);
+        }
+
+        .tab-content-custom {
+            padding: 30px;
+        }
+
+        .tab-pane-custom {
+            display: none;
+        }
+
+        .tab-pane-custom.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-group {
+            margin-bottom: 25px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #212529;
+        }
+
+        .info-value.editable {
+            border: 2px dashed #dee2e6;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .info-value.editable:hover {
+            border-color: var(--primary-purple);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            padding: 10px 15px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary-custom {
+            background: #6c757d;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .cooldown-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .cooldown-notice i {
+            color: #ffc107;
+            margin-right: 10px;
+        }
+
+        .password-strength {
+            height: 5px;
+            border-radius: 3px;
+            margin-top: 5px;
+            transition: all 0.3s;
+        }
+
+        .password-strength.weak { background: #dc3545; width: 33%; }
+        .password-strength.medium { background: #ffc107; width: 66%; }
+        .password-strength.strong { background: #28a745; width: 100%; }
+
+        .forgot-password-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-card {
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-purple);
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .option-card i {
+            font-size: 2rem;
+            color: var(--primary-purple);
+            margin-bottom: 10px;
+        }
+
+        .otp-modal, .request-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .otp-modal.active, .request-modal.active {
+            display: flex;
+        }
+
+        .modal-content-custom {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .otp-display {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: 5px;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .custom-tabs {
+                flex-direction: column;
+            }
+
+            .forgot-password-options {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-content-custom {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="account-container">
+        <div class="back-button" onclick="history.back()">
+            <a href="#" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Quay lại</span>
+            </a>
+        </div>
+
+        <div class="profile-header">
+            <div class="profile-header-content">
+                <div class="profile-avatar" id="avatarDisplay">U</div>
+                <div class="profile-info">
+                    <h2 id="profileName">Đang tải...</h2>
+                    <span class="profile-role" id="profileRole">Người dùng</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs-container">
+            <div class="custom-tabs">
+                <button class="custom-tab active" data-tab="info">
+                    <i class="fas fa-user-circle"></i> Thông tin cá nhân
+                </button>
+                <button class="custom-tab" data-tab="password">
+                    <i class="fas fa-key"></i> Đổi mật khẩu
+                </button>
+                <button class="custom-tab" data-tab="security">
+                    <i class="fas fa-shield-alt"></i> Bảo mật
+                </button>
+            </div>
+
+            <div class="tab-content-custom">
+                <!-- TAB THÔNG TIN -->
+                <div class="tab-pane-custom active" id="info">
+                    <div id="cooldownNotice" style="display:none;"></div>
+                    
+                    <div id="profileDisplay"></div>
+                    
+                    <div id="profileEditForm" style="display:none;">
+                        <form id="updateProfileForm"></form>
+                    </div>
+
+                    <div class="mt-4">
+                        <button class="btn btn-primary-custom" id="editProfileBtn" onclick="toggleEditMode()">
+                            <i class="fas fa-edit"></i> Chỉnh sửa thông tin
+                        </button>
+                        <button class="btn btn-primary-custom" id="saveProfileBtn" onclick="saveProfile()" style="display:none;">
+                            <i class="fas fa-save"></i> Lưu thay đổi
+                        </button>
+                        <button class="btn btn-secondary-custom" id="cancelEditBtn" onclick="cancelEdit()" style="display:none;">
+                            <i class="fas fa-times"></i> Hủy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB ĐỔI MẬT KHẨU -->
+                <div class="tab-pane-custom" id="password">
+                    <div id="passwordCooldownNotice" style="display:none;"></div>
+
+                    <form id="changePasswordForm" onsubmit="changePassword(event)">
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu hiện tại *</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('currentPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu mới *</label>
+                            <input type="password" class="form-control" id="newPassword" required minlength="6" oninput="checkPasswordStrength()">
+                            <div class="password-strength" id="passwordStrength"></div>
+                            <small class="text-muted">Mật khẩu phải có ít nhất 6 ký tự</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Xác nhận mật khẩu mới *</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom" id="changePasswordBtn">
+                            <i class="fas fa-key"></i> Đổi mật khẩu
+                        </button>
+                    </form>
+                </div>
+
+                <!-- TAB BẢO MẬT -->
+                <div class="tab-pane-custom" id="security">
+                    <h5 class="mb-4"><i class="fas fa-lock"></i> Quên mật khẩu?</h5>
+                    <p class="text-muted mb-4">Chọn một trong hai phương thức để khôi phục mật khẩu:</p>
+
+                    <div class="forgot-password-options">
+                        <div class="option-card" onclick="requestOTP()">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h6>Nhận mã OTP</h6>
+                            <p class="text-muted small mb-0">Nhận mã xác thực để đặt lại mật khẩu</p>
+                        </div>
+
+                        <div class="option-card" id="requestAdminCard" onclick="requestAdminReset()">
+                            <i class="fas fa-user-shield"></i>
+                            <h6>Yêu cầu Admin</h6>
+                            <p class="text-muted small mb-0">Gửi yêu cầu đến quản trị viên</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-top">
+                        <h6><i class="fas fa-info-circle"></i> Lưu ý bảo mật</h6>
+                        <ul class="text-muted small">
+                            <li>Không chia sẻ mật khẩu với bất kỳ ai</li>
+                            <li>Đổi mật khẩu định kỳ để bảo mật tài khoản</li>
+                            <li>Sử dụng mật khẩu mạnh kết hợp chữ, số và ký tự đặc biệt</li>
+                            <li>Đăng xuất sau khi sử dụng trên thiết bị chung</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP Modal -->
+    <div class="otp-modal" id="otpModal">
+        <div class="modal-content-custom">
+            <h5 class="mb-4">Xác thực OTP</h5>
+            <p class="text-muted">Mã OTP của bạn là:</p>
+            <div class="otp-display" id="otpDisplay">000000</div>
+            <p class="text-muted small">Mã có hiệu lực trong 5 phút</p>
+
+            <form onsubmit="verifyOTP(event)">
+                <div class="form-group">
+                    <label class="form-label">Nhập mã OTP</label>
+                    <input type="text" class="form-control text-center" id="otpInput" maxlength="6" required pattern="[0-9]{6}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu mới</label>
+                    <input type="password" class="form-control" id="otpNewPassword" required minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Xác nhận mật khẩu</label>
+                    <input type="password" class="form-control" id="otpConfirmPassword" required>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary-custom flex-fill">Xác nhận</button>
+                    <button type="button" class="btn btn-secondary-custom" onclick="closeOTPModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Admin Modal -->
+    <div class="request-modal" id="requestModal">
+        <div class="modal-content-custom">
+            <h5 class="mb-4">Yêu cầu cấp lại mật khẩu</h5>
+            <p class="text-muted">Bạn muốn gửi yêu cầu cấp lại mật khẩu đến quản trị viên?</p>
+            <p class="text-muted small">Mật khẩu mặc định sẽ được gửi qua thông báo sau khi admin xử lý.</p>
+
+            <div class="d-flex gap-2 mt-4">
+                <button class="btn btn-primary-custom flex-fill" onclick="confirmRequestAdmin()">
+                    <i class="fas fa-paper-plane"></i> Gửi yêu cầu
+                </button>
+                <button class="btn btn-secondary-custom" onclick="closeRequestModal()">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
+        const API_BASE_USER = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/user';
+        
+        let userData = {};
+        let currentOTP = '';
+        let editMode = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProfile();
+            setupTabs();
+            setupBackButton();
+        });
+
+        function setupBackButton() {
+            const role = localStorage.getItem('userRole') || sessionStorage.getItem('userRole');
+            const backBtn = document.getElementById('backBtn');
+            
+            if (role === 'benhnhan') {
+                backBtn.href = '../patient/index.html';
+            } else if (role === 'bacsi') {
+                backBtn.href = '../doctor/dashboard.html';
+            } else if (role === 'quantri') {
+                backBtn.href = '../admin/dashboard.html';
+            }
+        }
+
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.custom-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.dataset.tab;
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    document.querySelectorAll('.tab-pane-custom').forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+        }
+
+        async function loadUserProfile() {
+            try {
+                const response = await fetch(`${API_BASE_USER}/get-user-profile.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    userData = data.data;
+                    displayUserProfile();
+                    checkUpdateCooldown();
+                    checkPasswordCooldown();
+                    
+                    // Hide admin request option for admin
+                    if (userData.vaiTro === 'quantri') {
+                        document.getElementById('requestAdminCard').style.display = 'none';
+                    }
+                } else {
+                    showAlert('error', data.message || 'Không thể tải thông tin');
+                    setTimeout(() => window.location.href = '../auth/login.html', 1500);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối server');
+            }
+        }
+
+        function displayUserProfile() {
+            // Header
+            document.getElementById('profileName').textContent = userData.hoTen;
+            document.getElementById('profileRole').textContent = getRoleText(userData.vaiTro);
+            
+            const initials = userData.hoTen.split(' ').slice(-2).map(w => w[0]).join('').toUpperCase();
+            document.getElementById('avatarDisplay').textContent = initials;
+
+            // Profile display
+            let html = '<div class="row">';
+
+            // Common fields
+            html += `
+                <div class="col-md-6">
+                    <div class="info-group">
+                        <div class="info-label"><i class="fas fa-user"></i> Họ và tên</div>
+                        <div class="info-value">${userData.hoTen}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-group">
+                        <div class="info-label"><i class="fas fa-id-card"></i> Tên đăng nhập</div>
+                        <div class="info-value">${userData.tenDangNhap}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-group">
+                        <div class="info-label"><i class="fas fa-phone"></i> Số điện thoại</div>
+                        <div class="info-value editable">${userData.soDienThoai || 'Chưa cập nhật'}</div>
+                    </div>
+                </div>
+            `;
+
+            // Role-specific fields
+            if (userData.vaiTro === 'benhnhan') {
+                html += `
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-birthday-cake"></i> Ngày sinh</div>
+                            <div class="info-value editable">${formatDate(userData.ngaySinh)}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-venus-mars"></i> Giới tính</div>
+                            <div class="info-value editable">${getGenderText(userData.gioiTinh)}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-id-card-alt"></i> Số thẻ BHYT</div>
+                            <div class="info-value editable">${userData.soTheBHYT || 'Chưa có'}</div>
+                        </div>
+                    </div>
+                `;
+            } else if (userData.vaiTro === 'bacsi') {
+                html += `
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-hospital"></i> Chuyên khoa</div>
+                            <div class="info-value">${userData.tenChuyenKhoa || 'Chưa có'}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-building"></i> Khoa</div>
+                            <div class="info-value">${userData.tenKhoa || 'Chưa có'}</div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-file-alt"></i> Mô tả</div>
+                            <div class="info-value editable">${userData.moTa || 'Chưa có mô tả'}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            document.getElementById('profileDisplay').innerHTML = html;
+
+            // Edit form
+            buildEditForm();
+        }
+
+        function buildEditForm() {
+            let html = '<div class="row">';
+
+            html += `
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên *</label>
+                        <input type="text" class="form-control" name="hoTen" value="${userData.hoTen}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" name="soDienThoai" value="${userData.soDienThoai || ''}" pattern="[0-9]{10,11}">
+                    </div>
+                </div>
+            `;
+
+            if (userData.vaiTro === 'benhnhan') {
+                html += `
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Ngày sinh</label>
+                            <input type="date" class="form-control" name="ngaySinh" value="${userData.ngaySinh}" max="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Giới tính</label>
+                            <select class="form-control" name="gioiTinh">
+                                <option value="nam" ${userData.gioiTinh === 'nam' ? 'selected' : ''}>Nam</option>
+                                <option value="nu" ${userData.gioiTinh === 'nu' ? 'selected' : ''}>Nữ</option>
+                                <option value="khac" ${userData.gioiTinh === 'khac' ? 'selected' : ''}>Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Số thẻ BHYT</label>
+                            <input type="text" class="form-control" name="soTheBHYT" value="${userData.soTheBHYT || ''}">
+                        </div>
+                    </div>
+                `;
+            } else if (userData.vaiTro === 'bacsi') {
+                html += `
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="form-label">Mô tả</label>
+                            <textarea class="form-control" name="moTa" rows="4">${userData.moTa || ''}</textarea>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            document.getElementById('updateProfileForm').innerHTML = html;
+        }
+
+        async function checkUpdateCooldown() {
+            try {
+                const response = await fetch(`${API_BASE_USER}/get-update-cooldown.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success && !data.canUpdate) {
+                    const notice = document.getElementById('cooldownNotice');
+                    notice.innerHTML = `
+                        <div class="cooldown-notice">
+                            <i class="fas fa-clock"></i>
+                            <strong>Thông báo:</strong> Bạn chỉ có thể cập nhật thông tin sau ${data.remainingTime}.
+                        </div>
+                    `;
+                    notice.style.display = 'block';
+                    document.getElementById('editProfileBtn').disabled = true;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function checkPasswordCooldown() {
+            try {
+                const response = await fetch(`${API_BASE_USER}/get-password-cooldown.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success && !data.canChange) {
+                    const notice = document.getElementById('passwordCooldownNotice');
+                    notice.innerHTML = `
+                        <div class="cooldown-notice">
+                            <i class="fas fa-clock"></i>
+                            <strong>Thông báo:</strong> Bạn chỉ có thể đổi mật khẩu sau ${data.remainingTime}.
+                        </div>
+                    `;
+                    notice.style.display = 'block';
+                    document.getElementById('changePasswordBtn').disabled = true;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function toggleEditMode() {
+            editMode = true;
+            document.getElementById('profileDisplay').style.display = 'none';
+            document.getElementById('profileEditForm').style.display = 'block';
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveProfileBtn').style.display = 'inline-block';
+            document.getElementById('cancelEditBtn').style.display = 'inline-block';
+        }
+
+        function cancelEdit() {
+            editMode = false;
+            document.getElementById('profileDisplay').style.display = 'block';
+            document.getElementById('profileEditForm').style.display = 'none';
+            document.getElementById('editProfileBtn').style.display = 'inline-block';
+            document.getElementById('saveProfileBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
+        async function saveProfile() {
+            const form = document.getElementById('updateProfileForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch(`${API_BASE_USER}/update-profile.php`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', 'Cập nhật thông tin thành công!');
+                    await loadUserProfile();
+                    cancelEdit();
+                } else {
+                    showAlert('error', result.message || 'Cập nhật thất bại');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối server');
+            }
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('newPassword').value;
+            const strength = document.getElementById('passwordStrength');
+            
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^a-zA-Z\d]/.test(password)) score++;
+
+            strength.className = 'password-strength';
+            if (score <= 1) strength.classList.add('weak');
+            else if (score <= 3) strength.classList.add('medium');
+            else strength.classList.add('strong');
+        }
+
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        async function changePassword(event) {
+            event.preventDefault();
+
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showAlert('error', 'Mật khẩu xác nhận không khớp!');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showAlert('error', 'Mật khẩu mới phải có ít nhất 6 ký tự!');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_USER}/change-password.php`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    body: JSON.stringify({currentPassword, newPassword})
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', 'Đổi mật khẩu thành công!');
+                    document.getElementById('changePasswordForm').reset();
+                    document.getElementById('passwordStrength').className = 'password-strength';
+                } else {
+                    showAlert('error', data.message || 'Đổi mật khẩu thất bại');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối server');
+            }
+        }
+
+        async function requestOTP() {
+            try {
+                const response = await fetch(`${API_BASE_USER}/request-otp.php`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentOTP = data.otp;
+                    document.getElementById('otpDisplay').textContent = data.otp;
+                    document.getElementById('otpModal').classList.add('active');
+                } else {
+                    showAlert('error', data.message || 'Không thể tạo mã OTP');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối server');
+            }
+        }
+
+        async function verifyOTP(event) {
+            event.preventDefault();
+
+            const otp = document.getElementById('otpInput').value;
+            const newPassword = document.getElementById('otpNewPassword').value;
+            const confirmPassword = document.getElementById('otpConfirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showAlert('error', 'Mật khẩu xác nhận không khớp!');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_USER}/verify-otp-reset.php`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    body: JSON.stringify({otp, newPassword})
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', 'Đổi mật khẩu thành công!');
+                    closeOTPModal();
+                } else {
+                    showAlert('error', data.message || 'Xác thực thất bại');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối server');
+            }
+        }
+
+        function closeOTPModal() {
+            document.getElementById('otpModal').classList.remove('active');
+            document.getElementById('otpInput').value = '';
+            document.getElementById('otpNewPassword').value = '';
+            document.getElementById('otpConfirmPassword').value = '';
+        }
+
+        function requestAdminReset() {
+            document.getElementById('requestModal').classList.add('active');
+        }
+
+        async function confirmRequestAdmin() {
+            try {
+                const response = await fetch(`${API_BASE_USER}/request-password-reset.php`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', 'Yêu cầu đã được gửi! Vui lòng chờ admin xử lý.');
+                    closeRequestModal();
+                } else {
+                    showAlert('error', data.message || 'Không thể gửi yêu cầu');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Lỗi kết nối server');
+            }
+        }
+
+        function closeRequestModal() {
+            document.getElementById('requestModal').classList.remove('active');
+        }
+
+        function getRoleText(role) {
+            const roles = {
+                'benhnhan': 'Bệnh nhân',
+                'bacsi': 'Bác sĩ',
+                'quantri': 'Quản trị viên'
+            };
+            return roles[role] || role;
+        }
+
+        function getGenderText(gender) {
+            const genders = {
+                'nam': 'Nam',
+                'nu': 'Nữ',
+                'khac': 'Khác'
+            };
+            return genders[gender] || gender;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Chưa cập nhật';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 99999; min-width: 300px;';
+            alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+    </script>
+</body>
+</html>

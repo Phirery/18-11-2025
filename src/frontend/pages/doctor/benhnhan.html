@@ -224,6 +224,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-left: auto;
         }
 
         .user-details {
@@ -763,7 +764,6 @@
     <div class="main-content">
         <div class="top-bar">
             <div class="top-bar-left">
-                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
                 <h5><i class="fas fa-user-injured me-2"></i>Quản lý bệnh nhân</h5>
             </div>
             <div class="top-bar-right">
@@ -771,10 +771,11 @@
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="topNotifBadge" style="display:none;">0</span>
                 </a>
+                <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
             </div>
             <div class="logout-header">
-                <div class="user-avatar">BS</div>
-                <div class="user-details">
+                <div class="user-avatar" onclick="window.location.href='taikhoan.html'" style="cursor: pointer;">BS</div>
+                <div class="user-details" onclick="window.location.href='taikhoan.html'" style="cursor: pointer;">
                     <div class="user-name" id="doctorName">Đang tải...</div>
                     <div class="user-role">Bác sĩ</div>
                 </div>
@@ -1355,7 +1356,7 @@
         }
 
         async function logout() {
-            if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
 
             try {
                 const response = await fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
