@@ -318,11 +318,11 @@
         .stat-card.total::before {background: #3498db;}
         .stat-card.pending::before {background: #f39c12;}
         .stat-card.completed::before {background: #2ecc71;}
-        .stat-card.cancelled::before {background: #e74c3c;}
+        .stat-card.cancelled::before {background: #9b59b6;}
         .stat-card.total::after {background: #3498db;}
         .stat-card.pending::after {background: #f39c12;}
         .stat-card.completed::after {background: #2ecc71;}
-        .stat-card.cancelled::after {background: #e74c3c;}
+        .stat-card.cancelled::after {background: #9b59b6;}
 
         .stat-icon {
             width: 60px;
@@ -485,6 +485,11 @@
             color: #721c24;
         }
 
+        .notification-type.password {
+            background: #e7d5ff;
+            color: #6b21a8;
+        }
+
         .notification-time {
             color: #6c757d;
             font-size: 0.85rem;
@@ -530,16 +535,42 @@
         .notification-actions {
             display: flex;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .btn-notif-action {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 8px;
             border: none;
             font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-reject {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-reject:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
         }
 
         .btn-delete {
@@ -549,6 +580,64 @@
 
         .btn-delete:hover {
             background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-notif-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .password-request-info {
+            background: #f8f4ff;
+            border: 1px solid #e7d5ff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .password-request-info .info-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .password-request-info .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .password-request-info i {
+            color: #9b59b6;
+            width: 20px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.processed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.rejected {
+            background: #f8d7da;
+            color: #721c24;
         }
 
         .loading {
@@ -712,6 +801,15 @@
                 gap: 8px;
             }
 
+            .notification-actions {
+                flex-direction: column;
+            }
+
+            .btn-notif-action {
+                width: 100%;
+                justify-content: center;
+            }
+
             .pagination-container {
                 flex-direction: column;
                 gap: 15px;
@@ -803,9 +901,9 @@
                     <div class="stat-label">Nghỉ phép</div>
                 </div>
                 <div class="stat-card cancelled">
-                    <div class="stat-icon"><i class="fas fa-calendar-times"></i></div>
-                    <div class="stat-number" id="cancelNotifications">0</div>
-                    <div class="stat-label">Hủy nghỉ</div>
+                    <div class="stat-icon"><i class="fas fa-key"></i></div>
+                    <div class="stat-number" id="passwordResetNotifications">0</div>
+                    <div class="stat-label">Cấp lại mật khẩu</div>
                 </div>
             </div>
 
@@ -835,6 +933,7 @@
                                 <option value="">Tất cả loại</option>
                                 <option value="Nghỉ phép">Nghỉ phép</option>
                                 <option value="Hủy nghỉ">Hủy nghỉ</option>
+                                <option value="Cấp lại mật khẩu">Cấp lại mật khẩu</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -1011,12 +1110,12 @@
             const total = allNotifications.length;
             const unread = allNotifications.filter(n => !n.daXem).length;
             const leave = allNotifications.filter(n => n.loai === 'Nghỉ phép').length;
-            const cancel = allNotifications.filter(n => n.loai === 'Hủy nghỉ').length;
+            const passwordReset = allNotifications.filter(n => n.loai === 'Cấp lại mật khẩu').length;
             
             animateNumber('totalNotifications', total);
             animateNumber('unreadNotifications', unread);
             animateNumber('leaveNotifications', leave);
-            animateNumber('cancelNotifications', cancel);
+            animateNumber('passwordResetNotifications', passwordReset);
         }
 
         function displayNotifications() {
@@ -1033,47 +1132,138 @@
             
             container.innerHTML = pageData.map(notif => {
                 const isUnread = !notif.daXem;
-                const typeClass = notif.loai === 'Nghỉ phép' ? 'leave' : 'cancel';
-                const icon = notif.loai === 'Nghỉ phép' ? 'fa-calendar-plus' : 'fa-calendar-times';
                 
-                return `
-                    <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="markAsRead(${notif.maThongBao})">
-                        <div class="notification-header">
-                            <span class="notification-type ${typeClass}">
-                                <i class="fas ${icon}"></i>
-                                ${notif.loai}
-                            </span>
-                            <span class="notification-time">${formatTimeAgo(notif.thoiGian)}</span>
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-title">${notif.tieuDe}</div>
-                            <div class="notification-text">${notif.noiDung}</div>
-                        </div>
-                        <div class="notification-details">
-                            <div class="notification-detail">
-                                <i class="fas fa-user-md"></i>
-                                <span>${notif.tenBacSi}</span>
-                            </div>
-                            <div class="notification-detail">
-                                <i class="fas fa-calendar"></i>
-                                <span>${notif.ngayNghi || 'N/A'}</span>
-                            </div>
-                            ${notif.tenCa ? `
-                            <div class="notification-detail">
-                                <i class="fas fa-clock"></i>
-                                <span>${notif.tenCa}</span>
-                            </div>` : ''}
-                        </div>
-                        <div class="notification-actions" onclick="event.stopPropagation()">
-                            <button class="btn-notif-action btn-delete" onclick="deleteNotification(${notif.maThongBao})">
-                                <i class="fas fa-trash"></i> Xóa
-                            </button>
-                        </div>
-                    </div>
-                `;
+                if (notif.loai === 'Cấp lại mật khẩu') {
+                    return renderPasswordResetNotification(notif, isUnread);
+                } else {
+                    return renderLeaveNotification(notif, isUnread);
+                }
             }).join('');
             
             updatePagination();
+        }
+
+        function renderPasswordResetNotification(notif, isUnread) {
+            const typeClass = 'password';
+            const icon = 'fa-key';
+            const isPending = notif.trangThai === 'Chờ';
+            
+            return `
+                <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="markAsRead(${notif.maThongBao})">
+                    <div class="notification-header">
+                        <span class="notification-type ${typeClass}">
+                            <i class="fas ${icon}"></i>
+                            ${notif.loai}
+                        </span>
+                        <span class="notification-time">${formatTimeAgo(notif.thoiGian)}</span>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.tieuDe}</div>
+                        <div class="notification-text">${notif.noiDung}</div>
+                    </div>
+                    <div class="password-request-info">
+                        <div class="info-row">
+                            <i class="fas fa-user-md"></i>
+                            <strong>Người yêu cầu:</strong> ${notif.tenBacSi || 'N/A'}
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-phone"></i>
+                            <strong>SĐT:</strong> ${notif.soDienThoai || 'N/A'}
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Trạng thái:</strong> 
+                            <span class="status-badge ${notif.trangThai === 'Chờ' ? 'pending' : notif.trangThai === 'Đã xử lý' ? 'processed' : 'rejected'}">
+                                ${notif.trangThai === 'Chờ' ? 'Chờ xử lý' : notif.trangThai === 'Đã xử lý' ? 'Đã chấp nhận' : 'Đã từ chối'}
+                            </span>
+                        </div>
+                        ${notif.trangThai !== 'Chờ' && notif.thoiGianXuLy ? `
+                        <div class="info-row">
+                            <i class="fas fa-clock"></i>
+                            <strong>Xử lý lúc:</strong> ${formatDateTime(notif.thoiGianXuLy)}
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="notification-actions" onclick="event.stopPropagation()">
+                        ${isPending ? `
+                            <button class="btn-notif-action btn-approve" onclick="processPasswordReset(${notif.requestId}, 'approve', ${notif.maThongBao})">
+                                <i class="fas fa-check"></i> Chấp nhận
+                            </button>
+                            <button class="btn-notif-action btn-reject" onclick="processPasswordReset(${notif.requestId}, 'reject', ${notif.maThongBao})">
+                                <i class="fas fa-times"></i> Từ chối
+                            </button>
+                        ` : ''}
+                        <button class="btn-notif-action btn-delete" onclick="deleteNotification(${notif.maThongBao})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLeaveNotification(notif, isUnread) {
+            const typeClass = notif.loai === 'Nghỉ phép' ? 'leave' : 'cancel';
+            const icon = notif.loai === 'Nghỉ phép' ? 'fa-calendar-plus' : 'fa-calendar-times';
+            
+            return `
+                <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="markAsRead(${notif.maThongBao})">
+                    <div class="notification-header">
+                        <span class="notification-type ${typeClass}">
+                            <i class="fas ${icon}"></i>
+                            ${notif.loai}
+                        </span>
+                        <span class="notification-time">${formatTimeAgo(notif.thoiGian)}</span>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">${notif.tieuDe}</div>
+                        <div class="notification-text">${notif.noiDung}</div>
+                    </div>
+                    <div class="notification-details">
+                        <div class="notification-detail">
+                            <i class="fas fa-user-md"></i>
+                            <span>${notif.tenBacSi}</span>
+                        </div>
+                        <div class="notification-detail">
+                            <i class="fas fa-calendar"></i>
+                            <span>${notif.ngayNghi || 'N/A'}</span>
+                        </div>
+                        ${notif.tenCa ? `
+                        <div class="notification-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>${notif.tenCa}</span>
+                        </div>` : ''}
+                    </div>
+                    <div class="notification-actions" onclick="event.stopPropagation()">
+                        <button class="btn-notif-action btn-delete" onclick="deleteNotification(${notif.maThongBao})">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function processPasswordReset(requestId, action, maThongBao) {
+            const actionText = action === 'approve' ? 'chấp nhận' : 'từ chối';
+            if (!confirm(`Bạn có chắc muốn ${actionText} yêu cầu này?`)) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/process-password-reset.php`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    credentials: 'include',
+                    body: JSON.stringify({requestId, action})
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showAlert('success', data.message);
+                    loadNotifications();
+                } else {
+                    showAlert('error', data.message || `Không thể ${actionText} yêu cầu`);
+                }
+            } catch (error) {
+                showAlert('error', 'Lỗi kết nối server');
+            }
         }
 
         function updatePagination() {
@@ -1275,6 +1465,17 @@
             return date.toLocaleDateString('vi-VN');
         }
 
+        function formatDateTime(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
         function playNotificationSound() {
             const sound = document.getElementById('notificationSound');
             sound.play().catch(e => console.log('Sound play failed:', e));
@@ -1316,8 +1517,6 @@
         }
 
         async function logout() {
-            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
-
             stopAutoRefresh();
 
             try {

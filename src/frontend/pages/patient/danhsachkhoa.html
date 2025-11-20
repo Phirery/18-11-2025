@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chuyên Khoa - Bệnh Viện Đa Khoa Quốc Tế</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../assets/css/style.css">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Filter Section - Simple & Clean */
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box .clear-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            cursor: pointer;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .search-box .clear-icon:hover {
+            color: #667eea;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #64748b;
+            min-width: 180px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .results-count {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        /* Departments Grid */
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .department-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+        }
+
+        .department-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: transform 0.3s;
+        }
+
+        .department-card:hover .icon-wrapper {
+            transform: scale(1.1);
+        }
+
+        .icon {
+            font-size: 2.5em;
+            color: white;
+        }
+
+        .department-name {
+            font-size: 1.3em;
+            color: #1e293b;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .department-desc {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .departments-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 15px;
+            }
+
+            .department-card {
+                padding: 25px 15px;
+            }
+
+            .icon-wrapper {
+                width: 65px;
+                height: 65px;
+            }
+
+            .icon {
+                font-size: 2em;
+            }
+
+            .department-name {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="sticky-top">
+        <div id="navbar"></div>
+    </div>
+
+    <div class="container mt-5">
+        <!-- Simple Filter -->
+        <div class="filter-section">
+            <div class="filter-row">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Tìm kiếm chuyên khoa..."
+                        autocomplete="off"
+                    />
+                    <i class="fas fa-times clear-icon" id="clearSearch"></i>
+                </div>
+                <select class="filter-select" id="filterSelect">
+                    <option value="all">Tất cả chuyên khoa</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Results Count -->
+        <div class="results-count" id="resultCount"></div>
+
+        <!-- Departments Grid -->
+        <div id="departmentsContainer" class="departments-grid"></div>
+    </div>
+
+    <script src="../../assets/js/navbar.js"></script>
+    <script>
+        const API_URL = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient/get_chuyenkhoa.php';
+        let allDepartments = [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        const container = document.getElementById("departmentsContainer");
+        const searchInput = document.getElementById("searchInput");
+        const clearSearch = document.getElementById("clearSearch");
+        const filterSelect = document.getElementById("filterSelect");
+        const resultCount = document.getElementById("resultCount");
+
+        const iconMap = {
+            "Tim mạch": "fa-heartbeat",
+            "Răng hàm mặt": "fa-tooth",
+            "Nhi khoa": "fa-baby",
+            "Da liễu": "fa-sparkles",
+            "Khám tổng quát": "fa-stethoscope"
+        };
+
+        // Load dữ liệu từ API
+        async function loadDepartments() {
+            try {
+                const response = await fetch(API_URL);
+                const result = await response.json();
+
+                if (result.success) {
+                    allDepartments = result.data;
+                    populateFilterSelect();
+                    filterAndRender();
+                } else {
+                    showError('Không thể tải dữ liệu: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                showError('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.');
+            }
+        }
+
+        // Tạo options cho select
+        function populateFilterSelect() {
+            const uniqueDepts = [...new Set(allDepartments.map(d => d.tenChuyenKhoa))];
+            uniqueDepts.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                filterSelect.appendChild(option);
+            });
+        }
+
+        // Lọc và render
+        function filterAndRender() {
+            let filtered = allDepartments;
+
+            // Filter by category
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(d => d.tenChuyenKhoa === currentFilter);
+            }
+
+            // Filter by search
+            if (searchQuery.trim()) {
+                filtered = filtered.filter(d => 
+                    d.tenChuyenKhoa.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    d.moTa.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
+
+            renderDepartments(filtered);
+            updateResultCount(filtered.length);
+        }
+
+        function renderDepartments(data) {
+            container.innerHTML = "";
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1;">
+                        <div class="alert alert-warning text-center">
+                            Không tìm thấy chuyên khoa phù hợp.
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            data.forEach(khoa => {
+                const iconClass = iconMap[khoa.tenChuyenKhoa] || 'fa-stethoscope';
+                const card = document.createElement('div');
+                card.className = 'department-card';
+                card.innerHTML = `
+                    <div class="icon-wrapper">
+                        <i class="icon fas ${iconClass}"></i>
+                    </div>
+                    <h2 class="department-name">${khoa.tenChuyenKhoa}</h2>
+                    <p class="department-desc">${khoa.moTa}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateResultCount(count) {
+            resultCount.textContent = count > 0 ? `${count} chuyên khoa` : '';
+        }
+
+        function showError(message) {
+            container.innerHTML = `
+                <div style="grid-column: 1/-1;">
+                    <div class="alert alert-danger text-center">${message}</div>
+                </div>
+            `;
+        }
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            clearSearch.style.display = searchQuery ? 'block' : 'none';
+            filterAndRender();
+        });
+
+        clearSearch.addEventListener('click', () => {
+            searchInput.value = '';
+            searchQuery = '';
+            clearSearch.style.display = 'none';
+            filterAndRender();
+        });
+
+        // Filter select
+        filterSelect.addEventListener('change', (e) => {
+            currentFilter = e.target.value;
+            filterAndRender();
+        });
+
+        // Load dữ liệu khi trang được tải
+        loadDepartments();
+    </script>
+
+</body>
+</html>

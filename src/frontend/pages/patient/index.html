@@ -422,11 +422,6 @@
             padding: 20px;
         }
 
-        /* .chuyenkhoa-header {
-            text-align: center;
-            margin-bottom: 50px;
-        } */
-
         .section-badge {
             display: inline-block;
             padding: 8px 20px;
@@ -440,21 +435,6 @@
             letter-spacing: 1px;
         }
 
-        .chuyenkhoa-container .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 15px;
-            margin-left: 350px;
-        }
-
-        .chuyenkhoa-container .section-subtitle {
-            color: #64748b;
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
 
         .service-card {
             border-radius: 20px;
@@ -504,6 +484,8 @@
                 font-size: 1.4rem;
             }
         }
+
+
         /* === GÓI KHÁM NỔI BẬT - REDESIGN === */
         .package-section .container {
             max-width: 1200px;
@@ -721,6 +703,36 @@
             text-transform: uppercase;
         }
 
+        /* === NHÃN LOẠI GÓI === */
+        .package-type-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* === ĐẢM BẢO CHIỀU CAO ĐỒNG ĐỀU === */
+        .package-card-modern {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .package-features {
+            flex-grow: 1;
+            min-height: 280px;
+        }
+
+        .package-price {
+            margin-top: auto;
+        }
+
         /* ĐỘI NGŨ BÁC SĨ */
         .doctor-section .container {
             max-width: 1200px;
@@ -842,12 +854,13 @@
 
         /* NÚT XEM THÊM */
         /* Button 4: 3D Flip */
-        .button-wrapper{
+        .button-wrapper {
             margin-top: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .btn-xemthem {
             position: relative;
             padding: 10px 90px;
@@ -1013,9 +1026,15 @@
 
     <!-- Chuyên khoa -->
     <div class="chuyenkhoa-container mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="section-title">Chuyên khoa nổi bật</h5>
+        <div class="section-header text-center mb-5">
+            <span class="section-badge">
+                <i class="fas fa-hospital me-2"></i>Chuyên khoa
+            </span>
+            <h2>Chuyên Khoa Nổi Bật</h2>
+            <p>Đa dạng chuyên khoa với đội ngũ bác sĩ giàu kinh nghiệm, sẵn sàng chăm sóc sức khỏe toàn diện cho bạn.
+            </p>
         </div>
+
         <div class="row g-3">
             <div class="col-md-6 col-lg-4">
                 <a href="chuyenkhoa.html" class="text-decoration-none text-dark">
@@ -1092,10 +1111,10 @@
         </div>
     </div>
 
-    <!-- GÓI KHÁM NỔI BẬT -->
+    <!-- ========== GÓI KHÁM ========== -->
     <section class="package-section">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header text-center mb-5">
                 <span class="section-badge">
                     <i class="fas fa-star me-2"></i>Dịch vụ nổi bật
                 </span>
@@ -1104,84 +1123,77 @@
                     tiết từ bác sĩ.</p>
             </div>
 
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
+            <div class="row g-4 justify-content-center">
+                <!-- GÓI KHÁM THƯỜNG -->
+                <div class="col-lg-5 col-md-6">
                     <div class="package-card-modern">
+                        <span class="package-type-badge basic">Gói Thường</span>
+
                         <div class="package-icon">
                             <i class="fas fa-heartbeat"></i>
                         </div>
-                        <h3 class="package-title">Gói Khám Cơ Bản</h3>
+
+                        <h3 class="package-title">Khám Với Bác Sĩ Tổng Quát</h3>
+                        <p class="package-desc">Phù hợp cho khám sức khỏe định kỳ, tầm soát bệnh lý thông thường và tư
+                            vấn sức khỏe cơ bản</p>
+
                         <ul class="package-features">
-                            <li><i class="fas fa-check-circle"></i> Khám tổng quát</li>
-                            <li><i class="fas fa-check-circle"></i> Xét nghiệm máu cơ bản</li>
+                            <li><i class="fas fa-check-circle"></i> Khám lâm sàng tổng quát</li>
+                            <li><i class="fas fa-check-circle"></i> Bác sĩ nội tổng quát</li>
+                            <li><i class="fas fa-check-circle"></i> Thời gian khám: 40 phút</li>
                             <li><i class="fas fa-check-circle"></i> Đo huyết áp, nhịp tim</li>
-                            <li><i class="fas fa-check-circle"></i> Tư vấn sức khỏe</li>
-                            <li><i class="fas fa-check-circle"></i> Hồ sơ điện tử</li>
+                            <li><i class="fas fa-check-circle"></i> Tư vấn sức khỏe cơ bản</li>
+                            <li><i class="fas fa-check-circle"></i> Kê đơn thuốc (nếu cần)</li>
                         </ul>
+
                         <div class="package-price">
-                            <span class="price-amount">1.500.000₫</span>
-                            <div class="price-period">/ lần khám</div>
+                            <span class="price-amount">150.000₫</span>
+                            <span class="price-period">/ lần khám</span>
                         </div>
-                        <button class="btn-book-package">
+
+                        <button class="btn-book-package" onclick="window.location.href='datlich.html'">
                             <i class="fas fa-calendar-check me-2"></i>Đặt lịch ngay
                         </button>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <div class="package-card-modern">
-                        <span class="popular-badge">Phổ biến</span>
-                        <div class="package-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3 class="package-title">Gói Khám Toàn Diện</h3>
-                        <ul class="package-features">
-                            <li><i class="fas fa-check-circle"></i> Tất cả gói Cơ bản</li>
-                            <li><i class="fas fa-check-circle"></i> Siêu âm tổng quát</li>
-                            <li><i class="fas fa-check-circle"></i> X-quang phổi</li>
-                            <li><i class="fas fa-check-circle"></i> Điện tim đồ</li>
-                            <li><i class="fas fa-check-circle"></i> Tư vấn dinh dưỡng</li>
-                        </ul>
-                        <div class="package-price">
-                            <span class="price-amount">3.500.000₫</span>
-                            <div class="price-period">/ lần khám</div>
-                        </div>
-                        <button class="btn-book-package">
-                            <i class="fas fa-calendar-check me-2"></i>Đặt lịch ngay
-                        </button>
-                    </div>
-                </div>
+                <!-- GÓI KHÁM CAO CẤP -->
+                <div class="col-lg-5 col-md-6">
+                    <div class="package-card-modern featured">
+                        <span class="popular-badge">
+                            <i class="fas fa-crown me-1"></i>Phổ biến nhất
+                        </span>
+                        <span class="package-type-badge premium">Gói CAO CẤP</span>
 
-                <div class="col-lg-4 col-md-6">
-                    <div class="package-card-modern">
                         <div class="package-icon">
-                            <i class="fas fa-gem"></i>
+                            <i class="fas fa-user-md"></i>
                         </div>
-                        <h3 class="package-title">Gói Khám VIP</h3>
+
+                        <h3 class="package-title">Khám Với Bác Sĩ Chuyên Gia</h3>
+                        <p class="package-desc">Khám chuyên sâu với bác sĩ chuyên khoa giàu kinh nghiệm, phù hợp cho các
+                            bệnh lý phức tạp</p>
+
                         <ul class="package-features">
-                            <li><i class="fas fa-check-circle"></i> Tất cả gói Toàn diện</li>
-                            <li><i class="fas fa-check-circle"></i> Nội soi dạ dày</li>
-                            <li><i class="fas fa-check-circle"></i> MRI/CT scan</li>
-                            <li><i class="fas fa-check-circle"></i> Khám chuyên sâu</li>
-                            <li><i class="fas fa-check-circle"></i> Phòng khám riêng</li>
+                            <li><i class="fas fa-check-circle"></i> Khám chuyên khoa chi tiết</li>
+                            <li><i class="fas fa-check-circle"></i> Bác sĩ chuyên gia đầu ngành</li>
+                            <li><i class="fas fa-check-circle"></i> Thời gian khám: 40 phút</li>
+                            <li><i class="fas fa-check-circle"></i> Chẩn đoán chuyên sâu</li>
+                            <li><i class="fas fa-check-circle"></i> Tư vấn điều trị chi tiết</li>
+                            <li><i class="fas fa-check-circle"></i> Ưu tiên đặt lịch khám</li>
                         </ul>
+
                         <div class="package-price">
-                            <span class="price-amount">7.500.000₫</span>
-                            <div class="price-period">/ lần khám</div>
+                            <span class="price-amount">250.000₫</span>
+                            <span class="price-period">/ lần khám</span>
                         </div>
-                        <button class="btn-book-package">
+
+                        <button class="btn-book-package" onclick="window.location.href='datlich.html'">
                             <i class="fas fa-calendar-check me-2"></i>Đặt lịch ngay
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="xemthem-container">
-                <a href="dsGoiKham.html" class="text-decoration-none">
-                <div class="button-wrapper">
-                        <button class="btn-xemthem">Xem thêm</button>
-                </div>
-                </a> 
-            </div>  
+
         </div>
     </section>
 
@@ -1289,12 +1301,12 @@
             </div>
             <div class="xemthem-container">
                 <a href="dsBacSi.html" class="text-decoration-none">
-                <div class="button-wrapper">
+                    <div class="button-wrapper">
                         <button class="btn-xemthem">Xem thêm</button>
-                </div>
-                </a> 
-            </div>    
+                    </div>
+                </a>
             </div>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -1330,16 +1342,16 @@
             observer.observe(card);
         });
 
-</script>
-<script src="../../assets/js/navbar.js"></script>
-<script>
-    fetch("../../components/footer.html")
-  .then(res => res.text())
-  .then(data => {
-    document.getElementById("footer").innerHTML = data;
-  })
-  .catch(err => console.error("Lỗi load footer:", err));
-</script>
+    </script>
+    <script src="../../assets/js/navbar.js"></script>
+    <script>
+        fetch("../../components/footer.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("footer").innerHTML = data;
+            })
+            .catch(err => console.error("Lỗi load footer:", err));
+    </script>
 
 
 

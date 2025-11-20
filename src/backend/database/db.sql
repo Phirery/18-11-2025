@@ -6,15 +6,17 @@ CREATE TABLE `bacsi` (
   `maBacSi` varchar(20) NOT NULL,
   `tenBacSi` varchar(100) DEFAULT NULL,
   `maChuyenKhoa` varchar(10) DEFAULT NULL,
+  `thoigianbatdaulamviec` date NOT NULL DEFAULT '2020-11-20',
   `moTa` text DEFAULT NULL,
-  `chuyenGia` tinyint(1) NOT NULL DEFAULT 0
+  `chuyenGia` tinyint(1) NOT NULL DEFAULT 0,
+  `gioiTinh` enum('nam','nu') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `bacsi` (`nguoiDungId`, `maBacSi`, `tenBacSi`, `maChuyenKhoa`, `moTa`, `chuyenGia`) VALUES
-(2, 'bs1', 'Trần Văn BBD', 'EYE102501', '', 0),
-(5, 'BS202511090112882', 'Nguyễn Thành C', 'SUR102501', NULL, 0),
-(7, 'BS202511090152610', 'Lê Văn D', 'INT102503', '1111111111111', 0),
-(13, 'BS202511102320635', 'Nguyễn Z', 'DER102502', NULL, 0);
+INSERT INTO `bacsi` (`nguoiDungId`, `maBacSi`, `tenBacSi`, `maChuyenKhoa`, `thoigianbatdaulamviec`, `moTa`, `chuyenGia`, `gioiTinh`) VALUES
+(2, 'bs1', 'Trần Văn BBD', 'EYE102501', '2020-11-20', '', 0, NULL),
+(5, 'BS202511090112882', 'Nguyễn Thành C', 'SUR102501', '2020-11-20', NULL, 0, NULL),
+(7, 'BS202511090152610', 'Lê Văn D', 'INT102503', '2020-11-20', '1111111111111', 0, NULL),
+(13, 'BS202511102320635', 'Nguyễn Z', 'DER102502', '2020-11-20', NULL, 0, NULL);
 
 CREATE TABLE `benhnhan` (
   `nguoiDungId` int(11) NOT NULL,
@@ -106,7 +108,65 @@ CREATE TABLE `doimatkhau` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `doimatkhau` (`id`, `nguoiDungId`, `trangThai`, `thoiGianYeuCau`, `thoiGianXuLy`, `nguoiXuLy`) VALUES
-(1, 2, 'Chờ', '2025-11-19 10:30:56', NULL, NULL);
+(1, 2, 'Đã xử lý', '2025-11-19 10:30:56', '2025-11-19 11:49:57', 3);
+DELIMITER $$
+CREATE TRIGGER `after_doimatkhau_insert` AFTER INSERT ON `doimatkhau` FOR EACH ROW BEGIN
+    DECLARE userName VARCHAR(100);
+    DECLARE userPhone VARCHAR(16);
+    DECLARE userRole VARCHAR(20);
+    DECLARE bacSiId VARCHAR(20);
+    
+    SELECT nd.tenDangNhap, nd.soDienThoai, nd.vaiTro
+    INTO userName, userPhone, userRole
+    FROM nguoidung nd
+    WHERE nd.id = NEW.nguoiDungId;
+    
+    IF userRole = 'bacsi' THEN
+        SELECT maBacSi INTO bacSiId
+        FROM bacsi
+        WHERE nguoiDungId = NEW.nguoiDungId;
+    ELSE
+        SET bacSiId = 'SYSTEM';
+    END IF;
+    
+    INSERT INTO thongbaoadmin (
+        maNghi, 
+        requestId,
+        maBacSi, 
+        soDienThoai,
+        loai, 
+        tieuDe, 
+        noiDung, 
+        thoiGian, 
+        daXem,
+        trangThai
+    )
+    VALUES (
+        NULL,
+        NEW.id,
+        bacSiId,
+        userPhone,
+        'Cấp lại mật khẩu',
+        'Yêu cầu cấp lại mật khẩu',
+        CONCAT('Người dùng ', userName, ' (', userRole, ') yêu cầu cấp lại mật khẩu'),
+        NOW(),
+        0,
+        'Chờ'
+    );
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_doimatkhau_update` AFTER UPDATE ON `doimatkhau` FOR EACH ROW BEGIN
+    IF NEW.trangThai != OLD.trangThai THEN
+        UPDATE thongbaoadmin
+        SET trangThai = NEW.trangThai,
+            thoiGianXuLy = NEW.thoiGianXuLy
+        WHERE requestId = NEW.id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 CREATE TABLE `goikham` (
   `maGoi` int(11) NOT NULL,
@@ -365,7 +425,7 @@ CREATE TABLE `nguoidung` (
 
 INSERT INTO `nguoidung` (`id`, `tenDangNhap`, `matKhau`, `soDienThoai`, `vaiTro`, `trangThai`, `ngayCapNhatTaiKhoan`, `ngayCapNhatMatKhau`) VALUES
 (1, 'nguoidung1', 'passwork', '0987654322', 'benhnhan', 'Hoạt Động', NULL, NULL),
-(2, 'nguoidung2', '$2y$10$XRsZeXYxxddlREUPuzZAD.vhWQKjQJGpJaNSmjyA1I.I99dJs2h1y', '0987654323', 'bacsi', 'Hoạt Động', '2025-11-19 10:30:38', '2025-11-19 10:29:16'),
+(2, 'nguoidung2', '$2y$10$7uT9tzPJEZVZElWaV6SUD.SdpBeuIiD7cHpc1eZ6RvymOS5hz/Jpm', '0987654323', 'bacsi', 'Hoạt Động', '2025-11-19 10:30:38', NULL),
 (3, 'nguoidung3', '$2y$10$55XC.J1xbMe0tIWNJb9UneupzHgh1x1fioWqKiF/y8eAbcGpERYHC', '0987654321', 'quantri', 'Hoạt Động', NULL, NULL),
 (5, 'nguyenthanhccur1025', '$2y$10$j/IqnU9fT0QPeHyZNU1uuum/5IktMdkELYMVs.Uvu9KOgu1PzjXoq', '0917382642', 'bacsi', 'Hoạt Động', NULL, NULL),
 (7, 'levand', '$2y$10$0w2wLh5q8dn.05WVbEYjc.Epw.C4BLmppiM5Hwj4QO7fbSDvqfOkK', '0361846731', 'bacsi', 'Hoạt Động', NULL, NULL),
@@ -407,20 +467,24 @@ INSERT INTO `suatkham` (`maSuat`, `maCa`, `gioBatDau`, `gioKetThuc`) VALUES
 CREATE TABLE `thongbaoadmin` (
   `maThongBao` int(11) NOT NULL,
   `maNghi` int(11) DEFAULT NULL,
+  `requestId` int(11) DEFAULT NULL,
+  `soDienThoai` varchar(16) DEFAULT NULL,
   `maBacSi` varchar(20) NOT NULL,
-  `loai` enum('Nghỉ phép','Hủy nghỉ') NOT NULL DEFAULT 'Nghỉ phép',
+  `loai` enum('Nghỉ phép','Hủy nghỉ','Cấp lại mật khẩu') NOT NULL DEFAULT 'Nghỉ phép',
   `tieuDe` varchar(255) NOT NULL,
   `noiDung` text NOT NULL,
   `thoiGian` datetime DEFAULT current_timestamp(),
-  `daXem` tinyint(1) DEFAULT 0
+  `daXem` tinyint(1) DEFAULT 0,
+  `trangThai` enum('Chờ','Đã xử lý','Từ chối') DEFAULT NULL,
+  `thoiGianXuLy` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `thongbaoadmin` (`maThongBao`, `maNghi`, `maBacSi`, `loai`, `tieuDe`, `noiDung`, `thoiGian`, `daXem`) VALUES
-(1, 3, 'BS202511090112882', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Nguyễn Thành C xin nghỉ phép vào ngày 17/11/2025 - Ca sáng. Lý do: 0', '2025-11-15 20:22:57', 1),
-(2, 4, 'BS202511090112882', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Nguyễn Thành C xin nghỉ phép vào ngày 17/11/2025 - Ca chiều. Lý do: ???', '2025-11-15 20:22:57', 1),
-(3, 5, 'bs1', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Trần Văn B xin nghỉ phép vào ngày 19/11/2025 - Ca sáng. Lý do: 0', '2025-11-18 19:52:10', 1),
-(4, 6, 'bs1', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Trần Văn B xin nghỉ phép vào ngày 19/11/2025 - Ca chiều. Lý do: ........', '2025-11-18 19:52:10', 1),
-(5, NULL, 'bs1', 'Nghỉ phép', 'Yêu cầu cấp lại mật khẩu', 'Người dùng nguoidung2 yêu cầu cấp lại mật khẩu', '2025-11-19 10:30:56', 1);
+INSERT INTO `thongbaoadmin` (`maThongBao`, `maNghi`, `requestId`, `soDienThoai`, `maBacSi`, `loai`, `tieuDe`, `noiDung`, `thoiGian`, `daXem`, `trangThai`, `thoiGianXuLy`) VALUES
+(1, 3, NULL, NULL, 'BS202511090112882', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Nguyễn Thành C xin nghỉ phép vào ngày 17/11/2025 - Ca sáng. Lý do: 0', '2025-11-15 20:22:57', 1, NULL, NULL),
+(2, 4, NULL, NULL, 'BS202511090112882', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Nguyễn Thành C xin nghỉ phép vào ngày 17/11/2025 - Ca chiều. Lý do: ???', '2025-11-15 20:22:57', 1, NULL, NULL),
+(3, 5, NULL, NULL, 'bs1', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Trần Văn B xin nghỉ phép vào ngày 19/11/2025 - Ca sáng. Lý do: 0', '2025-11-18 19:52:10', 1, NULL, NULL),
+(4, 6, NULL, NULL, 'bs1', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Trần Văn B xin nghỉ phép vào ngày 19/11/2025 - Ca chiều. Lý do: ........', '2025-11-18 19:52:10', 1, NULL, NULL),
+(5, NULL, 1, NULL, 'bs1', 'Cấp lại mật khẩu', 'Yêu cầu cấp lại mật khẩu', 'Người dùng nguoidung2 yêu cầu cấp lại mật khẩu', '2025-11-19 10:30:56', 1, 'Đã xử lý', '2025-11-19 11:49:57');
 
 CREATE TABLE `thongbaobenhnhan` (
   `maThongBao` int(11) NOT NULL,
@@ -448,7 +512,8 @@ INSERT INTO `thongbaolichkham` (`maThongBao`, `maBacSi`, `maLichKham`, `loai`, `
 (2, 'bs1', 27, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân AAAAAAAA đã đặt lịch khám vào ngày 19/11/2025 - Ca sáng', '2025-11-18 18:48:42', 1),
 (3, 'bs1', 28, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân ABCs đã đặt lịch khám vào ngày 19/11/2025 - Ca sáng', '2025-11-18 18:48:59', 1),
 (4, 'bs1', 29, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 19/11/2025 - Ca chiều', '2025-11-18 18:49:11', 1),
-(5, 'bs1', 30, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Trần Văn H đã đặt lịch khám vào ngày 19/11/2025 - Ca chiều', '2025-11-18 18:49:24', 1);
+(5, 'bs1', 30, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Trần Văn H đã đặt lịch khám vào ngày 19/11/2025 - Ca chiều', '2025-11-18 18:49:24', 1),
+(6, 'bs1', NULL, 'Đặt lịch', 'Cấp lại mật khẩu', 'Mật khẩu mới của bạn là: Eden19112025. Vui lòng đổi mật khẩu sau khi đăng nhập.', '2025-11-19 11:49:57', 1);
 
 
 ALTER TABLE `bacsi`
@@ -515,7 +580,8 @@ ALTER TABLE `thongbaoadmin`
   ADD KEY `maBacSi` (`maBacSi`),
   ADD KEY `maNghi` (`maNghi`),
   ADD KEY `idx_daxem` (`daXem`),
-  ADD KEY `idx_thoigian` (`thoiGian`);
+  ADD KEY `idx_thoigian` (`thoiGian`),
+  ADD KEY `fk_thongbaoadmin_doimatkhau` (`requestId`);
 
 ALTER TABLE `thongbaobenhnhan`
   ADD PRIMARY KEY (`maThongBao`),
@@ -559,7 +625,7 @@ ALTER TABLE `thongbaobenhnhan`
   MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `thongbaolichkham`
-  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 
 ALTER TABLE `bacsi`
@@ -599,6 +665,7 @@ ALTER TABLE `suatkham`
   ADD CONSTRAINT `suatkham_ibfk_1` FOREIGN KEY (`maCa`) REFERENCES `calamviec` (`maCa`);
 
 ALTER TABLE `thongbaoadmin`
+  ADD CONSTRAINT `fk_thongbaoadmin_doimatkhau` FOREIGN KEY (`requestId`) REFERENCES `doimatkhau` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `thongbaoadmin_ibfk_1` FOREIGN KEY (`maBacSi`) REFERENCES `bacsi` (`maBacSi`) ON DELETE CASCADE,
   ADD CONSTRAINT `thongbaoadmin_ibfk_2` FOREIGN KEY (`maNghi`) REFERENCES `ngaynghi` (`maNghi`) ON DELETE SET NULL;
 

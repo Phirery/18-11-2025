@@ -9,7 +9,7 @@ $input = json_decode(file_get_contents('php://input'), true);
 $requestId = $input['requestId'];
 
 try {
-    $stmt = $conn->prepare("DELETE FROM password_reset_requests WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM doimatkhau WHERE id = ?");
     $stmt->bind_param("i", $requestId);
     
     if ($stmt->execute()) {

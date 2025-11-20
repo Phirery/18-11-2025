@@ -15,7 +15,7 @@ try {
     // Get request info
     $stmt = $conn->prepare("
         SELECT r.nguoiDungId, nd.tenDangNhap, nd.vaiTro
-        FROM password_reset_requests r
+        FROM doimatkhau r
         JOIN nguoidung nd ON r.nguoiDungId = nd.id
         WHERE r.id = ? AND r.trangThai = 'Chờ'
     ");
@@ -38,7 +38,7 @@ try {
         // Update password
         $stmt = $conn->prepare("
             UPDATE nguoidung 
-            SET matKhau = ?, last_password_change = NULL 
+            SET matKhau = ?, ngayCapNhatMatKhau = NULL 
             WHERE id = ?
         ");
         $stmt->bind_param("si", $hashedPassword, $request['nguoiDungId']);
@@ -100,7 +100,7 @@ try {
     
     // Update request status
     $stmt = $conn->prepare("
-        UPDATE password_reset_requests 
+        UPDATE doimatkhau 
         SET trangThai = ?, thoiGianXuLy = NOW(), nguoiXuLy = ?
         WHERE id = ?
     ");

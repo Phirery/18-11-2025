@@ -15,7 +15,7 @@ try {
                     ELSE nd.tenDangNhap
                 END as hoTen,
                 ad.tenDangNhap as nguoiXuLyName
-            FROM password_reset_requests r
+            FROM doimatkhau r
             JOIN nguoidung nd ON r.nguoiDungId = nd.id
             LEFT JOIN benhnhan bn ON nd.id = bn.nguoiDungId
             LEFT JOIN bacsi bs ON nd.id = bs.nguoiDungId
