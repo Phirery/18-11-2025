@@ -6,17 +6,17 @@ CREATE TABLE `bacsi` (
   `maBacSi` varchar(20) NOT NULL,
   `tenBacSi` varchar(100) DEFAULT NULL,
   `maChuyenKhoa` varchar(10) DEFAULT NULL,
-  `thoigianbatdaulamviec` date NOT NULL DEFAULT '2020-11-20',
   `moTa` text DEFAULT NULL,
   `chuyenGia` tinyint(1) NOT NULL DEFAULT 0,
-  `gioiTinh` enum('nam','nu') DEFAULT NULL
+  `gioiTinh` enum('nam','nu') DEFAULT NULL,
+  `namLamViec` smallint(5) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `bacsi` (`nguoiDungId`, `maBacSi`, `tenBacSi`, `maChuyenKhoa`, `thoigianbatdaulamviec`, `moTa`, `chuyenGia`, `gioiTinh`) VALUES
-(2, 'bs1', 'Trần Văn BBD', 'EYE102501', '2020-11-20', '', 0, NULL),
-(5, 'BS202511090112882', 'Nguyễn Thành C', 'SUR102501', '2020-11-20', NULL, 0, NULL),
-(7, 'BS202511090152610', 'Lê Văn D', 'INT102503', '2020-11-20', '1111111111111', 0, NULL),
-(13, 'BS202511102320635', 'Nguyễn Z', 'DER102502', '2020-11-20', NULL, 0, NULL);
+INSERT INTO `bacsi` (`nguoiDungId`, `maBacSi`, `tenBacSi`, `maChuyenKhoa`, `moTa`, `chuyenGia`, `gioiTinh`, `namLamViec`) VALUES
+(2, 'bs1', 'Trần Văn BBD', 'EYE102501', '', 0, NULL, NULL),
+(5, 'BS202511090112882', 'Nguyễn Thành C', 'SUR102501', NULL, 0, NULL, NULL),
+(7, 'BS202511090152610', 'Lê Văn D', 'INT102503', '1111111111111', 0, NULL, NULL),
+(13, 'BS202511102320635', 'Nguyễn Z', 'DER102502', NULL, 0, NULL, NULL);
 
 CREATE TABLE `benhnhan` (
   `nguoiDungId` int(11) NOT NULL,
