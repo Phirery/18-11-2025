@@ -1,359 +1,784 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đội Ngũ Bác Sĩ Chuyên Môn</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    /* Animated background */
-    body::before {
-      content: '';
-      position: fixed;
-      top: -50%;
-      right: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(102, 126, 234, 0.06), transparent 50%);
-      animation: rotate 25s linear infinite;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    @keyframes rotate {
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* Header Section */
-    .header-section {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 80px 0 100px;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: -50px;
-    }
-
-    .header-section::before {
-      content: '';
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      top: -200px;
-      right: -150px;
-      animation: float 8s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-30px);
-      }
-    }
-
-    .header-badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      color: white;
-      padding: 8px 24px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      color: white;
-      font-weight: 800;
-      font-size: 3rem;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .section-subtitle {
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Search & Filter Box */
-    .search-filter-box {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      margin-bottom: 40px;
-      position: relative;
-      z-index: 10;
-      border: 2px solid #f0f0f0;
-    }
-
-    .input-group .form-control,
-    .form-select {
-      border: 2px solid #e8eef5;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 0.95rem;
-      transition: all 0.3s;
-    }
-
-    .input-group .form-control:focus,
-    .form-select:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .input-group-text {
-      background: transparent;
-      border: 2px solid #e8eef5;
-      border-right: none;
-      border-radius: 12px 0 0 12px;
-    }
-
-    .input-group .form-control {
-      border-left: none;
-      border-radius: 0 12px 12px 0;
-    }
-
-    /* Card bác sĩ */
-    .doctor-card-item {
-      background-color: #fff;
-      border: 1px solid #f0f0f0;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
-      overflow: hidden;
-      height: 100%;
-    }
-
-    .doctor-card-item:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 28px rgba(102, 126, 234, 0.2);
-      border-color: #667eea;
-    }
-
-    /* Ảnh bác sĩ */
-    .doctor-img-container {
-      width: 130px;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 3px solid transparent;
-      transition: all 0.35s ease;
-    }
-
-    .doctor-card-item:hover .doctor-img-container {
-      border-color: #667eea;
-      transform: rotate(-2deg) scale(1.03);
-      box-shadow: 0 0 18px rgba(102, 126, 234, 0.3);
-    }
-
-    /* Nội dung */
-    .doctor-name {
-      font-weight: 700;
-      font-size: 1.25rem;
-      color: #1f2937;
-    }
-
-    .doctor-title-text {
-      color: #667eea;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .tag-chuyen-khoa {
-      background-color: #f0f4ff;
-      color: #667eea;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .profile-link {
-      color: #667eea;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s;
-    }
-
-    .profile-link:hover {
-      color: #764ba2;
-      transform: translateX(4px);
-    }
-
-    /* Loading spinner */
-    .loading-spinner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 300px;
-    }
-
-    .spinner-border {
-      width: 3rem;
-      height: 3rem;
-      border-width: 0.3em;
-    }
-
-    /* Bố cục canh đều */
-    .doctor-info {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .doctor-info {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .doctor-img-container {
-        margin-bottom: 15px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <div class="header-section text-center">
-    <div class="container position-relative">
-      <span class="header-badge">
-        <i class="fas fa-user-md me-2"></i>Chuyên gia y tế
-      </span>
-      <h2 class="section-title">Đội Ngũ Bác Sĩ Chuyên Môn</h2>
-      <p class="section-subtitle">Đội ngũ bác sĩ giàu kinh nghiệm, tận tâm và được đào tạo bài bản</p>
-    </div>
-  </div>
-
-  <div class="main-container">
-    <div class="container">
-      <!-- search -->
-      <div class="search-filter-box">
-        <div class="row g-3 align-items-center">
-          <div class="col-lg-6 col-md-6">
-            <div class="input-group">
-              <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-primary"></i></span>
-              <input type="text" id="searchInput" class="form-control"
-                placeholder="Tìm theo tên bác sĩ hoặc chuyên khoa...">
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-6">
-            <select id="filterSelect" class="form-select">
-              <option value="">Tất cả chuyên khoa</option>
-              <option value="Nội Tiết">Nội tiết</option>
-              <option value="Truyền Nhiễm">Truyền nhiễm</option>
-              <option value="Chấn Thương">Chấn thương chỉnh hình</option>
-              <option value="Tiểu Đường">Tiểu đường</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="row g-4" id="doctorList">
-        <!-- Loading spinner -->
-        <div class="col-12 loading-spinner">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Đang tải...</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <script>
-    const API_URL = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient/get_doctors.php';    let allDoctors = [];
-
-    const list = document.getElementById("doctorList");
-    const searchInput = document.getElementById("searchInput");
-    const filterSelect = document.getElementById("filterSelect");
-
-    // Load dữ liệu từ API
-    async function loadDoctors() {
-      try {
-        const response = await fetch(API_URL);
-        const result = await response.json();
-        
-        if (result.success) {
-          allDoctors = result.data;
-          renderDoctors(allDoctors);
-        } else {
-          showError('Không thể tải dữ liệu: ' + result.message);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đội Ngũ Bác Sĩ Chuyên Môn - Eden Health</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
         }
-      } catch (error) {
-        console.error('Lỗi:', error);
-        showError('Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau.');
-      }
-    }
 
-    function renderDoctors(data) {
-      list.innerHTML = "";
-      if (data.length === 0) {
-        list.innerHTML = `<div class="col-12"><div class="alert alert-warning text-center">Không tìm thấy bác sĩ nào phù hợp.</div></div>`;
-        return;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      data.forEach(doc => {
-        list.innerHTML += `
-      <div class="col-lg-6">
-        <div class="doctor-card-item p-4">
-          <div class="doctor-info">
-            <img src="${doc.img}" class="doctor-img-container" alt="${doc.name}">
-            <div class="flex-grow-1">
-              <h5 class="doctor-name mb-1">${doc.name}</h5>
-              <p class="doctor-title-text mb-2">${doc.title}</p>
-              <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-                <span class="tag-chuyen-khoa"><i class="fas fa-stethoscope me-1"></i>${doc.specialty}</span>
-              </div>
-              <p class="small fw-bold mb-1">Lĩnh vực chuyên môn:</p>
-              <p class="small text-secondary mb-3">${doc.interests}</p>
-              <a href="${doc.profile}" class="profile-link d-flex align-items-center justify-content-end">
-                Xem Hồ Sơ <i class="fas fa-arrow-right ms-2"></i>
-              </a>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-purple) !important;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand-header i {
+            color: var(--secondary-purple);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Header Section */
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 0 80px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: -40px;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -200px;
+            right: -150px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: white;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter Box */
+        .filter-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .filter-box h5 {
+            color: var(--primary-purple);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e8eef5;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-filter {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-filter:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-reset {
+            background: #e0e0e0;
+            color: #666;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: #d0d0d0;
+        }
+
+        /* Doctor Cards */
+        .doctors-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+        }
+
+        .doctor-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #f5f7fa, #e8eef5);
+        }
+
+        .doctor-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doctor-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .doctor-specialty {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            color: var(--primary-purple);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .doctor-experience {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .doctor-experience i {
+            color: var(--primary-purple);
+        }
+
+        .doctor-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .doctor-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e8eef5;
+        }
+
+        .department-badge {
+            background: #f8f9fa;
+            color: #495057;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Pagination */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .pagination {
+            margin: 0;
+            gap: 5px;
+        }
+
+        .page-link {
+            color: var(--primary-purple);
+            border: 2px solid #e8eef5;
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .page-link:hover {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+        }
+
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border-color: var(--primary-purple);
+        }
+
+        .page-item.disabled .page-link {
+            background: #f8f9fa;
+            border-color: #e8eef5;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3rem;
+            color: var(--primary-purple);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .doctors-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .filter-box {
+                padding: 20px;
+            }
+
+            .pagination-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand-header" href="index.html">
+                <i class="fas fa-clinic-medical"></i>
+                <span><span style="font-weight: 800;">Eden</span> Health</span>
+            </a>
+            <div class="ms-auto user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName">Người dùng</span>
             </div>
-          </div>
         </div>
-      </div>`;
+    </nav>
+
+    <!-- Header -->
+    <div class="header-section text-center">
+        <div class="container position-relative">
+            <span class="header-badge">
+                <i class="fas fa-user-md me-2"></i>Chuyên gia y tế
+            </span>
+            <h2 class="section-title">Đội Ngũ Bác Sĩ Chuyên Môn</h2>
+            <p class="section-subtitle">Đội ngũ bác sĩ giàu kinh nghiệm, tận tâm và được đào tạo bài bản</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="doctors-container">
+        <!-- Filter Box -->
+        <div class="filter-box">
+            <h5><i class="fas fa-filter me-2"></i>Bộ lọc tìm kiếm</h5>
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <label class="form-label">Khoa</label>
+                    <select class="form-select" id="filterKhoa">
+                        <option value="">Tất cả khoa</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Chuyên khoa</label>
+                    <select class="form-select" id="filterChuyenKhoa">
+                        <option value="">Tất cả chuyên khoa</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tìm kiếm</label>
+                    <input type="text" class="form-control" id="filterSearch" placeholder="Nhập tên bác sĩ hoặc chuyên khoa...">
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn-filter" onclick="applyFilters()">
+                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                </button>
+                <button class="btn-reset" onclick="resetFilters()">
+                    <i class="fas fa-redo me-2"></i>Đặt lại
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading">
+            <div class="spinner-border"></div>
+            <p class="mt-3">Đang tải dữ liệu...</p>
+        </div>
+
+        <!-- Doctors Grid -->
+        <div id="doctorsGrid" class="doctors-grid" style="display: none;"></div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-user-md"></i>
+            <h4>Không tìm thấy bác sĩ</h4>
+            <p>Vui lòng thử lại với bộ lọc khác</p>
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationContainer" class="pagination-container" style="display: none;">
+            <div class="text-muted" id="recordInfo">Hiển thị 0 - 0 của 0 bác sĩ</div>
+            <nav>
+                <ul class="pagination" id="paginationList"></ul>
+            </nav>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+
+      // State management
+      let allDoctors = [];
+      let filteredDoctors = [];
+      let allKhoa = [];
+      let allChuyenKhoa = [];
+      let currentPage = 1;
+      const itemsPerPage = 9;
+
+      // Initialize on page load
+      document.addEventListener('DOMContentLoaded', function() {
+          checkAuth();
+          loadKhoa();
+          loadChuyenKhoa();
+          loadDoctors();
+          
+          // Setup filter listeners
+          document.getElementById('filterKhoa').addEventListener('change', handleKhoaChange);
+          document.getElementById('filterSearch').addEventListener('input', debounce(applyFilters, 500));
+          
+          // Enter key to search
+          document.getElementById('filterSearch').addEventListener('keypress', function(e) {
+              if (e.key === 'Enter') {
+                  applyFilters();
+              }
+          });
       });
-    }
 
-    function showError(message) {
-      list.innerHTML = `<div class="col-12"><div class="alert alert-danger text-center">${message}</div></div>`;
-    }
+      // Check authentication
+      async function checkAuth() {
+          try {
+              const response = await fetch(`${API_BASE}/check-auth.php`, {
+                  credentials: 'include'
+              });
+              const data = await response.json();
+              
+              if (data.success) {
+                  const userName = data.fullName || data.username;
+                  document.getElementById('userName').textContent = userName;
+                  document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+              } else {
+                  // Not logged in - still show page but with guest info
+                  document.getElementById('userName').textContent = 'Khách';
+                  document.getElementById('userAvatar').textContent = 'K';
+              }
+          } catch (error) {
+              console.error('Auth check error:', error);
+          }
+      }
 
-    function applyFilters() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const specialtyFilter = filterSelect.value;
+      // Load Khoa list
+      async function loadKhoa() {
+          try {
+              const response = await fetch(`${API_BASE}/get-departments.php`);
+              const data = await response.json();
+              
+              if (data.success) {
+                  allKhoa = data.data;
+                  const select = document.getElementById('filterKhoa');
+                  select.innerHTML = '<option value="">Tất cả khoa</option>' +
+                      data.data.map(k => `<option value="${k.maKhoa}">${k.tenKhoa}</option>`).join('');
+              }
+          } catch (error) {
+              console.error('Error loading departments:', error);
+          }
+      }
 
-      const filteredDoctors = allDoctors.filter(doc => {
-        const matchesSearch = doc.name.toLowerCase().includes(searchTerm) ||
-          doc.specialty.toLowerCase().includes(searchTerm);
-        const matchesSpecialty = specialtyFilter === "" || doc.specialty === specialtyFilter;
-        return matchesSearch && matchesSpecialty;
-      });
+      // Load all Chuyen Khoa
+      async function loadChuyenKhoa() {
+          try {
+              const response = await fetch(`${API_BASE}/get-departments.php`);
+              const deptData = await response.json();
+              
+              if (!deptData.success) return;
+              
+              // Load specialties for all departments
+              const specialtyPromises = deptData.data.map(dept => 
+                  fetch(`${API_BASE}/get-specialties.php?maKhoa=${dept.maKhoa}`)
+                      .then(r => r.json())
+              );
+              
+              const results = await Promise.all(specialtyPromises);
+              allChuyenKhoa = results.flatMap(r => r.success ? r.data : []);
+              
+              updateChuyenKhoaFilter();
+          } catch (error) {
+              console.error('Error loading specialties:', error);
+          }
+      }
 
-      renderDoctors(filteredDoctors);
-    }
+      // Handle Khoa filter change
+      function handleKhoaChange() {
+          const selectedKhoa = document.getElementById('filterKhoa').value;
+          updateChuyenKhoaFilter(selectedKhoa);
+          // Auto-apply filters when khoa changes
+          applyFilters();
+      }
 
-    searchInput.addEventListener("input", applyFilters);
-    filterSelect.addEventListener("change", applyFilters);
+      // Update Chuyen Khoa filter based on selected Khoa
+      function updateChuyenKhoaFilter(maKhoa = '') {
+          const select = document.getElementById('filterChuyenKhoa');
+          
+          if (!maKhoa) {
+              // Show all specialties
+              select.innerHTML = '<option value="">Tất cả chuyên khoa</option>' +
+                  allChuyenKhoa.map(ck => `<option value="${ck.maChuyenKhoa}">${ck.tenChuyenKhoa}</option>`).join('');
+          } else {
+              // Filter specialties by khoa
+              const filtered = allChuyenKhoa.filter(ck => ck.maKhoa === maKhoa);
+              select.innerHTML = '<option value="">Tất cả chuyên khoa</option>' +
+                  filtered.map(ck => `<option value="${ck.maChuyenKhoa}">${ck.tenChuyenKhoa}</option>`).join('');
+          }
+      }
 
-    // Load dữ liệu khi trang được tải
-    loadDoctors();
-  </script>
+      // Load doctors with filters
+      async function loadDoctors() {
+          showLoading(true);
+          
+          const maKhoa = document.getElementById('filterKhoa').value;
+          const maChuyenKhoa = document.getElementById('filterChuyenKhoa').value;
+          const search = document.getElementById('filterSearch').value;
+          
+          // Build query string
+          const params = new URLSearchParams();
+          if (maKhoa) params.append('maKhoa', maKhoa);
+          if (maChuyenKhoa) params.append('maChuyenKhoa', maChuyenKhoa);
+          if (search) params.append('search', search);
+          
+          try {
+              const response = await fetch(`${API_BASE}/get_doctors.php?${params.toString()}`);
+              const data = await response.json();
+              
+              if (data.success) {
+                  allDoctors = data.data;
+                  filteredDoctors = [...allDoctors];
+                  currentPage = 1;
+                  displayDoctors();
+              } else {
+                  showEmptyState();
+              }
+          } catch (error) {
+              console.error('Error loading doctors:', error);
+              showEmptyState();
+          } finally {
+              showLoading(false);
+          }
+      }
+
+      // Display doctors with pagination
+      function displayDoctors() {
+          const grid = document.getElementById('doctorsGrid');
+          const emptyState = document.getElementById('emptyState');
+          const pagination = document.getElementById('paginationContainer');
+          
+          if (filteredDoctors.length === 0) {
+              grid.style.display = 'none';
+              pagination.style.display = 'none';
+              emptyState.style.display = 'block';
+              return;
+          }
+          
+          // Calculate pagination
+          const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+          const start = (currentPage - 1) * itemsPerPage;
+          const end = start + itemsPerPage;
+          const pageData = filteredDoctors.slice(start, end);
+          
+          // Render doctor cards
+          grid.innerHTML = pageData.map(doctor => createDoctorCard(doctor)).join('');
+          grid.style.display = 'grid';
+          emptyState.style.display = 'none';
+          
+          // Update pagination
+          updatePagination(totalPages);
+      }
+
+      // Create doctor card HTML
+      function createDoctorCard(doctor) {
+          const experienceText = doctor.namKinhNghiem > 0 
+              ? `${doctor.namKinhNghiem} năm kinh nghiệm`
+              : 'Mới tham gia';
+          
+          const description = doctor.moTa || 'Chưa có mô tả';
+          
+          return `
+              <div class="doctor-card">
+                  <img src="${doctor.anhDaiDien}" alt="${doctor.tenBacSi}" class="doctor-image" 
+                      onerror="this.src='http://localhost/DO_AN_1/code_doan1/src/frontend/assets/images/doctor_male.png'">
+                  <div class="doctor-content">
+                      <h3 class="doctor-name">${doctor.tenBacSi}</h3>
+                      <div class="doctor-specialty">
+                          <i class="fas fa-stethoscope me-1"></i>${doctor.tenChuyenKhoa || 'Đa khoa'}
+                      </div>
+                      <div class="doctor-experience">
+                          <i class="fas fa-award"></i>
+                          <span>${experienceText}</span>
+                      </div>
+                      <p class="doctor-description">${description}</p>
+                      <div class="doctor-footer">
+                          <span class="department-badge">
+                              <i class="fas fa-hospital me-1"></i>${doctor.tenKhoa || 'N/A'}
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          `;
+      }
+
+      // Update pagination UI
+      function updatePagination(totalPages) {
+          const container = document.getElementById('paginationContainer');
+          const list = document.getElementById('paginationList');
+          const recordInfo = document.getElementById('recordInfo');
+          
+          if (totalPages <= 1) {
+              container.style.display = 'none';
+              return;
+          }
+          
+          container.style.display = 'flex';
+          
+          // Update record info
+          const start = (currentPage - 1) * itemsPerPage + 1;
+          const end = Math.min(currentPage * itemsPerPage, filteredDoctors.length);
+          recordInfo.textContent = `Hiển thị ${start} - ${end} của ${filteredDoctors.length} bác sĩ`;
+          
+          // Build pagination
+          let html = `
+              <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                  <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                      <i class="fas fa-chevron-left"></i>
+                  </a>
+              </li>
+          `;
+          
+          // Page numbers
+          for (let i = 1; i <= totalPages; i++) {
+              if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                  html += `
+                      <li class="page-item ${i === currentPage ? 'active' : ''}">
+                          <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+                      </li>
+                  `;
+              } else if (i === currentPage - 2 || i === currentPage + 2) {
+                  html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+              }
+          }
+          
+          html += `
+              <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                  <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                      <i class="fas fa-chevron-right"></i>
+                  </a>
+              </li>
+          `;
+          
+          list.innerHTML = html;
+      }
+
+      // Change page
+      function changePage(page) {
+          const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+          if (page >= 1 && page <= totalPages) {
+              currentPage = page;
+              displayDoctors();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+      }
+
+      // Apply filters
+      function applyFilters() {
+          loadDoctors();
+      }
+
+      // Reset filters
+      function resetFilters() {
+          document.getElementById('filterKhoa').value = '';
+          document.getElementById('filterChuyenKhoa').value = '';
+          document.getElementById('filterSearch').value = '';
+          updateChuyenKhoaFilter();
+          loadDoctors();
+      }
+
+      // Show/hide loading
+      function showLoading(show) {
+          document.getElementById('loadingIndicator').style.display = show ? 'block' : 'none';
+          document.getElementById('doctorsGrid').style.display = show ? 'none' : 'grid';
+          document.getElementById('paginationContainer').style.display = show ? 'none' : 'flex';
+      }
+
+      // Show empty state
+      function showEmptyState() {
+          document.getElementById('loadingIndicator').style.display = 'none';
+          document.getElementById('doctorsGrid').style.display = 'none';
+          document.getElementById('paginationContainer').style.display = 'none';
+          document.getElementById('emptyState').style.display = 'block';
+      }
+
+      // Debounce utility
+      function debounce(func, wait) {
+          let timeout;
+          return function executedFunction(...args) {
+              const later = () => {
+                  clearTimeout(timeout);
+                  func(...args);
+              };
+              clearTimeout(timeout);
+              timeout = setTimeout(later, wait);
+          };
+      }
+    </script>
 </body>
-
 </html>

@@ -1057,28 +1057,28 @@
                     <li class="nav-item"><a class="nav-link-header" href="vechungtoi.html">Về chúng tôi</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
                     <li class="nav-item" id="navProfileItem" style="display: none;">
-                        <a class="nav-link-header" href="xemhoso.html">Hồ sơ cá nhân</a>
+                        <a class="nav-link-header" href="hosocanhan.html">Hồ sơ cá nhân</a>
                     </li>
                 </ul>
 
                 <div class="d-flex align-items-center">
                     <!-- Auth buttons (chưa đăng nhập) -->
                     <div class="auth-buttons" id="authButtons">
-                        <a href="dangnhap.html" class="btn-auth btn-login">
+                        <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
                             <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
                         </a>
-                        <a href="dangky.html" class="btn-auth btn-register">
+                        <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
                             <i class="fas fa-user-plus me-1"></i> Đăng ký
                         </a>
                     </div>
 
                     <!-- User dropdown (đã đăng nhập) -->
                     <div class="user-dropdown dropdown" id="userDropdown">
-                        <div class="user-avatar" data-bs-toggle="dropdown" id="userAvatar">A</div>
+                        <div class="user-avatar" data-bs-toggle="dropdown" id="userAvatar">N</div>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom">
                             <li><span class="dropdown-item-text fw-bold" id="dropdownUserName">Người dùng</span></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="xemhoso.html"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item" href="hosocanhan.html"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a></li>
                             <li><a class="dropdown-item" href="lichkham.html"><i class="fas fa-calendar-check"></i> Lịch khám của tôi</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
@@ -1484,9 +1484,22 @@
         }
 
         function logout() {
+            // Xóa tất cả localStorage
             localStorage.removeItem('loggedIn');
             localStorage.removeItem('username');
+            localStorage.removeItem('userRole');
             localStorage.removeItem('maBenhNhan');
+            localStorage.removeItem('hoTen');
+            localStorage.removeItem('maBacSi');
+            localStorage.removeItem('maQuanTriVien');
+            
+            // Gọi API logout (optional, để xóa session)
+            fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
+                method: 'POST',
+                credentials: 'include'
+            });
+            
+            // Reload trang
             window.location.reload();
         }
     </script>
