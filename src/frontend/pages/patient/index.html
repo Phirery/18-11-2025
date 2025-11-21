@@ -4,14 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trangchu</title>
+    <title>Trang Chủ Eden Health</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
-
     <style>
-        /* === BANNER STYLES === */
         .banner-section {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             position: relative;
@@ -19,7 +17,6 @@
             padding: 80px 0;
         }
 
-        /* Animated background circles */
         .banner-section::before,
         .banner-section::after {
             content: '';
@@ -57,7 +54,6 @@
             }
         }
 
-        /* Floating particles */
         .particle {
             position: absolute;
             width: 10px;
@@ -250,7 +246,6 @@
             box-shadow: 0 30px 80px rgba(102, 126, 234, 0.3);
         }
 
-        /* Floating badge */
         .floating-badge {
             position: absolute;
             background: white;
@@ -295,7 +290,6 @@
             font-size: 0.9rem;
         }
 
-        /* Trust indicators */
         .trust-indicators {
             display: flex;
             gap: 40px;
@@ -319,7 +313,6 @@
             font-size: 0.9rem;
         }
 
-        /* Info Section */
         .info-section {
             background: linear-gradient(135deg, #667eea, #764ba2);
             padding: 80px 0;
@@ -327,7 +320,6 @@
             overflow: hidden;
         }
 
-        /* màu nền */
         .info-section::before {
             content: "";
             position: absolute;
@@ -387,7 +379,6 @@
             line-height: 1.6;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .banner-content h1 {
                 font-size: 2rem;
@@ -410,12 +401,10 @@
             }
         }
 
-        /* Section Spacing */
         .section-spacing {
             padding: 60px 0;
         }
 
-        /* === CHUYÊN KHOA === */
         .chuyenkhoa-container {
             max-width: 1200px;
             margin: 80px auto;
@@ -773,10 +762,6 @@
             transition: transform 0.5s;
         }
 
-        /* .doctor-card-modern:hover .doctor-image-wrapper img {
-        transform: scale(1.1);
-    } */
-
         .doctor-badge {
             position: absolute;
             top: 15px;
@@ -943,12 +928,11 @@
                                 <i class="fas fa-calendar-check me-2"></i>
                                 Đặt Lịch Ngay
                             </a>
-                            <a href="#" class="btn btn-more">
+                            <a href="vechungtoi.html" class="btn btn-more">
                                 <i class="fas fa-info-circle me-2"></i>
                                 Tìm Hiểu Thêm
                             </a>
                         </div>
-
                         <div class="trust-indicators">
                             <div class="trust-item">
                                 <span class="number">50K+</span>
@@ -1202,9 +1186,9 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-badge">
-                    <i class="fas fa-user-md me-2"></i>Chuyên gia
+                    <i class="fas fa-user-md me-2"></i>Bác sĩ xuất sắc
                 </span>
-                <h2>Đội Ngũ Bác Sĩ Xuất Sắc</h2>
+                <h2>Đội Ngũ Bác Sĩ Hàng Đầu</h2>
                 <p>Đội ngũ bác sĩ giàu kinh nghiệm, tận tâm và được đào tạo bài bản tại các trường y khoa hàng đầu.</p>
             </div>
 
@@ -1212,7 +1196,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="doctor-card-modern">
                         <div class="doctor-image-wrapper">
-                            <img src="../../assets/images/doctor1.jpg" alt="Dr. Michael Renner">
+                            <img src="../../assets/images/doctor_male.png">
                             <span class="doctor-badge">Chuyên gia</span>
                         </div>
                         <div class="doctor-info-modern">
@@ -1242,7 +1226,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="doctor-card-modern">
                         <div class="doctor-image-wrapper">
-                            <img src="../../assets/images/doctor1.jpg" alt="Kiệt chó">
+                            <img src="../../assets/images/doctor_male.png">
                             <span class="doctor-badge">Chuyên gia</span>
                         </div>
                         <div class="doctor-info-modern">
@@ -1272,7 +1256,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="doctor-card-modern">
                         <div class="doctor-image-wrapper">
-                            <img src="../../assets/images/doctor1.jpg" alt="Dr. Michael Renner">
+                            <img src="../../assets/images/doctor_male.png">
                             <span class="doctor-badge">Chuyên gia</span>
                         </div>
                         <div class="doctor-info-modern">
@@ -1300,7 +1284,7 @@
                 </div>
             </div>
             <div class="xemthem-container">
-                <a href="dsBacSi.html" class="text-decoration-none">
+                <a href="danhsachbacsi.html" class="text-decoration-none">
                     <div class="button-wrapper">
                         <button class="btn-xemthem">Xem thêm</button>
                     </div>
@@ -1352,9 +1336,5 @@
             })
             .catch(err => console.error("Lỗi load footer:", err));
     </script>
-
-
-
-</body>
-
+    </body>
 </html>

@@ -17,8 +17,18 @@ try {
         exit;
     }
 
-    $sql = "SELECT t.maThongBao, t.loai, t.tieuDe, t.noiDung, t.thoiGian, t.daXem,
-            bn.tenBenhNhan, l.ngayKham, c.tenCa
+    // Query để lấy tất cả thông báo bao gồm cả thông báo cấp lại mật khẩu
+    $sql = "SELECT 
+            t.maThongBao, 
+            t.loai, 
+            t.tieuDe, 
+            t.noiDung, 
+            t.thoiGian, 
+            t.daXem,
+            t.maLichKham,
+            bn.tenBenhNhan, 
+            l.ngayKham, 
+            c.tenCa
             FROM thongbaolichkham t
             LEFT JOIN lichkham l ON t.maLichKham = l.maLichKham
             LEFT JOIN benhnhan bn ON l.maBenhNhan = bn.maBenhNhan
@@ -33,7 +43,17 @@ try {
     
     $notifications = [];
     while ($row = $result->fetch_assoc()) {
+        // Convert daXem to boolean
         $row['daXem'] = (bool)$row['daXem'];
+        
+        // Đảm bảo loại thông báo được set đúng
+        // Nếu không có maLichKham và tiêu đề chứa "mật khẩu", đây là thông báo cấp lại mật khẩu
+        if (!$row['maLichKham'] && 
+            (stripos($row['tieuDe'], 'mật khẩu') !== false || 
+             stripos($row['noiDung'], 'mật khẩu') !== false)) {
+            $row['loai'] = 'Cấp lại mật khẩu';
+        }
+        
         $notifications[] = $row;
     }
     $stmt->close();

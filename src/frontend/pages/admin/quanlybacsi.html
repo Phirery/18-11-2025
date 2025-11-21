@@ -861,7 +861,15 @@
                             <option value="">Tất cả chuyên khoa</option>
                         </select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
+                        <label class="form-label">Giới tính</label>
+                        <select class="form-select" id="filterGender">
+                            <option value="">Tất cả</option>
+                            <option value="nam">Nam</option>
+                            <option value="nu">Nữ</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label">Tìm kiếm</label>
                         <input type="text" class="form-control" id="filterSearch" placeholder="Tên bác sĩ, mã bác sĩ...">
                     </div>
@@ -894,11 +902,11 @@
                     <table class="custom-table">
                         <thead>
                             <tr>
-                                <th style="width: 20%;">Họ và tên</th>
+                                <th style="width: 22%;">Họ và tên</th>
                                 <th style="width: 15%;">Khoa</th>
                                 <th style="width: 20%;">Chuyên khoa</th>
                                 <th style="width: 13%;">Điện thoại</th>
-                                <th style="width: 17%;">Tên đăng nhập</th>
+                                <th style="width: 15%;">Năm làm việc</th>
                                 <th style="width: 15%;">Thao tác</th>
                             </tr>
                         </thead>
@@ -936,7 +944,19 @@
                                 <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="doctorPhone" required pattern="[0-9]{10,11}">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label class="form-label">Giới tính <span class="text-danger">*</span></label>
+                                <select class="form-select" id="doctorGender" required>
+                                    <option value="">-- Chọn giới tính --</option>
+                                    <option value="nam">Nam</option>
+                                    <option value="nu">Nữ</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Năm làm việc <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="doctorWorkYear" required min="1980" max="2025">
+                            </div>
+                            <div class="col-md-4">
                                 <label class="form-label">Khoa <span class="text-danger">*</span></label>
                                 <select class="form-select" id="departmentSelect" required onchange="loadSpecialtiesByDepartment()">
                                     <option value="">-- Chọn khoa --</option>
@@ -952,7 +972,7 @@
                                 <label class="form-label">Tên đăng nhập <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="username" required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label class="form-label">Mật khẩu <span class="text-danger" id="passwordRequired">*</span></label>
                                 <input type="password" class="form-control" id="password">
                                 <small class="text-muted">Để trống nếu không muốn thay đổi (khi sửa)</small>
@@ -1195,6 +1215,18 @@
             }
         }
 
+        function calculateExperience(workYear) {
+            if (!workYear) return '';
+            const currentYear = new Date().getFullYear();
+            const experience = currentYear - workYear;
+            return `${workYear} (${experience} năm)`;
+        }
+
+        function formatGender(gender) {
+            if (!gender) return '';
+            return gender === 'nam' ? 'nam' : 'nữ';
+        }
+
         function displayDoctors() {
             const tbody = document.getElementById('doctorTableBody');
             const start = (currentPage - 1) * itemsPerPage;
@@ -1206,16 +1238,21 @@
                 return;
             }
             
-            tbody.innerHTML = pageData.map(doctor => `
+            tbody.innerHTML = pageData.map(doctor => {
+                const genderText = formatGender(doctor.gioiTinh);
+                const displayName = genderText ? `${doctor.tenBacSi} (${genderText})` : doctor.tenBacSi;
+                const workYearText = calculateExperience(doctor.namLamViec);
+                
+                return `
                 <tr>
                     <td>
                         <i class="fas fa-user-md me-2 text-primary"></i>
-                        ${doctor.tenBacSi}
+                        ${displayName}
                     </td>
                     <td>${doctor.tenKhoa || 'N/A'}</td>
                     <td><span class="specialty-badge">${doctor.tenChuyenKhoa || 'N/A'}</span></td>
                     <td>${doctor.soDienThoai || 'N/A'}</td>
-                    <td>${doctor.tenDangNhap || 'N/A'}</td>
+                    <td>${workYearText || 'N/A'}</td>
                     <td>
                         <button class="btn-action btn-view" onclick="viewDoctor('${doctor.maBacSi}')" title="Xem chi tiết">
                             <i class="fas fa-eye"></i>
@@ -1228,7 +1265,7 @@
                         </button>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
             
             updatePagination();
         }
@@ -1283,6 +1320,7 @@
         function applyFilters() {
             const department = document.getElementById('filterDepartment').value;
             const specialty = document.getElementById('filterSpecialty').value;
+            const gender = document.getElementById('filterGender').value;
             const search = document.getElementById('filterSearch').value.toLowerCase();
             
             filteredDoctors = allDoctors.filter(doctor => {
@@ -1290,6 +1328,7 @@
                 
                 if (department && doctor.maKhoa !== department) match = false;
                 if (specialty && doctor.maChuyenKhoa !== specialty) match = false;
+                if (gender && doctor.gioiTinh !== gender) match = false;
                 if (search) {
                     const searchFields = `${doctor.tenBacSi} ${doctor.maBacSi}`.toLowerCase();
                     if (!searchFields.includes(search)) match = false;
@@ -1305,6 +1344,7 @@
         function resetFilters() {
             document.getElementById('filterDepartment').value = '';
             document.getElementById('filterSpecialty').value = '';
+            document.getElementById('filterGender').value = '';
             document.getElementById('filterSearch').value = '';
             filteredDoctors = [...allDoctors];
             currentPage = 1;
@@ -1317,6 +1357,11 @@
             document.getElementById('doctorId').value = '';
             document.getElementById('password').required = true;
             document.getElementById('passwordRequired').textContent = '*';
+            
+            // Set default work year to current year
+            const currentYear = new Date().getFullYear();
+            document.getElementById('doctorWorkYear').value = currentYear;
+            
             new bootstrap.Modal(document.getElementById('doctorModal')).show();
         }
 
@@ -1328,6 +1373,8 @@
             document.getElementById('doctorId').value = maBacSi;
             document.getElementById('doctorName').value = doctor.tenBacSi;
             document.getElementById('doctorPhone').value = doctor.soDienThoai;
+            document.getElementById('doctorGender').value = doctor.gioiTinh || '';
+            document.getElementById('doctorWorkYear').value = doctor.namLamViec || '';
             document.getElementById('departmentSelect').value = doctor.maKhoa;
             
             loadSpecialtiesByDepartment();
@@ -1349,11 +1396,20 @@
             const doctor = allDoctors.find(d => d.maBacSi === maBacSi);
             if (!doctor) return;
             
+            const genderText = formatGender(doctor.gioiTinh);
+            const workYearText = calculateExperience(doctor.namLamViec);
+            
             const body = document.getElementById('viewModalBody');
             body.innerHTML = `
                 <div class="row g-3">
                     <div class="col-md-6">
                         <strong>Họ và tên:</strong> ${doctor.tenBacSi}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Giới tính:</strong> ${genderText ? genderText.charAt(0).toUpperCase() + genderText.slice(1) : 'N/A'}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Năm làm việc:</strong> ${workYearText || 'N/A'}
                     </div>
                     <div class="col-md-6">
                         <strong>Khoa:</strong> ${doctor.tenKhoa || 'N/A'}
@@ -1364,7 +1420,7 @@
                     <div class="col-md-6">
                         <strong>Số điện thoại:</strong> ${doctor.soDienThoai || 'N/A'}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <strong>Tên đăng nhập:</strong> ${doctor.tenDangNhap || 'N/A'}
                     </div>
                     ${doctor.moTa ? `<div class="col-12"><strong>Mô tả:</strong><br>${doctor.moTa}</div>` : ''}
@@ -1407,6 +1463,8 @@
             const data = {
                 tenBacSi: document.getElementById('doctorName').value,
                 soDienThoai: document.getElementById('doctorPhone').value,
+                gioiTinh: document.getElementById('doctorGender').value,
+                namLamViec: parseInt(document.getElementById('doctorWorkYear').value),
                 maChuyenKhoa: document.getElementById('specialtySelect').value,
                 tenDangNhap: document.getElementById('username').value,
                 matKhau: document.getElementById('password').value,
@@ -1477,8 +1535,6 @@
         }
 
         async function logout() {
-            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
-
             try {
                 const response = await fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
                     method: 'POST',

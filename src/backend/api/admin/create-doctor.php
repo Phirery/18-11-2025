@@ -17,6 +17,8 @@ try {
     $maChuyenKhoa = $conn->real_escape_string($data['maChuyenKhoa']);
     $tenDangNhap = $conn->real_escape_string($data['tenDangNhap']);
     $matKhau = $conn->real_escape_string($data['matKhau']);
+    $gioiTinh = isset($data['gioiTinh']) ? $conn->real_escape_string($data['gioiTinh']) : null;
+    $namLamViec = isset($data['namLamViec']) ? intval($data['namLamViec']) : null;
     
     // Kiểm tra tên đăng nhập đã tồn tại chưa
     $checkSql = "SELECT COUNT(*) as count FROM nguoidung WHERE tenDangNhap = '$tenDangNhap'";
@@ -44,9 +46,11 @@ try {
     // 2. Tạo mã bác sĩ tự động (format: BS + timestamp)
     $maBacSi = 'BS' . date('YmdHi') . sprintf('%03d', rand(0, 999));
     
-    // 3. Thêm vào bảng bacsi
-    $sql2 = "INSERT INTO bacsi (nguoiDungId, maBacSi, tenBacSi, maChuyenKhoa) 
-             VALUES ($nguoiDungId, '$maBacSi', '$tenBacSi', '$maChuyenKhoa')";
+    // 3. Thêm vào bảng bacsi với giới tính và năm làm việc
+    $sql2 = "INSERT INTO bacsi (nguoiDungId, maBacSi, tenBacSi, maChuyenKhoa, gioiTinh, namLamViec) 
+             VALUES ($nguoiDungId, '$maBacSi', '$tenBacSi', '$maChuyenKhoa', " . 
+             ($gioiTinh ? "'$gioiTinh'" : "NULL") . ", " . 
+             ($namLamViec ? $namLamViec : "NULL") . ")";
     
     if (!$conn->query($sql2)) {
         throw new Exception('Lỗi tạo hồ sơ bác sĩ: ' . $conn->error);

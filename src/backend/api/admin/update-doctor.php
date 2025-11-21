@@ -19,6 +19,9 @@ try {
     $tenDangNhap = $conn->real_escape_string($data['tenDangNhap']);
     $matKhau = isset($data['matKhau']) ? $conn->real_escape_string($data['matKhau']) : '';
     $moTa = isset($data['moTa']) ? $conn->real_escape_string($data['moTa']) : '';
+    $gioiTinh = isset($data['gioiTinh']) ? $conn->real_escape_string($data['gioiTinh']) : null;
+    $namLamViec = isset($data['namLamViec']) ? intval($data['namLamViec']) : null;
+    
     // Lấy nguoiDungId từ maBacSi
     $getUserSql = "SELECT nguoiDungId FROM bacsi WHERE maBacSi = '$maBacSi'";
     $userResult = $conn->query($getUserSql);
@@ -60,11 +63,13 @@ try {
         throw new Exception('Lỗi cập nhật tài khoản: ' . $conn->error);
     }
     
-    // 2. Cập nhật bảng bacsi
+    // 2. Cập nhật bảng bacsi với giới tính và năm làm việc
     $sql2 = "UPDATE bacsi 
              SET tenBacSi = '$tenBacSi',
                  maChuyenKhoa = '$maChuyenKhoa',
-                     moTa = '$moTa'
+                 moTa = '$moTa',
+                 gioiTinh = " . ($gioiTinh ? "'$gioiTinh'" : "NULL") . ",
+                 namLamViec = " . ($namLamViec ? $namLamViec : "NULL") . "
              WHERE maBacSi = '$maBacSi'";
     
     if (!$conn->query($sql2)) {

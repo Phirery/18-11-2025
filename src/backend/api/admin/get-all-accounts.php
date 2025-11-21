@@ -23,6 +23,7 @@ SELECT
     END AS ngaySinh, 
     CASE 
         WHEN nd.vaiTro = 'benhnhan' THEN bn.gioiTinh
+        WHEN nd.vaiTro = 'bacsi' THEN bs.gioiTinh
         ELSE NULL
     END AS gioiTinh, 
     CASE 
@@ -32,15 +33,28 @@ SELECT
     CASE 
         WHEN nd.vaiTro = 'bacsi' THEN bs.maBacSi
         ELSE NULL
-    END AS maBacSi, 
+    END AS maBacSi,
+    CASE 
+        WHEN nd.vaiTro = 'bacsi' THEN bs.namLamViec
+        ELSE NULL
+    END AS namLamViec,
+    CASE 
+        WHEN nd.vaiTro = 'bacsi' THEN bs.moTa
+        ELSE NULL
+    END AS moTa,
     CASE 
         WHEN nd.vaiTro = 'bacsi' THEN ck.tenChuyenKhoa
         ELSE NULL
-    END AS tenChuyenKhoa
+    END AS tenChuyenKhoa,
+    CASE 
+        WHEN nd.vaiTro = 'bacsi' THEN k.tenKhoa
+        ELSE NULL
+    END AS tenKhoa
 FROM nguoidung nd
 LEFT JOIN benhnhan bn ON nd.id = bn.nguoiDungId
 LEFT JOIN bacsi bs ON nd.id = bs.nguoiDungId
 LEFT JOIN chuyenkhoa ck ON bs.maChuyenKhoa = ck.maChuyenKhoa
+LEFT JOIN khoa k ON ck.maKhoa = k.maKhoa
 ORDER BY nd.id DESC
 ";
 

@@ -47,22 +47,28 @@ if (
             );
             $stmt->execute();
 
-            } elseif ($data['vaiTro'] === 'bacsi') {
+        } elseif ($data['vaiTro'] === 'bacsi') {
             $result = $conn->query("SELECT COUNT(*) as total FROM bacsi");
             $count = $result->fetch_assoc()['total'];
             $maBacSi = 'BS' . date('YmdHi') . sprintf('%03d', rand(0, 999));
 
-            $stmt = $conn->prepare("
-                INSERT INTO bacsi (nguoiDungId, maBacSi, tenBacSi, maChuyenKhoa, moTa)
-                VALUES (?, ?, ?, ?, ?)
-            ");
+            // Lấy giới tính và năm làm việc từ request
+            $gioiTinh = isset($data['gioiTinh']) ? $data['gioiTinh'] : null;
+            $namLamViec = isset($data['namLamViec']) ? intval($data['namLamViec']) : null;
             $moTa = isset($data['moTa']) ? $data['moTa'] : null;
+
+            $stmt = $conn->prepare("
+                INSERT INTO bacsi (nguoiDungId, maBacSi, tenBacSi, maChuyenKhoa, gioiTinh, namLamViec, moTa)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ");
             $stmt->bind_param(
-                "issss",
+                "issssss",
                 $nguoiDungId,
                 $maBacSi,
                 $data['hoTen'],
                 $data['maChuyenKhoa'],
+                $gioiTinh,
+                $namLamViec,
                 $moTa
             );
             $stmt->execute();

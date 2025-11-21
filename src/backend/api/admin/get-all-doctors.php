@@ -7,6 +7,7 @@ require_role('quantri');
 
 $sql = "SELECT 
             bs.maBacSi, bs.tenBacSi, bs.nguoiDungId, bs.maChuyenKhoa, bs.moTa,
+            bs.gioiTinh, bs.namLamViec,
             ck.tenChuyenKhoa, ck.maKhoa, k.tenKhoa,
             nd.soDienThoai, nd.tenDangNhap
         FROM bacsi bs
@@ -36,7 +37,9 @@ if ($result->num_rows > 0) {
             'tenKhoa' => $row['tenKhoa'],
             'soDienThoai' => $row['soDienThoai'],
             'tenDangNhap' => $row['tenDangNhap'],
-            'moTa' => $row['moTa']
+            'moTa' => $row['moTa'],
+            'gioiTinh' => $row['gioiTinh'],
+            'namLamViec' => $row['namLamViec']
         ];
     }
 }

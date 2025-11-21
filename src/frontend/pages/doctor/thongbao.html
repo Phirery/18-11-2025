@@ -298,10 +298,13 @@
         .stat-card.pending::before {background: #f39c12;}
         .stat-card.completed::before {background: #2ecc71;}
         .stat-card.cancelled::before {background: #e74c3c;}
+        .stat-card.password::before {background: #9b59b6;}
+        
         .stat-card.total::after {background: #3498db;}
         .stat-card.pending::after {background: #f39c12;}
         .stat-card.completed::after {background: #2ecc71;}
         .stat-card.cancelled::after {background: #e74c3c;}
+        .stat-card.password::after {background: #9b59b6;}
 
         .stat-icon {
             width: 60px;
@@ -476,6 +479,11 @@
         .notification-type.cancel {
             background: #f8d7da;
             color: #721c24;
+        }
+
+        .notification-type.password {
+            background: #e8daef;
+            color: #6c3483;
         }
 
         .notification-time {
@@ -793,6 +801,11 @@
                     <div class="stat-number" id="cancelNotifications">0</div>
                     <div class="stat-label">Hủy lịch</div>
                 </div>
+                <div class="stat-card password" style="display: none;">
+                    <div class="stat-icon"><i class="fas fa-key"></i></div>
+                    <div class="stat-number" id="passwordNotifications">0</div>
+                    <div class="stat-label">Cấp lại mật khẩu</div>
+                </div>
             </div>
 
             <div class="section-card">
@@ -810,7 +823,7 @@
                 
                 <div class="filter-bar">
                     <div class="row g-3">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="search-box">
                                 <i class="fas fa-search"></i>
                                 <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm thông báo..." oninput="applyFilters()">
@@ -821,6 +834,7 @@
                                 <option value="">Tất cả loại</option>
                                 <option value="Đặt lịch">Đặt lịch</option>
                                 <option value="Hủy lịch">Hủy lịch</option>
+                                <option value="Cấp lại mật khẩu">Cấp lại mật khẩu</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -830,7 +844,7 @@
                                 <option value="read">Đã đọc</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <button class="btn btn-secondary w-100" onclick="resetFilters()">
                                 <i class="fas fa-redo me-1"></i>Đặt lại
                             </button>
@@ -972,12 +986,9 @@
                 const data = await response.json();
                 
                 if (data.success && data.count > 0) {
-                    document.getElementById('topNotifBadge').textContent = data.count;
-                    document.getElementById('topNotifBadge').style.display = 'inline-block';
                     document.getElementById('sidebarNotifBadge').textContent = data.count;
                     document.getElementById('sidebarNotifBadge').style.display = 'inline-block';
                 } else {
-                    document.getElementById('topNotifBadge').style.display = 'none';
                     document.getElementById('sidebarNotifBadge').style.display = 'none';
                 }
             } catch (error) {
@@ -1030,11 +1041,13 @@
             const unread = allNotifications.filter(n => !n.daXem).length;
             const booking = allNotifications.filter(n => n.loai === 'Đặt lịch').length;
             const cancel = allNotifications.filter(n => n.loai === 'Hủy lịch').length;
+            const password = allNotifications.filter(n => n.loai === 'Cấp lại mật khẩu').length;
             
             animateNumber('totalNotifications', total);
             animateNumber('unreadNotifications', unread);
             animateNumber('bookingNotifications', booking);
             animateNumber('cancelNotifications', cancel);
+            animateNumber('passwordNotifications', password);
         }
 
         function displayNotifications() {
@@ -1053,8 +1066,22 @@
             
             container.innerHTML = pageData.map(notif => {
                 const isUnread = !notif.daXem;
-                const typeClass = notif.loai === 'Đặt lịch' ? 'booking' : 'cancel';
-                const icon = notif.loai === 'Đặt lịch' ? 'fa-calendar-plus' : 'fa-calendar-times';
+                let typeClass, icon;
+                
+                // Xác định loại thông báo và icon tương ứng
+                if (notif.loai === 'Đặt lịch') {
+                    typeClass = 'booking';
+                    icon = 'fa-calendar-plus';
+                } else if (notif.loai === 'Hủy lịch') {
+                    typeClass = 'cancel';
+                    icon = 'fa-calendar-times';
+                } else if (notif.loai === 'Cấp lại mật khẩu') {
+                    typeClass = 'password';
+                    icon = 'fa-key';
+                } else {
+                    typeClass = 'booking';
+                    icon = 'fa-bell';
+                }
                 
                 return `
                     <div class="notification-item ${isUnread ? 'unread' : ''}" onclick="markAsRead(${notif.maThongBao})">
@@ -1069,12 +1096,13 @@
                             <div class="notification-title">${notif.tieuDe}</div>
                             <div class="notification-text">${notif.noiDung}</div>
                         </div>
-                        ${notif.tenBenhNhan ? `
+                        ${(notif.tenBenhNhan || notif.ngayKham || notif.tenCa) ? `
                         <div class="notification-details">
+                            ${notif.tenBenhNhan ? `
                             <div class="notification-detail">
                                 <i class="fas fa-user"></i>
                                 <span>${notif.tenBenhNhan}</span>
-                            </div>
+                            </div>` : ''}
                             ${notif.ngayKham ? `
                             <div class="notification-detail">
                                 <i class="fas fa-calendar"></i>
@@ -1351,8 +1379,6 @@
         }
 
         async function logout() {
-            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
-
             stopAutoRefresh();
 
             try {

@@ -212,6 +212,7 @@
             font-size: 1.3rem;
             color: var(--primary-purple);
             padding: 5px 10px;
+            text-decoration: none;
         }
 
         .notification-icon .badge {
@@ -341,7 +342,7 @@
         .stat-card.patients::before {background: linear-gradient(135deg, #00AEEF, #0088cc);}
         .stat-card.doctors::before {background: linear-gradient(135deg, #28a745, #20c997);}
         .stat-card.admins::before {background: linear-gradient(135deg, #ffc107, #ff9800);}
-        
+
         .stat-card.all .stat-icon {
             background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
             color: white;
@@ -434,6 +435,7 @@
             border-radius: 25px;
             font-weight: 600;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .btn-add:hover {
@@ -923,6 +925,7 @@
         </div>
     </div>
 
+    <!-- Modal Thêm Tài Khoản -->
     <div class="modal fade" id="accountModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -959,6 +962,7 @@
                                 <input type="text" class="form-control" id="fullName" required>
                             </div>
 
+                            <!-- Patient Fields -->
                             <div id="patientFields" style="display: none;">
                                 <div class="row g-3">
                                     <div class="col-md-6">
@@ -967,7 +971,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Giới tính</label>
-                                        <select class="form-select" id="gender">
+                                        <select class="form-select" id="patientGender">
                                             <option value="nam">Nam</option>
                                             <option value="nu">Nữ</option>
                                             <option value="khac">Khác</option>
@@ -980,15 +984,28 @@
                                 </div>
                             </div>
 
+                            <!-- Doctor Fields -->
                             <div id="doctorFields" style="display: none;">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Giới tính <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="doctorGender">
+                                            <option value="">-- Chọn --</option>
+                                            <option value="nam">Nam</option>
+                                            <option value="nu">Nữ</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Năm làm việc <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="doctorWorkYear" min="1980" max="2025">
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="form-label">Khoa <span class="text-danger">*</span></label>
                                         <select class="form-select" id="departmentSelect" onchange="loadSpecialtiesByDept()">
                                             <option value="">-- Chọn khoa --</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <label class="form-label">Chuyên khoa <span class="text-danger">*</span></label>
                                         <select class="form-select" id="specialtySelect">
                                             <option value="">-- Chọn chuyên khoa --</option>
@@ -1012,6 +1029,7 @@
         </div>
     </div>
 
+    <!-- Modal Xem Chi Tiết -->
     <div class="modal fade" id="viewModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -1406,6 +1424,9 @@
                 patientFields.style.display = 'block';
             } else if (role === 'bacsi') {
                 doctorFields.style.display = 'block';
+                // Set default work year
+                const currentYear = new Date().getFullYear();
+                document.getElementById('doctorWorkYear').value = currentYear;
             }
         }
 
@@ -1421,6 +1442,18 @@
             if (!dateString) return 'N/A';
             const date = new Date(dateString);
             return date.toLocaleDateString('vi-VN');
+        }
+
+        function formatGender(gender) {
+            if (!gender) return 'N/A';
+            return gender === 'nam' ? 'Nam' : gender === 'nu' ? 'Nữ' : 'Khác';
+        }
+
+        function calculateExperience(workYear) {
+            if (!workYear) return 'N/A';
+            const currentYear = new Date().getFullYear();
+            const experience = currentYear - workYear;
+            return `${workYear} (${experience} năm)`;
         }
 
         async function viewAccount(id) {
@@ -1457,19 +1490,20 @@
                     </div>
             `;
             
-            if (account.vaiTro === 'benhnhan' && account.ngaySinh) {
+            if (account.vaiTro === 'benhnhan') {
                 detailsHtml += `
                     <div class="col-12"><strong>Ngày sinh:</strong> ${formatDate(account.ngaySinh)}</div>
-                    <div class="col-12"><strong>Giới tính:</strong> ${
-                        account.gioiTinh === 'nam' ? 'Nam' : 
-                        account.gioiTinh === 'nu' ? 'Nữ' : 'Khác'
-                    }</div>
+                    <div class="col-12"><strong>Giới tính:</strong> ${formatGender(account.gioiTinh)}</div>
                     <div class="col-12"><strong>Số thẻ BHYT:</strong> ${account.soTheBHYT || 'Chưa có'}</div>
                 `;
             } else if (account.vaiTro === 'bacsi') {
                 detailsHtml += `
                     <div class="col-12"><strong>Mã bác sĩ:</strong> ${account.maBacSi || 'N/A'}</div>
+                    <div class="col-12"><strong>Giới tính:</strong> ${formatGender(account.gioiTinh)}</div>
+                    <div class="col-12"><strong>Năm làm việc:</strong> ${calculateExperience(account.namLamViec)}</div>
+                    <div class="col-12"><strong>Khoa:</strong> ${account.tenKhoa || 'N/A'}</div>
                     <div class="col-12"><strong>Chuyên khoa:</strong> ${account.tenChuyenKhoa || 'N/A'}</div>
+                    ${account.moTa ? `<div class="col-12"><strong>Mô tả:</strong><br>${account.moTa}</div>` : ''}
                 `;
             }
             
@@ -1527,12 +1561,22 @@
             
             if (role === 'benhnhan') {
                 data.ngaySinh = document.getElementById('birthDate').value;
-                data.gioiTinh = document.getElementById('gender').value;
+                data.gioiTinh = document.getElementById('patientGender').value;
                 data.soTheBHYT = document.getElementById('insuranceNumber').value;
             } else if (role === 'bacsi') {
+                data.gioiTinh = document.getElementById('doctorGender').value;
+                data.namLamViec = parseInt(document.getElementById('doctorWorkYear').value);
                 data.maChuyenKhoa = document.getElementById('specialtySelect').value;
                 data.moTa = document.getElementById('doctorDescription').value;
                 
+                if (!data.gioiTinh) {
+                    showAlert('error', 'Vui lòng chọn giới tính cho bác sĩ!');
+                    return;
+                }
+                if (!data.namLamViec) {
+                    showAlert('error', 'Vui lòng nhập năm làm việc cho bác sĩ!');
+                    return;
+                }
                 if (!data.maChuyenKhoa) {
                     showAlert('error', 'Vui lòng chọn chuyên khoa cho bác sĩ!');
                     return;
@@ -1577,8 +1621,6 @@
         }
 
         async function logout() {
-            //if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
-
             try {
                 const response = await fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
                     method: 'POST',
