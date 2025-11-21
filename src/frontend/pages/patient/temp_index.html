@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ - Eden Health</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+            --primary-blue: #00AEEF;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fff;
+        }
+
+        /* === NAVBAR === */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-custom.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-purple) !important;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .navbar-brand-header:hover {
+            transform: scale(1.02);
+            color: var(--secondary-purple) !important;
+        }
+
+        .navbar-brand-header i {
+            color: var(--secondary-purple);
+        }
+
+        .nav-link-header {
+            color: #333 !important;
+            font-weight: 500;
+            margin: 0 8px;
+            padding: 8px 12px !important;
+            position: relative;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-link-header:hover {
+            color: var(--primary-purple) !important;
+        }
+
+        .nav-link-header:hover::after {
+            width: 80%;
+        }
+
+        .btn-auth {
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white !important;
+            border: none;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            color: white !important;
+        }
+
+        .btn-register {
+            background: transparent;
+            color: var(--primary-purple) !important;
+            border: 2px solid var(--primary-purple);
+            margin-left: 10px;
+        }
+
+        .btn-register:hover {
+            background: var(--primary-purple);
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        /* User logged in dropdown */
+        .user-dropdown {
+            display: none;
+        }
+
+        .user-dropdown.show {
+            display: flex;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .dropdown-menu-custom {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+            padding: 8px 0;
+            min-width: 200px;
+            animation: fadeDown 0.25s ease;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-menu-custom .dropdown-item {
+            padding: 10px 18px;
+            font-weight: 500;
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        .dropdown-menu-custom .dropdown-item:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            color: var(--secondary-purple);
+        }
+
+        .dropdown-menu-custom .dropdown-item i {
+            width: 20px;
+            margin-right: 10px;
+            color: var(--primary-purple);
+        }
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* === BANNER === */
+        .banner-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf3 50%, #f0f4ff 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 80px 0;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .banner-section::before,
+        .banner-section::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.08);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .banner-section::before {
+            width: 350px;
+            height: 350px;
+            top: -120px;
+            right: -120px;
+        }
+
+        .banner-section::after {
+            width: 250px;
+            height: 250px;
+            bottom: -80px;
+            left: -80px;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(102, 126, 234, 0.25);
+            border-radius: 50%;
+            animation: particles 8s infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 80%; top: 80%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 50%; top: 50%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 30%; top: 70%; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 70%; top: 30%; animation-delay: 3s; }
+
+        @keyframes particles {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { transform: translateY(-100px) scale(1.5); opacity: 1; }
+        }
+
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .banner-content h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .banner-content .highlight {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .banner-content p {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        .banner-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-book, .btn-more {
+            padding: 14px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        .btn-book {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            border: none;
+        }
+
+        .btn-book:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .btn-more {
+            background: white;
+            color: var(--primary-purple);
+            border: 2px solid var(--primary-purple);
+        }
+
+        .btn-more:hover {
+            background: var(--primary-purple);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Banner Image */
+        .banner-image-wrapper {
+            position: relative;
+            z-index: 2;
+            animation: fadeInRight 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .banner-image {
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+            transition: all 0.5s;
+            max-height: 450px;
+            object-fit: cover;
+        }
+
+        .banner-image:hover {
+            transform: scale(1.03);
+            box-shadow: 0 30px 80px rgba(102, 126, 234, 0.3);
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            animation: floatBadge 3s ease-in-out infinite;
+            text-align: center;
+        }
+
+        .badge-1 { top: 20px; right: -15px; }
+        .badge-2 { bottom: 30px; left: -15px; animation-delay: 1.5s; }
+
+        @keyframes floatBadge {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .floating-badge i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .floating-badge p {
+            margin: 0;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.85rem;
+            line-height: 1.3;
+        }
+
+        /* Trust Indicators */
+        .trust-indicators {
+            display: flex;
+            gap: 50px;
+            margin-top: 45px;
+        }
+
+        .trust-item {
+            text-align: center;
+        }
+
+        .trust-item .number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .trust-item .label {
+            color: #64748b;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* === INFO SECTION === */
+        .info-section {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-section::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), transparent 60%);
+            transform: translate(-25%, -25%);
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            height: 100%;
+        }
+
+        .info-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card i {
+            font-size: 2.8rem;
+            color: var(--primary-purple);
+            background: rgba(102, 126, 234, 0.1);
+            padding: 22px;
+            border-radius: 50%;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .info-card:hover i {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .info-card h5 {
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 20px;
+            font-size: 1.15rem;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-top: 12px;
+            line-height: 1.6;
+        }
+
+        /* === CHUYÊN KHOA === */
+        .specialty-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header h2 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: #64748b;
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            border-radius: 16px;
+            padding: 22px 24px;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.15);
+            cursor: pointer;
+            color: var(--light-bg);
+        }
+
+        .service-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-size: 1.6rem;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover .service-icon {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+        }
+
+        /* === GÓI KHÁM === */
+        .package-section {
+            background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+            padding: 80px 0;
+        }
+
+        .package-card-modern {
+            background: white;
+            border-radius: 24px;
+            padding: 35px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .package-card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-purple), var(--secondary-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .package-card-modern:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+            border-color: var(--primary-purple);
+        }
+
+        .package-card-modern:hover::before {
+            transform: scaleX(1);
+        }
+
+        .package-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            transition: all 0.4s;
+        }
+
+        .package-card-modern:hover .package-icon {
+            transform: rotateY(180deg);
+        }
+
+        .package-icon i {
+            font-size: 2.2rem;
+            color: white;
+        }
+
+        .package-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .package-desc {
+            color: #64748b;
+            font-size: 0.95rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 25px 0;
+            flex-grow: 1;
+        }
+
+        .package-features li {
+            padding: 10px 0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .package-features li i {
+            color: #10b981;
+            font-size: 1rem;
+        }
+
+        .package-price {
+            text-align: center;
+            margin: 25px 0 20px;
+        }
+
+        .price-amount {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-period {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .btn-book-package {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-book-package::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s;
+        }
+
+        .btn-book-package:hover::before {
+            left: 100%;
+        }
+
+        .btn-book-package:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .package-type-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* === ĐỘI NGŨ BÁC SĨ === */
+        .doctor-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .doctor-card-modern {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s;
+            height: 100%;
+            border: 2px solid #e5e7eb;
+        }
+
+        .doctor-card-modern:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+            border-color: var(--primary-purple);
+        }
+
+        .doctor-image-wrapper {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f0f4ff, #e8ecf3);
+        }
+
+        .doctor-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .doctor-card-modern:hover .doctor-image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .doctor-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .doctor-info-modern {
+            padding: 25px;
+        }
+
+        .doctor-name-modern {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .doctor-specialty-modern {
+            color: var(--primary-purple);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .doctor-stats {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-view-profile {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--primary-purple);
+            background: transparent;
+            color: var(--primary-purple);
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-view-profile:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        /* Button Xem thêm */
+        .btn-xemthem-wrapper {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .btn-xemthem {
+            padding: 12px 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-xemthem:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.45);
+            color: white;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 60px 0 25px;
+        }
+
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand i {
+            color: var(--primary-purple);
+        }
+
+        .footer-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer h5 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border-radius: 2px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            color: #94a3b8;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-contact i {
+            color: var(--primary-purple);
+            width: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* === SCROLL TO TOP === */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            border: none;
+            font-size: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        #scrollTopBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 992px) {
+            .banner-content h1 { font-size: 2.5rem; }
+            .trust-indicators { gap: 30px; }
+            .floating-badge { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .banner-section { padding: 50px 0; min-height: auto; }
+            .banner-content h1 { font-size: 2rem; }
+            .trust-indicators { gap: 20px; flex-wrap: wrap; justify-content: center; }
+            .trust-item .number { font-size: 1.8rem; }
+            .section-header h2 { font-size: 1.8rem; }
+            .auth-buttons { flex-direction: column; gap: 5px; }
+            .btn-auth { padding: 8px 18px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand-header" href="index.html">
+                <i class="fas fa-clinic-medical me-2"></i>
+                <span>Eden</span> Health
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="danhsachkhoa.html">Chuyên khoa</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="vechungtoi.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
+                    <li class="nav-item" id="navProfileItem" style="display: none;">
+                        <a class="nav-link-header" href="xemhoso.html">Hồ sơ cá nhân</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    <!-- Auth buttons (chưa đăng nhập) -->
+                    <div class="auth-buttons" id="authButtons">
+                        <a href="dangnhap.html" class="btn-auth btn-login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                        </a>
+                        <a href="dangky.html" class="btn-auth btn-register">
+                            <i class="fas fa-user-plus me-1"></i> Đăng ký
+                        </a>
+                    </div>
+
+                    <!-- User dropdown (đã đăng nhập) -->
+                    <div class="user-dropdown dropdown" id="userDropdown">
+                        <div class="user-avatar" data-bs-toggle="dropdown" id="userAvatar">A</div>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom">
+                            <li><span class="dropdown-item-text fw-bold" id="dropdownUserName">Người dùng</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="xemhoso.html"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item" href="lichkham.html"><i class="fas fa-calendar-check"></i> Lịch khám của tôi</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BANNER -->
+    <section class="banner-section">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="banner-content">
+                        <p class="text-uppercase fw-bold mb-3" style="color: var(--primary-purple); letter-spacing: 2px;">
+                            <i class="fas fa-star me-1"></i> CHÀO MỪNG BẠN
+                        </p>
+                        <h1>Chăm Sóc Sức Khỏe<br><span class="highlight">Dễ Dàng & Tiện Lợi</span></h1>
+                        <p>Đặt lịch khám nhanh chóng với đội ngũ bác sĩ chuyên môn cao. Sử dụng công nghệ tiên tiến để chẩn đoán chính xác. Sức khỏe của bạn là ưu tiên hàng đầu!</p>
+                        <div class="banner-buttons">
+                            <a href="datlich.html" class="btn btn-book"><i class="fas fa-calendar-check me-2"></i>Đặt Lịch Ngay</a>
+                            <a href="vechungtoi.html" class="btn btn-more"><i class="fas fa-info-circle me-2"></i>Tìm Hiểu Thêm</a>
+                        </div>
+                        <div class="trust-indicators">
+                            <div class="trust-item">
+                                <span class="number" id="statPatients">0+</span>
+                                <span class="label">Bệnh nhân</span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="number" id="statDoctors">0+</span>
+                                <span class="label">Bác sĩ</span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="number" id="statSpecialties">0+</span>
+                                <span class="label">Chuyên khoa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <div class="banner-image-wrapper">
+                        <img src="../../assets/images/image3.jpg" class="img-fluid banner-image" alt="Medical Care">
+                        <div class="floating-badge badge-1">
+                            <i class="fas fa-user-md"></i>
+                            <p>Bác sĩ<br>chuyên nghiệp</p>
+                        </div>
+                        <div class="floating-badge badge-2">
+                            <i class="fas fa-shield-alt"></i>
+                            <p>An toàn<br>& Hiệu quả</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFO SECTION -->
+    <section class="info-section">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-card"><i class="fas fa-stethoscope"></i><h5>Chẩn Đoán Chuẩn Xác</h5><p>Bác sĩ giàu kinh nghiệm, thiết bị tiên tiến đảm bảo kết quả đáng tin cậy.</p></div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-card"><i class="fas fa-hospital-user"></i><h5>Chăm Sóc Tận Tình</h5><p>Luôn lắng nghe và hỗ trợ người bệnh với tinh thần trách nhiệm cao.</p></div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-card"><i class="fas fa-syringe"></i><h5>Điều Trị Hiệu Quả</h5><p>Phác đồ điều trị tối ưu, theo dõi sát sao tiến trình phục hồi.</p></div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="info-card"><i class="fas fa-first-aid"></i><h5>Hỗ Trợ Nhanh Chóng</h5><p>Phản hồi nhanh 24/7, đảm bảo người bệnh được giúp đỡ kịp thời.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHUYÊN KHOA -->
+    <section class="specialty-section">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-hospital me-2"></i>Chuyên khoa</span>
+            <h2>Chuyên Khoa Nổi Bật</h2>
+            <p>Đa dạng chuyên khoa với đội ngũ bác sĩ giàu kinh nghiệm, sẵn sàng chăm sóc sức khỏe toàn diện cho bạn.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <a href="chuyenkhoa.html?khoa=tim-mach" class="service-card"><div class="service-icon"><i class="ri-heart-pulse-fill"></i></div><span>Tim mạch</span></a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="chuyenkhoa.html?khoa=than-kinh" class="service-card"><div class="service-icon"><i class="ri-brain-fill"></i></div><span>Thần kinh</span></a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="chuyenkhoa.html?khoa=noi-tong-quat" class="service-card"><div class="service-icon"><i class="ri-stethoscope-fill"></i></div><span>Nội tổng quát</span></a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="chuyenkhoa.html?khoa=mat" class="service-card"><div class="service-icon"><i class="ri-eye-fill"></i></div><span>Mắt</span></a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="chuyenkhoa.html?khoa=san-phu-khoa" class="service-card"><div class="service-icon"><i class="ri-parent-fill"></i></div><span>Sản phụ khoa</span></a>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <a href="chuyenkhoa.html?khoa=nhi" class="service-card"><div class="service-icon"><i class="ri-user-heart-fill"></i></div><span>Nhi khoa</span></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- GÓI KHÁM -->
+    <section class="package-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fas fa-star me-2"></i>Dịch vụ nổi bật</span>
+                <h2>Gói Khám Sức Khỏe</h2>
+                <p>Lựa chọn gói khám phù hợp với nhu cầu của bạn. Tất cả gói đều bao gồm khám tổng quát và tư vấn chi tiết từ bác sĩ.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-5 col-md-6">
+                    <div class="package-card-modern">
+                        <span class="package-type-badge">Gói Thường</span>
+                        <div class="package-icon"><i class="fas fa-heartbeat"></i></div>
+                        <h3 class="package-title">Khám Với Bác Sĩ Tổng Quát</h3>
+                        <p class="package-desc">Phù hợp cho khám sức khỏe định kỳ, tầm soát bệnh lý thông thường</p>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check-circle"></i> Khám lâm sàng tổng quát</li>
+                            <li><i class="fas fa-check-circle"></i> Bác sĩ nội tổng quát</li>
+                            <li><i class="fas fa-check-circle"></i> Thời gian khám: 40 phút</li>
+                            <li><i class="fas fa-check-circle"></i> Đo huyết áp, nhịp tim</li>
+                            <li><i class="fas fa-check-circle"></i> Tư vấn sức khỏe cơ bản</li>
+                            <li><i class="fas fa-check-circle"></i> Kê đơn thuốc (nếu cần)</li>
+                        </ul>
+                        <div class="package-price"><span class="price-amount">150.000₫</span><span class="price-period">/ lần khám</span></div>
+                        <button class="btn-book-package" onclick="window.location.href='datlich.html'"><i class="fas fa-calendar-check me-2"></i>Đặt lịch ngay</button>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6">
+                    <div class="package-card-modern">
+                        <span class="popular-badge"><i class="fas fa-crown me-1"></i>Phổ biến nhất</span>
+                        <span class="package-type-badge" style="background: linear-gradient(135deg, #f59e0b, #d97706);">Gói Cao Cấp</span>
+                        <div class="package-icon"><i class="fas fa-user-md"></i></div>
+                        <h3 class="package-title">Khám Với Bác Sĩ Chuyên Gia</h3>
+                        <p class="package-desc">Khám chuyên sâu với bác sĩ chuyên khoa giàu kinh nghiệm</p>
+                        <ul class="package-features">
+                            <li><i class="fas fa-check-circle"></i> Khám chuyên khoa chi tiết</li>
+                            <li><i class="fas fa-check-circle"></i> Bác sĩ chuyên gia đầu ngành</li>
+                            <li><i class="fas fa-check-circle"></i> Thời gian khám: 40 phút</li>
+                            <li><i class="fas fa-check-circle"></i> Chẩn đoán chuyên sâu</li>
+                            <li><i class="fas fa-check-circle"></i> Tư vấn điều trị chi tiết</li>
+                            <li><i class="fas fa-check-circle"></i> Ưu tiên đặt lịch khám</li>
+                        </ul>
+                        <div class="package-price"><span class="price-amount">250.000₫</span><span class="price-period">/ lần khám</span></div>
+                        <button class="btn-book-package" onclick="window.location.href='datlich.html'"><i class="fas fa-calendar-check me-2"></i>Đặt lịch ngay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ĐỘI NGŨ BÁC SĨ -->
+    <section class="doctor-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fas fa-user-md me-2"></i>Bác sĩ xuất sắc</span>
+                <h2>Đội Ngũ Bác Sĩ Hàng Đầu</h2>
+                <p>Đội ngũ bác sĩ giàu kinh nghiệm, tận tâm và được đào tạo bài bản tại các trường y khoa hàng đầu.</p>
+            </div>
+            <div class="row g-4" id="topDoctorsContainer">
+                <div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div><p class="mt-3 text-muted">Đang tải...</p></div>
+            </div>
+            <div class="btn-xemthem-wrapper">
+                <a href="danhsachbacsi.html" class="btn-xemthem"><i class="fas fa-arrow-right me-2"></i>Xem tất cả bác sĩ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand"><i class="fas fa-clinic-medical me-2"></i>Eden Health</div>
+                    <p class="footer-desc">Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam. Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất cho bạn và gia đình.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Liên kết</h5>
+                    <ul class="footer-links">
+                        <li><a href="vechungtoi.html"><i class="fas fa-chevron-right"></i> Về chúng tôi</a></li>
+                        <li><a href="danhsachkhoa.html"><i class="fas fa-chevron-right"></i> Chuyên khoa</a></li>
+                        <li><a href="danhsachbacsi.html"><i class="fas fa-chevron-right"></i> Bác sĩ</a></li>
+                        <li><a href="lienhe.html"><i class="fas fa-chevron-right"></i> Liên hệ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Chính sách</h5>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách hoạt động</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách bảo mật</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Điều khoản sử dụng</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Liên hệ</h5>
+                    <div class="footer-contact">
+                        <p><i class="fas fa-phone-alt"></i> Hotline: <strong>1900 0091</strong></p>
+                        <p><i class="fas fa-envelope"></i> edenhealth@gmail.com</p>
+                        <p><i class="fas fa-clock"></i> 07:00 - 17:00 (T2 - CN)</p>
+                        <p><i class="fas fa-map-marker-alt"></i> TP. Hồ Chí Minh, Việt Nam</p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Eden Health. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            loadStatistics();
+            loadTopDoctors();
+
+            // Scroll effects
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar-custom');
+                const scrollBtn = document.getElementById('scrollTopBtn');
+                
+                if (window.scrollY > 50) navbar.classList.add('scrolled');
+                else navbar.classList.remove('scrolled');
+                
+                scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            });
+
+            // Animate elements on scroll
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.info-card, .service-card, .package-card-modern, .doctor-card-modern').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+            const username = localStorage.getItem('username');
+
+            if (isLoggedIn && username) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userDropdown').classList.add('show');
+                document.getElementById('navProfileItem').style.display = 'block';
+                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+                document.getElementById('dropdownUserName').textContent = username;
+            } else {
+                document.getElementById('authButtons').style.display = 'flex';
+                document.getElementById('userDropdown').classList.remove('show');
+                document.getElementById('navProfileItem').style.display = 'none';
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch(`${API_BASE}/get-statistics.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    animateNumber('statPatients', data.data.patients, 10);
+                    animateNumber('statDoctors', data.data.doctors, 10);
+                    animateNumber('statSpecialties', data.data.specialties, 10);
+                }
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                document.getElementById('statPatients').textContent = '50+';
+                document.getElementById('statDoctors').textContent = '10+';
+                document.getElementById('statSpecialties').textContent = '10+';
+            }
+        }
+
+        function animateNumber(elementId, target, roundTo) {
+            const element = document.getElementById(elementId);
+            const roundedTarget = Math.ceil(target / roundTo) * roundTo;
+            let current = 0;
+            const increment = Math.ceil(roundedTarget / 40);
+            const duration = 1500;
+            const stepTime = duration / 40;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= roundedTarget) {
+                    element.textContent = roundedTarget.toLocaleString('vi-VN') + '+';
+                    clearInterval(timer);
+                } else {
+                    element.textContent = current.toLocaleString('vi-VN') + '+';
+                }
+            }, stepTime);
+        }
+
+        async function loadTopDoctors() {
+            try {
+                const response = await fetch(`${API_BASE}/get-top-doctors.php`);
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    renderDoctors(data.data);
+                } else {
+                    document.getElementById('topDoctorsContainer').innerHTML = '<div class="col-12 text-center py-5 text-muted">Chưa có dữ liệu bác sĩ</div>';
+                }
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+                document.getElementById('topDoctorsContainer').innerHTML = '<div class="col-12 text-center py-5 text-muted">Không thể tải dữ liệu</div>';
+            }
+        }
+
+        function renderDoctors(doctors) {
+            const container = document.getElementById('topDoctorsContainer');
+            const currentYear = new Date().getFullYear();
+            
+            container.innerHTML = doctors.map(doc => {
+                const experience = doc.namLamViec ? currentYear - doc.namLamViec : 'N/A';
+                const appointments = roundNumber(doc.totalAppointments || 0);
+                const patients = roundNumber(doc.totalPatients || 0);
+                const imgSrc = doc.gioiTinh === 'nu' ? '../../assets/images/doctor_female.png' : '../../assets/images/doctor_male.png';
+                
+                return `
+                <div class="col-lg-4 col-md-6">
+                    <div class="doctor-card-modern">
+                        <div class="doctor-image-wrapper">
+                            <img src="${imgSrc}" alt="${doc.tenBacSi}">
+                            <span class="doctor-badge"><i class="fas fa-star me-1"></i>Top bác sĩ</span>
+                        </div>
+                        <div class="doctor-info-modern">
+                            <h5 class="doctor-name-modern">${doc.tenBacSi}</h5>
+                            <p class="doctor-specialty-modern">${doc.tenChuyenKhoa || 'Đa khoa'}</p>
+                            <div class="doctor-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">${experience === 'N/A' ? 'N/A' : experience + '+'}</span>
+                                    <span class="stat-label">Năm KN</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">${appointments}+</span>
+                                    <span class="stat-label">Lịch khám</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">${patients}+</span>
+                                    <span class="stat-label">Bệnh nhân</span>
+                                </div>
+                            </div>
+                            <button class="btn-view-profile" onclick="window.location.href='chitietbacsi.html?id=${doc.maBacSi}'">
+                                <i class="fas fa-user me-2"></i>Xem hồ sơ
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function roundNumber(num) {
+            if (num < 10) return num;
+            if (num < 100) return Math.floor(num / 10) * 10;
+            if (num < 1000) return Math.floor(num / 100) * 100;
+            return Math.floor(num / 1000) * 1000;
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('maBenhNhan');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
