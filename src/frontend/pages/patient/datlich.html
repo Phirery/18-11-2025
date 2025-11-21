@@ -1,23 +1,76 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đặt Lịch Khám</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Lịch Khám - Eden Health</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+        }
+
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-bottom: 20px;
         }
 
+        /* Navbar */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 12px 0;
+        }
+
+        .navbar-brand-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-purple) !important;
+            text-decoration: none;
+        }
+
+        .navbar-brand-header i {
+            color: var(--secondary-purple);
+        }
+
+        .nav-link-header {
+            color: #333 !important;
+            font-weight: 500;
+            margin: 0 8px;
+            padding: 8px 12px !important;
+            text-decoration: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Booking Container */
         .booking-wrapper {
             max-width: 1100px;
             margin: 30px auto;
+            padding: 0 20px;
         }
 
         .booking-card {
@@ -29,14 +82,8 @@
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .booking-header {
@@ -50,14 +97,6 @@
             font-size: 2rem;
             font-weight: 700;
             margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .booking-header p {
-            margin: 10px 0 0 0;
-            opacity: 0.9;
-            font-size: 0.95rem;
         }
 
         .booking-body {
@@ -83,12 +122,12 @@
             z-index: 0;
         }
 
-        .step-indicator .progress-line {
+        .progress-line {
             position: absolute;
             top: 20px;
             left: 0;
             height: 3px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, var(--primary-purple), var(--secondary-purple));
             transition: width 0.3s ease;
             z-index: 1;
         }
@@ -116,7 +155,7 @@
 
         .step.active .step-circle,
         .step.completed .step-circle {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             color: white;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
@@ -129,10 +168,11 @@
 
         .step.active .step-label,
         .step.completed .step-label {
-            color: #667eea;
+            color: var(--primary-purple);
             font-weight: 600;
         }
 
+        /* Section */
         .section {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -143,14 +183,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .section-title {
@@ -159,11 +193,11 @@
             color: #333;
             margin-bottom: 24px;
             padding-bottom: 12px;
-            border-bottom: 3px solid #667eea;
+            border-bottom: 3px solid var(--primary-purple);
             display: inline-block;
         }
 
-        /* Selection Cards */
+        /* Selection Grid */
         .selection-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -183,22 +217,22 @@
         }
 
         .selection-card:hover {
-            border-color: #667eea;
+            border-color: var(--primary-purple);
             transform: translateY(-4px);
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
         }
 
         .selection-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-color: var(--primary-purple);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
-        .selection-card .card-icon {
+        .card-icon {
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             color: white;
             display: inline-flex;
             align-items: center;
@@ -207,26 +241,26 @@
             margin-bottom: 16px;
         }
 
-        .selection-card .card-title {
+        .card-title {
             font-weight: 700;
             font-size: 1.1rem;
             color: #333;
             margin-bottom: 8px;
         }
 
-        .selection-card .card-subtitle {
+        .card-subtitle {
             font-size: 0.9rem;
             color: #666;
         }
 
-        .selection-card .check-icon {
+        .check-icon {
             position: absolute;
             top: 15px;
             right: 15px;
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: #667eea;
+            background: var(--primary-purple);
             color: white;
             display: none;
             align-items: center;
@@ -237,7 +271,7 @@
             display: flex;
         }
 
-        /* Doctor Cards */
+        /* Doctor Grid */
         .doctor-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -255,28 +289,28 @@
         }
 
         .doctor-card:hover {
-            border-color: #667eea;
+            border-color: var(--primary-purple);
             transform: translateY(-4px);
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
         }
 
         .doctor-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-color: var(--primary-purple);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
-        .doctor-card .doctor-header {
+        .doctor-header {
             display: flex;
             align-items: center;
             margin-bottom: 12px;
         }
 
-        .doctor-card .doctor-avatar {
+        .doctor-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             color: white;
             display: flex;
             align-items: center;
@@ -285,29 +319,47 @@
             margin-right: 12px;
         }
 
-        .doctor-card .doctor-name {
+        .doctor-name {
             font-weight: 700;
             font-size: 1rem;
             color: #333;
         }
 
-        .doctor-card .doctor-specialty {
+        .doctor-specialty {
             font-size: 0.85rem;
             color: #666;
         }
 
-        .doctor-card .expert-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-            color: #333;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 8px;
+        /* Time Slots */
+        .shift-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        /* Time Slots */
+        .shift-btn {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .shift-btn:hover {
+            border-color: var(--primary-purple);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .shift-btn.selected {
+            border-color: var(--primary-purple);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+        }
+
         .time-slots {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -328,82 +380,21 @@
         }
 
         .time-slot:hover:not(.disabled) {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
+            border-color: var(--primary-purple);
+            transform: translateY(-5px);
         }
 
         .time-slot.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: var(--primary-purple);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             color: white;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+
         }
 
         .time-slot.disabled {
             opacity: 0.4;
             cursor: not-allowed;
             background: #f5f5f5;
-        }
-
-        .time-slot i {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 1.2rem;
-        }
-
-        /* Package Type Cards */
-        .package-type-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .package-type-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 16px;
-            padding: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            background: white;
-            position: relative;
-        }
-
-        .package-type-card:hover:not(.disabled) {
-            border-color: #667eea;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
-        }
-
-        .package-type-card.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .package-type-card.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .package-type-card .package-name {
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #333;
-            margin-bottom: 12px;
-        }
-
-        .package-type-card .package-price {
-            font-size: 1.8rem;
-            color: #667eea;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .package-type-card .package-description {
-            font-size: 0.9rem;
-            color: #666;
         }
 
         /* Navigation Buttons */
@@ -436,27 +427,24 @@
             background: #d0d0d0;
         }
 
-        .btn-next,
-        .btn-submit {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-next, .btn-submit {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             color: white;
         }
 
-        .btn-next:hover,
-        .btn-submit:hover {
+        .btn-next:hover, .btn-submit:hover {
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
             transform: translateY(-2px);
         }
 
-        .btn-next:disabled,
-        .btn-submit:disabled {
+        .btn-next:disabled, .btn-submit:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Summary Card */
+        /* Summary */
         .summary-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 30px;
@@ -487,11 +475,10 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             padding: 12px;
-            transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            border-color: #667eea;
+            border-color: var(--primary-purple);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -507,67 +494,39 @@
             color: #999;
         }
 
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        .shift-selector {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .shift-btn {
-            flex: 1;
-            padding: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
+        .loading {
             text-align: center;
+            padding: 40px;
         }
 
-        .shift-btn:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .shift-btn.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .spinner-border {
+            color: var(--primary-purple);
         }
 
         @media (max-width: 768px) {
-            .booking-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .booking-body {
-                padding: 24px;
-            }
-
-            .step-label {
-                font-size: 0.75rem;
-            }
-
-            .selection-grid,
-            .doctor-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .time-slots {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
+            .booking-header h1 { font-size: 1.5rem; }
+            .booking-body { padding: 24px; }
+            .selection-grid, .doctor-grid { grid-template-columns: 1fr; }
+            .time-slots { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
         }
     </style>
 </head>
-
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand-header" href="index.html">
+                <i class="fas fa-clinic-medical me-2"></i>
+                <span>Eden</span> Health
+            </a>
+            <div class="ms-auto user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName">Người dùng</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Booking Container -->
     <div class="booking-wrapper">
         <div class="booking-card">
             <div class="booking-header">
@@ -581,30 +540,34 @@
                     <div class="progress-line" id="progressLine"></div>
                     <div class="step active" data-step="1">
                         <div class="step-circle">1</div>
-                        <div class="step-label">Khoa</div>
+                        <div class="step-label">Gói Khám</div>
                     </div>
                     <div class="step" data-step="2">
                         <div class="step-circle">2</div>
-                        <div class="step-label">Chuyên Khoa</div>
+                        <div class="step-label">Khoa</div>
                     </div>
                     <div class="step" data-step="3">
                         <div class="step-circle">3</div>
-                        <div class="step-label">Ngày & Bác Sĩ</div>
+                        <div class="step-label">Chuyên Khoa</div>
                     </div>
                     <div class="step" data-step="4">
                         <div class="step-circle">4</div>
-                        <div class="step-label">Giờ Khám</div>
+                        <div class="step-label">Ngày & Bác Sĩ</div>
                     </div>
                     <div class="step" data-step="5">
                         <div class="step-circle">5</div>
+                        <div class="step-label">Giờ Khám</div>
+                    </div>
+                    <div class="step" data-step="6">
+                        <div class="step-circle">6</div>
                         <div class="step-label">Xác Nhận</div>
                     </div>
                 </div>
 
-                <!-- Step 1: Chọn Khoa -->
+                <!-- Step 1: Gói Khám -->
                 <div class="section active" id="step1">
-                    <h2 class="section-title">Chọn Khoa Khám</h2>
-                    <div class="selection-grid" id="departmentGrid"></div>
+                    <h2 class="section-title">Chọn Gói Khám</h2>
+                    <div class="selection-grid" id="packageGrid"></div>
                     <div class="nav-buttons">
                         <button class="btn-custom btn-prev" style="visibility: hidden">
                             <i class="fas fa-arrow-left"></i> Quay Lại
@@ -615,10 +578,10 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Chọn Chuyên Khoa -->
+                <!-- Step 2: Khoa -->
                 <div class="section" id="step2">
-                    <h2 class="section-title">Chọn Chuyên Khoa</h2>
-                    <div class="selection-grid" id="specialtyGrid"></div>
+                    <h2 class="section-title">Chọn Khoa Khám</h2>
+                    <div class="selection-grid" id="departmentGrid"></div>
                     <div class="nav-buttons">
                         <button class="btn-custom btn-prev" onclick="goToStep(1)">
                             <i class="fas fa-arrow-left"></i> Quay Lại
@@ -629,16 +592,10 @@
                     </div>
                 </div>
 
-                <!-- Step 3: Chọn Ngày & Bác Sĩ -->
+                <!-- Step 3: Chuyên Khoa -->
                 <div class="section" id="step3">
-                    <h2 class="section-title">Chọn Ngày Khám</h2>
-                    <div class="mb-4">
-                        <input type="date" class="form-control" id="appointmentDate" />
-                    </div>
-
-                    <h2 class="section-title">Chọn Bác Sĩ</h2>
-                    <div class="doctor-grid" id="doctorGrid"></div>
-
+                    <h2 class="section-title">Chọn Chuyên Khoa</h2>
+                    <div class="selection-grid" id="specialtyGrid"></div>
                     <div class="nav-buttons">
                         <button class="btn-custom btn-prev" onclick="goToStep(2)">
                             <i class="fas fa-arrow-left"></i> Quay Lại
@@ -649,17 +606,14 @@
                     </div>
                 </div>
 
-                <!-- Step 4: Chọn Ca & Giờ Khám -->
+                <!-- Step 4: Ngày & Bác Sĩ -->
                 <div class="section" id="step4">
-                    <h2 class="section-title">Chọn Ca Làm Việc</h2>
-                    <div class="shift-selector" id="shiftSelector"></div>
-
-                    <h2 class="section-title">Chọn Suất Khám</h2>
-                    <div class="time-slots" id="timeSlots"></div>
-
-                    <h2 class="section-title">Chọn Gói Khám</h2>
-                    <div class="package-type-grid" id="packageTypeGrid"></div>
-
+                    <h2 class="section-title">Chọn Ngày Khám</h2>
+                    <div class="mb-4">
+                        <input type="date" class="form-control" id="appointmentDate">
+                    </div>
+                    <h2 class="section-title">Chọn Bác Sĩ</h2>
+                    <div class="doctor-grid" id="doctorGrid"></div>
                     <div class="nav-buttons">
                         <button class="btn-custom btn-prev" onclick="goToStep(3)">
                             <i class="fas fa-arrow-left"></i> Quay Lại
@@ -670,19 +624,32 @@
                     </div>
                 </div>
 
-                <!-- Step 5: Xác Nhận -->
+                <!-- Step 5: Giờ Khám -->
                 <div class="section" id="step5">
-                    <h2 class="section-title">Xác Nhận Thông Tin</h2>
-                    <div class="summary-card" id="summaryCard"></div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Ghi chú (không bắt buộc)</label>
-                        <textarea class="form-control" rows="4" id="notes"
-                            placeholder="Nhập ghi chú hoặc yêu cầu đặc biệt..."></textarea>
-                    </div>
-
+                    <h2 class="section-title">Chọn Ca Làm Việc</h2>
+                    <div class="shift-selector" id="shiftSelector"></div>
+                    <h2 class="section-title">Chọn Suất Khám</h2>
+                    <div class="time-slots" id="timeSlots"></div>
                     <div class="nav-buttons">
                         <button class="btn-custom btn-prev" onclick="goToStep(4)">
+                            <i class="fas fa-arrow-left"></i> Quay Lại
+                        </button>
+                        <button class="btn-custom btn-next" id="btnStep5Next" disabled>
+                            Tiếp Theo <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Xác Nhận -->
+                <div class="section" id="step6">
+                    <h2 class="section-title">Xác Nhận Thông Tin</h2>
+                    <div class="summary-card" id="summaryCard"></div>
+                    <div class="mb-4">
+                        <label class="form-label">Ghi chú (không bắt buộc)</label>
+                        <textarea class="form-control" rows="4" id="notes" placeholder="Nhập ghi chú hoặc yêu cầu đặc biệt..."></textarea>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn-custom btn-prev" onclick="goToStep(5)">
                             <i class="fas fa-arrow-left"></i> Quay Lại
                         </button>
                         <button class="btn-custom btn-submit" onclick="submitBooking()">
@@ -696,270 +663,369 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // MOCK DATA - Dữ liệu giả đầy đủ để test luồng
-        const MOCK_DATA = {
-            departments: [
-                { id: 1, name: "Nội Khoa", icon: "fa-heartbeat" },
-                { id: 2, name: "Ngoại Khoa", icon: "fa-hand-holding-medical" },
-                { id: 3, name: "Sản Phụ Khoa", icon: "fa-baby" },
-                { id: 4, name: "Nhi Khoa", icon: "fa-child" },
-                { id: 5, name: "Mắt", icon: "fa-eye" },
-                { id: 6, name: "Tai Mũi Họng", icon: "fa-head-side-mask" }
-            ],
-            specialties: {
-                1: [
-                    { id: 11, name: "Tim Mạch", icon: "fa-heartbeat" },
-                    { id: 12, name: "Tiêu Hóa", icon: "fa-stomach" },
-                    { id: 13, name: "Hô Hấp", icon: "fa-lungs" },
-                    { id: 14, name: "Thần Kinh", icon: "fa-brain" },
-                    { id: 15, name: "Nội Tiết", icon: "fa-syringe" }
-                ],
-                2: [
-                    { id: 21, name: "Chấn Thương Chỉnh Hình", icon: "fa-bone" },
-                    { id: 22, name: "Tiết Niệu", icon: "fa-kidneys" },
-                    { id: 23, name: "Ngoại Tổng Quát", icon: "fa-procedures" }
-                ],
-                3: [
-                    { id: 31, name: "Sản Khoa", icon: "fa-baby-carriage" },
-                    { id: 32, name: "Phụ Khoa", icon: "fa-female" }
-                ],
-                4: [
-                    { id: 41, name: "Nhi Tổng Quát", icon: "fa-child" },
-                    { id: 42, name: "Nhi Tiêu Hóa", icon: "fa-baby" }
-                ],
-                5: [
-                    { id: 51, name: "Khúc Xạ", icon: "fa-glasses" },
-                    { id: 52, name: "Võng Mạc", icon: "fa-eye" }
-                ],
-                6: [
-                    { id: 61, name: "Tai", icon: "fa-deaf" },
-                    { id: 62, name: "Mũi Họng", icon: "fa-head-side-mask" }
-                ]
-            },
-            doctors: [
-                // Tim Mạch
-                {
-                    id: 1,
-                    name: "PGS.TS.BS Nguyễn Văn Hùng",
-                    specialty_id: 11,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-18", "2025-11-19", "2025-11-20"],
-                    shifts: {
-                        morning: { start: "07:00", end: "11:00", slot_duration: 40 },
-                        afternoon: { start: "13:00", end: "17:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T07:00", "2025-11-15T09:20", "2025-11-15T13:00"]
-                },
-                {
-                    id: 2,
-                    name: "BS. Trần Thị Mai Anh",
-                    specialty_id: 11,
-                    is_expert: false,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18"],
-                    shifts: {
-                        morning: { start: "08:00", end: "12:00", slot_duration: 40 },
-                        afternoon: { start: "14:00", end: "18:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T08:00", "2025-11-15T14:00"]
-                },
-                {
-                    id: 3,
-                    name: "ThS.BS Lê Minh Tuấn",
-                    specialty_id: 11,
-                    is_expert: true,
-                    work_days: ["2025-11-16", "2025-11-17", "2025-11-19", "2025-11-20"],
-                    shifts: {
-                        morning: { start: "07:30", end: "11:30", slot_duration: 40 }
-                    },
-                    booked_slots: []
-                },
-                
-                // Tiêu Hóa
-                {
-                    id: 4,
-                    name: "BS.CKII Phạm Văn Đức",
-                    specialty_id: 12,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-17", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "07:00", end: "11:00", slot_duration: 40 },
-                        afternoon: { start: "13:30", end: "17:30", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T07:40", "2025-11-15T10:20"]
-                },
-                {
-                    id: 5,
-                    name: "BS. Hoàng Thị Lan",
-                    specialty_id: 12,
-                    is_expert: false,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18", "2025-11-19"],
-                    shifts: {
-                        afternoon: { start: "13:00", end: "17:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T13:40"]
-                },
+        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
 
-                // Hô Hấp
-                {
-                    id: 6,
-                    name: "PGS.BS Đỗ Quang Minh",
-                    specialty_id: 13,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-18"],
-                    shifts: {
-                        morning: { start: "08:00", end: "12:00", slot_duration: 40 },
-                        afternoon: { start: "14:00", end: "17:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T08:00", "2025-11-15T08:40", "2025-11-15T14:00"]
-                },
-
-                // Chấn Thương Chỉnh Hình
-                {
-                    id: 7,
-                    name: "TS.BS Ngô Văn Thành",
-                    specialty_id: 21,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-17", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "07:00", end: "11:00", slot_duration: 40 },
-                        afternoon: { start: "13:00", end: "16:00", slot_duration: 40 }
-                    },
-                    booked_slots: []
-                },
-                {
-                    id: 8,
-                    name: "BS. Vũ Thị Hương",
-                    specialty_id: 21,
-                    is_expert: false,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "08:00", end: "12:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T09:20", "2025-11-15T10:00"]
-                },
-
-                // Sản Khoa
-                {
-                    id: 9,
-                    name: "BS.CKII Trần Thị Bích Ngọc",
-                    specialty_id: 31,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18"],
-                    shifts: {
-                        morning: { start: "07:00", end: "11:00", slot_duration: 40 },
-                        afternoon: { start: "13:00", end: "17:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T07:00", "2025-11-15T13:00", "2025-11-15T13:40"]
-                },
-                {
-                    id: 10,
-                    name: "BS. Lê Thị Thanh Hà",
-                    specialty_id: 31,
-                    is_expert: false,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-19"],
-                    shifts: {
-                        afternoon: { start: "14:00", end: "18:00", slot_duration: 40 }
-                    },
-                    booked_slots: []
-                },
-
-                // Nhi Tổng Quát
-                {
-                    id: 11,
-                    name: "ThS.BS Phạm Minh Đức",
-                    specialty_id: 41,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "07:30", end: "11:30", slot_duration: 40 },
-                        afternoon: { start: "13:30", end: "17:30", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T07:30", "2025-11-15T09:50"]
-                },
-                {
-                    id: 12,
-                    name: "BS. Nguyễn Thị Thu",
-                    specialty_id: 41,
-                    is_expert: false,
-                    work_days: ["2025-11-15", "2025-11-17", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "08:00", end: "12:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T08:40"]
-                },
-
-                // Mắt
-                {
-                    id: 13,
-                    name: "BS.CKII Đặng Văn Long",
-                    specialty_id: 51,
-                    is_expert: true,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-18", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "07:00", end: "11:00", slot_duration: 40 },
-                        afternoon: { start: "13:00", end: "16:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T10:20"]
-                },
-
-                // Tai Mũi Họng
-                {
-                    id: 14,
-                    name: "BS. Võ Thị Kim Anh",
-                    specialty_id: 61,
-                    is_expert: false,
-                    work_days: ["2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18", "2025-11-19"],
-                    shifts: {
-                        morning: { start: "08:00", end: "12:00", slot_duration: 40 },
-                        afternoon: { start: "14:00", end: "18:00", slot_duration: 40 }
-                    },
-                    booked_slots: ["2025-11-15T08:00", "2025-11-15T14:00", "2025-11-15T15:20"]
-                }
-            ],
-            packageTypes: [
-                { id: "normal", name: "Khám Bình Thường", price: "150.000đ", description: "Dịch vụ khám bệnh tiêu chuẩn với bác sĩ đa khoa" },
-                { id: "expert", name: "Khám Chuyên Gia", price: "250.000đ", description: "Khám với bác sĩ chuyên gia giàu kinh nghiệm, trình độ cao", requireExpert: true }
-            ]
-        };
-
-        // STATE
+        // State quản lý booking
         const bookingState = {
-            department: null,
-            specialty: null,
+            packageId: null,
+            departmentId: null,
+            specialtyId: null,
             date: null,
-            doctor: null,
-            shift: null,
-            time: null,
-            packageType: null
+            doctorId: null,
+            shiftId: null,
+            slotId: null,
+            patientId: null
         };
 
-        // HELPER FUNCTIONS
-        function formatDate(dateStr) {
-            const d = new Date(dateStr);
-            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
-        }
-
-        function generateTimeSlots(start, end, duration) {
-            const slots = [];
-            let current = new Date(`2000-01-01T${start}`);
-            const endTime = new Date(`2000-01-01T${end}`);
-
-            while (current < endTime) {
-                const slotEnd = new Date(current.getTime() + duration * 60000);
-                slots.push({
-                    start: current.toTimeString().slice(0, 5),
-                    end: slotEnd.toTimeString().slice(0, 5)
-                });
-                current = slotEnd;
+        // Khởi tạo
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadPackages();
+            setupDateInput();
+            
+            // Check URL params cho package
+            const urlParams = new URLSearchParams(window.location.search);
+            const packageParam = urlParams.get('package');
+            if (packageParam) {
+                bookingState.packageId = parseInt(packageParam);
             }
-            return slots;
+        });
+
+        // Kiểm tra đăng nhập
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${API_BASE}/check-auth.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (!data.success || data.role !== 'benhnhan') {
+                    alert('Vui lòng đăng nhập với tài khoản bệnh nhân để đặt lịch!');
+                    window.location.href = 'dangnhap.html';
+                    return;
+                }
+                
+                bookingState.patientId = data.patientId;
+                document.getElementById('userName').textContent = data.fullName || data.username;
+                document.getElementById('userAvatar').textContent = (data.fullName || data.username).charAt(0).toUpperCase();
+                
+            } catch (error) {
+                console.error('Auth error:', error);
+                alert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!');
+                window.location.href = 'dangnhap.html';
+            }
         }
+
+        // Setup date input - chỉ cho phép chọn ngày từ hôm nay
+        function setupDateInput() {
+            const dateInput = document.getElementById('appointmentDate');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+            
+            dateInput.addEventListener('change', function() {
+                if (this.value && bookingState.specialtyId) {
+                    bookingState.date = this.value;
+                    loadAvailableDoctors();
+                }
+            });
+        }
+
+        // === LOAD DATA FUNCTIONS ===
+
+        // Load gói khám
+        async function loadPackages() {
+            try {
+                const response = await fetch(`${API_BASE}/get-packages.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderPackages(data.data);
+                    
+                    // Auto-select nếu có packageId từ URL
+                    if (bookingState.packageId) {
+                        setTimeout(() => selectPackage(bookingState.packageId), 100);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading packages:', error);
+            }
+        }
+
+        // Load khoa
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_BASE}/get-departments.php`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderDepartments(data.data);
+                }
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        // Load chuyên khoa theo khoa
+        async function loadSpecialties(departmentId) {
+            try {
+                const response = await fetch(`${API_BASE}/get-specialties.php?maKhoa=${departmentId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderSpecialties(data.data);
+                }
+            } catch (error) {
+                console.error('Error loading specialties:', error);
+            }
+        }
+
+        // Load bác sĩ khả dụng theo ngày và chuyên khoa
+        async function loadAvailableDoctors() {
+            const container = document.getElementById('doctorGrid');
+            container.innerHTML = '<div class="loading"><div class="spinner-border"></div><p>Đang tải...</p></div>';
+            
+            try {
+                const response = await fetch(
+                    `${API_BASE}/get-available-doctors.php?maChuyenKhoa=${bookingState.specialtyId}&ngayKham=${bookingState.date}`
+                );
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    renderDoctors(data.data);
+                } else {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-user-md"></i><p>Không có bác sĩ khả dụng trong ngày này</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+                container.innerHTML = '<div class="empty-state text-danger"><i class="fas fa-exclamation-circle"></i><p>Lỗi tải dữ liệu</p></div>';
+            }
+        }
+
+        // Load ca làm việc khả dụng
+        async function loadShifts() {
+            try {
+                const response = await fetch(
+                    `${API_BASE}/get-available-shifts.php?maBacSi=${bookingState.doctorId}&ngayKham=${bookingState.date}`
+                );
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderShifts(data.data);
+                }
+            } catch (error) {
+                console.error('Error loading shifts:', error);
+            }
+        }
+
+        // Load suất khám khả dụng
+        async function loadAvailableSlots(shiftId) {
+            const container = document.getElementById('timeSlots');
+            container.innerHTML = '<div class="loading"><div class="spinner-border"></div></div>';
+            
+            try {
+                const response = await fetch(
+                    `${API_BASE}/get-available-slots.php?maBacSi=${bookingState.doctorId}&ngayKham=${bookingState.date}&maCa=${shiftId}`
+                );
+                const data = await response.json();
+                
+                if (data.success) {
+                    renderTimeSlots(data.data);
+                } else {
+                    container.innerHTML = '<div class="empty-state"><i class="fas fa-clock"></i><p>Không có suất khám khả dụng</p></div>';
+                }
+            } catch (error) {
+                console.error('Error loading slots:', error);
+                container.innerHTML = '<div class="empty-state text-danger"><i class="fas fa-exclamation-circle"></i><p>Lỗi tải dữ liệu</p></div>';
+            }
+        }
+
+        // === RENDER FUNCTIONS ===
+
+        function renderPackages(packages) {
+            const container = document.getElementById('packageGrid');
+            container.innerHTML = packages.map(pkg => `
+                <div class="selection-card" data-id="${pkg.maGoi}" onclick="selectPackage(${pkg.maGoi})">
+                    <div class="card-icon"><i class="fas ${pkg.maGoi === 1 ? 'fa-heartbeat' : 'fa-user-md'}"></i></div>
+                    <div class="card-title">${pkg.tenGoi}</div>
+                    <div class="card-subtitle">${Number(pkg.gia).toLocaleString('vi-VN')}đ</div>
+                    <div class="check-icon"><i class="fas fa-check"></i></div>
+                </div>
+            `).join('');
+        }
+
+        function renderDepartments(departments) {
+            const container = document.getElementById('departmentGrid');
+            container.innerHTML = departments.map(dept => `
+                <div class="selection-card" data-id="${dept.maKhoa}" onclick="selectDepartment('${dept.maKhoa}')">
+                    <div class="card-icon"><i class="fas fa-hospital"></i></div>
+                    <div class="card-title">${dept.tenKhoa}</div>
+                    <div class="check-icon"><i class="fas fa-check"></i></div>
+                </div>
+            `).join('');
+        }
+
+        function renderSpecialties(specialties) {
+            const container = document.getElementById('specialtyGrid');
+            container.innerHTML = specialties.map(spec => `
+                <div class="selection-card" data-id="${spec.maChuyenKhoa}" onclick="selectSpecialty('${spec.maChuyenKhoa}')">
+                    <div class="card-icon"><i class="fas fa-stethoscope"></i></div>
+                    <div class="card-title">${spec.tenChuyenKhoa}</div>
+                    <div class="check-icon"><i class="fas fa-check"></i></div>
+                </div>
+            `).join('');
+        }
+
+        function renderDoctors(doctors) {
+            const container = document.getElementById('doctorGrid');
+            container.innerHTML = doctors.map(doc => {
+                const unavailableClass = doc.available ? '' : 'disabled';
+                const unavailableBadge = doc.available ? '' : '<div style="background: #ff4d4f; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; margin-top: 8px;">Không khả dụng</div>';
+                const onclick = doc.available ? `onclick="selectDoctor('${doc.maBacSi}')"` : '';
+                
+                return `
+                <div class="doctor-card ${unavailableClass}" data-id="${doc.maBacSi}" ${onclick} style="${doc.available ? '' : 'opacity: 0.5; cursor: not-allowed;'}">
+                    <div class="doctor-header">
+                        <div class="doctor-avatar"><i class="fas fa-user-md"></i></div>
+                        <div>
+                            <div class="doctor-name">${doc.tenBacSi}</div>
+                            <div class="doctor-specialty">${doc.tenChuyenKhoa || 'Đa khoa'}</div>
+                        </div>
+                    </div>
+                    ${unavailableBadge}
+                </div>
+                `;
+            }).join('');
+        }
+
+        function renderShifts(shifts) {
+            const container = document.getElementById('shiftSelector');
+            container.innerHTML = shifts.map(shift => {
+                // Tất cả ca đều khả dụng ban đầu (sẽ check khi chọn)
+                return `
+                <div class="shift-btn" data-shift="${shift.maCa}" onclick="selectShift(${shift.maCa})">
+                    <i class="fas ${shift.maCa === 1 ? 'fa-sun' : 'fa-cloud-sun'}"></i> ${shift.tenCa}<br>
+                    <small>${shift.gioBatDau.substring(0, 5)} - ${shift.gioKetThuc.substring(0, 5)}</small>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function renderTimeSlots(slots) {
+            const container = document.getElementById('timeSlots');
+            container.innerHTML = slots.map(slot => {
+                const unavailableClass = slot.available ? '' : 'disabled';
+                const onclick = slot.available ? `onclick="selectSlot(${slot.maSuat})"` : '';
+                const unavailableText = slot.available ? '' : '<small style="color: #ff4d4f; display: block; margin-top: 4px;">Đã đặt</small>';
+                
+                return `
+                <div class="time-slot ${unavailableClass}" 
+                    data-slot="${slot.maSuat}" 
+                    ${onclick}>
+                    <i class="fas fa-clock"></i>
+                    <div>${slot.gioBatDau.substring(0, 5)} - ${slot.gioKetThuc.substring(0, 5)}</div>
+                    ${unavailableText}
+                </div>
+                `;
+            }).join('');
+        }
+
+        // === SELECTION HANDLERS ===
+
+        function selectPackage(packageId) {
+            bookingState.packageId = packageId;
+            document.querySelectorAll('#packageGrid .selection-card').forEach(card => {
+                card.classList.toggle('selected', parseInt(card.dataset.id) === packageId);
+            });
+            document.getElementById('btnStep1Next').disabled = false;
+        }
+
+        function selectDepartment(departmentId) {
+            bookingState.departmentId = departmentId;
+            bookingState.specialtyId = null;
+            bookingState.doctorId = null;
+            bookingState.date = null;
+            bookingState.shiftId = null;
+            bookingState.slotId = null;
+            
+            document.querySelectorAll('#departmentGrid .selection-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.id === departmentId);
+            });
+            
+            loadSpecialties(departmentId);
+            document.getElementById('btnStep2Next').disabled = false;
+        }
+
+        function selectSpecialty(specialtyId) {
+            bookingState.specialtyId = specialtyId;
+            bookingState.doctorId = null;
+            bookingState.date = null;
+            bookingState.shiftId = null;
+            bookingState.slotId = null;
+            
+            document.querySelectorAll('#specialtyGrid .selection-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.id === specialtyId);
+            });
+            
+            document.getElementById('btnStep3Next').disabled = false;
+        }
+
+        function selectDoctor(doctorId) {
+            // Kiểm tra xem bác sĩ có khả dụng không
+            const doctorCard = document.querySelector(`#doctorGrid .doctor-card[data-id="${doctorId}"]`);
+            if (doctorCard && doctorCard.classList.contains('disabled')) {
+                alert('Bác sĩ này không khả dụng trong ngày đã chọn. Vui lòng chọn bác sĩ khác!');
+                return;
+            }
+            
+            bookingState.doctorId = doctorId;
+            bookingState.shiftId = null;
+            bookingState.slotId = null;
+            
+            document.querySelectorAll('#doctorGrid .doctor-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.id === doctorId);
+            });
+            
+            loadShifts();
+            document.getElementById('btnStep4Next').disabled = false;
+        }
+
+        function selectShift(shiftId) {
+            bookingState.shiftId = shiftId;
+            bookingState.slotId = null;
+            
+            document.querySelectorAll('#shiftSelector .shift-btn').forEach(btn => {
+                btn.classList.toggle('selected', parseInt(btn.dataset.shift) === shiftId);
+            });
+            
+            loadAvailableSlots(shiftId);
+            document.getElementById('btnStep5Next').disabled = true;
+        }
+
+        function selectSlot(slotId) {
+            // Kiểm tra xem suất có khả dụng không
+            const slotCard = document.querySelector(`#timeSlots .time-slot[data-slot="${slotId}"]`);
+            if (slotCard && slotCard.classList.contains('disabled')) {
+                alert('Suất khám này đã được đặt. Vui lòng chọn suất khác!');
+                return;
+            }
+            
+            bookingState.slotId = slotId;
+            
+            document.querySelectorAll('#timeSlots .time-slot').forEach(slot => {
+                slot.classList.toggle('selected', parseInt(slot.dataset.slot) === slotId);
+            });
+            
+            document.getElementById('btnStep5Next').disabled = false;
+        }
+
+        // === NAVIGATION ===
 
         function goToStep(stepNumber) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(sec => sec.classList.remove('active'));
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.getElementById('step' + stepNumber).classList.add('active');
-
+            
+            // Update step indicators
             const steps = document.querySelectorAll('.step');
             steps.forEach(s => {
                 s.classList.remove('active', 'completed');
@@ -967,439 +1033,133 @@
                 if (step < stepNumber) s.classList.add('completed');
                 if (step === stepNumber) s.classList.add('active');
             });
-
+            
+            // Update progress line
             const progressLine = document.getElementById('progressLine');
             const percent = ((stepNumber - 1) / (steps.length - 1)) * 100;
             progressLine.style.width = percent + '%';
-        }
-
-        // RENDER FUNCTIONS
-        function renderDepartments() {
-            const container = document.getElementById('departmentGrid');
-            let html = '';
-
-            MOCK_DATA.departments.forEach(dept => {
-                html += `
-                    <div class="selection-card" data-id="${dept.id}" onclick="selectDepartment(${dept.id})">
-                        <div class="card-icon"><i class="fas ${dept.icon}"></i></div>
-                        <div class="card-title">${dept.name}</div>
-                        <div class="check-icon"><i class="fas fa-check"></i></div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderSpecialties(departmentId) {
-            const container = document.getElementById('specialtyGrid');
-            const specialties = MOCK_DATA.specialties[departmentId] || [];
-            let html = '';
-
-            specialties.forEach(spec => {
-                html += `
-                    <div class="selection-card" data-id="${spec.id}" onclick="selectSpecialty(${spec.id})">
-                        <div class="card-icon"><i class="fas ${spec.icon}"></i></div>
-                        <div class="card-title">${spec.name}</div>
-                        <div class="check-icon"><i class="fas fa-check"></i></div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderDoctors(specialtyId, date) {
-            const container = document.getElementById('doctorGrid');
-            // Filter doctors by specialty and available on selected date
-            const availableDoctors = MOCK_DATA.doctors.filter(doc => 
-                doc.specialty_id === specialtyId && 
-                doc.work_days.includes(date)
-            );
-
-            if (availableDoctors.length === 0) {
-                container.innerHTML = '<div class="empty-state"><i class="fas fa-user-md"></i><p>Không có bác sĩ khả dụng trong ngày này</p></div>';
-                return;
-            }
-
-            let html = '';
-            availableDoctors.forEach(doctor => {
-                html += `
-                    <div class="doctor-card" data-id="${doctor.id}" onclick="selectDoctor(${doctor.id})">
-                        <div class="doctor-header">
-                            <div class="doctor-avatar"><i class="fas fa-user-md"></i></div>
-                            <div>
-                                <div class="doctor-name">${doctor.name}</div>
-                                <div class="doctor-specialty">Chuyên khoa: ${getSpecialtyName(doctor.specialty_id)}</div>
-                            </div>
-                        </div>
-                        ${doctor.is_expert ? '<div class="expert-badge"><i class="fas fa-star"></i> Bác Sĩ Chuyên Gia</div>' : ''}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderShifts(doctorId) {
-            const container = document.getElementById('shiftSelector');
-            const doctor = MOCK_DATA.doctors.find(d => d.id === doctorId);
             
-            let html = '';
-            if (doctor.shifts.morning) {
-                html += `
-                    <div class="shift-btn" data-shift="morning" onclick="selectShift('morning')">
-                        <i class="fas fa-sun"></i> Ca Sáng<br>
-                        <small>${doctor.shifts.morning.start} - ${doctor.shifts.morning.end}</small>
-                    </div>
-                `;
+            // Load data if needed
+            if (stepNumber === 2 && !document.querySelector('#departmentGrid .selection-card')) {
+                loadDepartments();
             }
-            if (doctor.shifts.afternoon) {
-                html += `
-                    <div class="shift-btn" data-shift="afternoon" onclick="selectShift('afternoon')">
-                        <i class="fas fa-cloud-sun"></i> Ca Chiều<br>
-                        <small>${doctor.shifts.afternoon.start} - ${doctor.shifts.afternoon.end}</small>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
         }
 
-        function renderTimeSlots(doctorId, shift) {
-            const container = document.getElementById('timeSlots');
-            const doctor = MOCK_DATA.doctors.find(d => d.id === doctorId);
-            const shiftData = doctor.shifts[shift];
-            
-            const slots = generateTimeSlots(shiftData.start, shiftData.end, shiftData.slot_duration);
-            let html = '';
+        // Button event listeners
+        document.getElementById('btnStep1Next').addEventListener('click', () => goToStep(2));
+        document.getElementById('btnStep2Next').addEventListener('click', () => goToStep(3));
+        document.getElementById('btnStep3Next').addEventListener('click', () => goToStep(4));
+        document.getElementById('btnStep4Next').addEventListener('click', () => goToStep(5));
+        document.getElementById('btnStep5Next').addEventListener('click', () => {
+            renderSummary();
+            goToStep(6);
+        });
 
-            slots.forEach(slot => {
-                const slotDateTime = `${bookingState.date}T${slot.start}`;
-                const isBooked = doctor.booked_slots.includes(slotDateTime);
-                const disabledClass = isBooked ? 'disabled' : '';
-                const onclick = isBooked ? '' : `onclick="selectTime('${slot.start}')"`;
+        // === SUMMARY & SUBMIT ===
 
-                html += `
-                    <div class="time-slot ${disabledClass}" data-time="${slot.start}" ${onclick}>
-                        <i class="fas fa-clock"></i>
-                        <div>${slot.start} - ${slot.end}</div>
-                        ${isBooked ? '<small style="color: #ff4d4f;">Đã đặt</small>' : ''}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderPackageTypes(doctorId) {
-            const container = document.getElementById('packageTypeGrid');
-            const doctor = MOCK_DATA.doctors.find(d => d.id === doctorId);
-            
-            let html = '';
-            MOCK_DATA.packageTypes.forEach(pkg => {
-                const disabled = pkg.requireExpert && !doctor.is_expert;
-                const disabledClass = disabled ? 'disabled' : '';
-                const onclick = disabled ? '' : `onclick="selectPackageType('${pkg.id}')"`;
-
-                html += `
-                    <div class="package-type-card ${disabledClass}" data-id="${pkg.id}" ${onclick}>
-                        <div class="package-name">${pkg.name}</div>
-                        <div class="package-price">${pkg.price}</div>
-                        <div class="package-description">${pkg.description}</div>
-                        ${disabled ? '<small style="color: #ff4d4f; margin-top: 10px; display: block;">Không khả dụng</small>' : ''}
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function renderSummary() {
+        async function renderSummary() {
             const container = document.getElementById('summaryCard');
             
-            const department = MOCK_DATA.departments.find(d => d.id === bookingState.department);
-            const specialty = MOCK_DATA.specialties[bookingState.department].find(s => s.id === bookingState.specialty);
-            const doctor = MOCK_DATA.doctors.find(d => d.id === bookingState.doctor);
-            const packageType = MOCK_DATA.packageTypes.find(p => p.id === bookingState.packageType);
-
-            container.innerHTML = `
-                <div class="summary-item">
-                    <div class="summary-label">Khoa:</div>
-                    <div class="summary-value">${department.name}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Chuyên Khoa:</div>
-                    <div class="summary-value">${specialty.name}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Bác Sĩ:</div>
-                    <div class="summary-value">${doctor.name} ${doctor.is_expert ? '(Chuyên Gia)' : ''}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Ngày Khám:</div>
-                    <div class="summary-value">${formatDate(bookingState.date)}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Ca Làm Việc:</div>
-                    <div class="summary-value">${bookingState.shift === 'morning' ? 'Ca Sáng' : 'Ca Chiều'}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Giờ Khám:</div>
-                    <div class="summary-value">${bookingState.time}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Gói Khám:</div>
-                    <div class="summary-value">${packageType.name} - ${packageType.price}</div>
-                </div>
-            `;
+            try {
+                // Fetch all needed data
+                const [packageRes, deptRes, specRes, docRes, shiftRes, slotRes] = await Promise.all([
+                    fetch(`${API_BASE}/get-packages.php`),
+                    fetch(`${API_BASE}/get-departments.php`),
+                    fetch(`${API_BASE}/get-specialties.php?maKhoa=${bookingState.departmentId}`),
+                    fetch(`${API_BASE}/get-available-doctors.php?maChuyenKhoa=${bookingState.specialtyId}&ngayKham=${bookingState.date}`),
+                    fetch(`${API_BASE}/get-shifts.php`),
+                    fetch(`${API_BASE}/get-available-slots.php?maBacSi=${bookingState.doctorId}&ngayKham=${bookingState.date}&maCa=${bookingState.shiftId}`)
+                ]);
+                
+                const packages = (await packageRes.json()).data;
+                const departments = (await deptRes.json()).data;
+                const specialties = (await specRes.json()).data;
+                const doctors = (await docRes.json()).data;
+                const shifts = (await shiftRes.json()).data;
+                const slots = (await slotRes.json()).data;
+                
+                const pkg = packages.find(p => p.maGoi === bookingState.packageId);
+                const dept = departments.find(d => d.maKhoa === bookingState.departmentId);
+                const spec = specialties.find(s => s.maChuyenKhoa === bookingState.specialtyId);
+                const doc = doctors.find(d => d.maBacSi === bookingState.doctorId);
+                const shift = shifts.find(s => s.maCa === bookingState.shiftId);
+                const slot = slots.find(s => s.maSuat === bookingState.slotId);
+                
+                container.innerHTML = `
+                    <div class="summary-item">
+                        <div class="summary-label">Gói Khám:</div>
+                        <div class="summary-value">${pkg.tenGoi} - ${Number(pkg.gia).toLocaleString('vi-VN')}đ</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Khoa:</div>
+                        <div class="summary-value">${dept.tenKhoa}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Chuyên Khoa:</div>
+                        <div class="summary-value">${spec.tenChuyenKhoa}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Bác Sĩ:</div>
+                        <div class="summary-value">${doc.tenBacSi}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Ngày Khám:</div>
+                        <div class="summary-value">${formatDate(bookingState.date)}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Ca Làm Việc:</div>
+                        <div class="summary-value">${shift.tenCa}</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Giờ Khám:</div>
+                        <div class="summary-value">${slot.gioBatDau.substring(0, 5)} - ${slot.gioKetThuc.substring(0, 5)}</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error rendering summary:', error);
+            }
         }
 
-        // SELECTION HANDLERS
-function selectDepartment(id) {
-    bookingState.department = id;
-    bookingState.specialty = null;
-    bookingState.doctor = null;
-    bookingState.date = null;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
+        async function submitBooking() {
+            const notes = document.getElementById('notes').value;
+            
+            const bookingData = {
+                maBenhNhan: bookingState.patientId,
+                maBacSi: bookingState.doctorId,
+                ngayKham: bookingState.date,
+                maCa: bookingState.shiftId,
+                maSuat: bookingState.slotId,
+                maGoi: bookingState.packageId,
+                ghiChu: notes
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/create-appointment.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData),
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Đặt lịch thành công! Mã lịch khám: ' + data.maLichKham);
+                    window.location.href = 'lichkham.html';
+                } else {
+                    alert('Đặt lịch thất bại: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error submitting booking:', error);
+                alert('Có lỗi xảy ra. Vui lòng thử lại!');
+            }
+        }
 
-    // Highlight selected
-    document.querySelectorAll('#departmentGrid .selection-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.id) === id);
-    });
-
-    renderSpecialties(id);
-    document.getElementById('btnStep1Next').disabled = false;
-}
-
-function selectSpecialty(id) {
-    bookingState.specialty = id;
-    bookingState.doctor = null;
-    bookingState.date = null;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    document.querySelectorAll('#specialtyGrid .selection-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.id) === id);
-    });
-
-    document.getElementById('btnStep2Next').disabled = false;
-}
-
-function selectDate(date) {
-    bookingState.date = date;
-    bookingState.doctor = null;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-    document.getElementById('btnStep3Next').disabled = true;
-}
-
-function selectDoctor(id) {
-    bookingState.doctor = id;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    document.querySelectorAll('#doctorGrid .doctor-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.id) === id);
-    });
-
-    renderShifts(id);
-    document.getElementById('btnStep3Next').disabled = false;
-}
-
-function selectShift(shift) {
-    bookingState.shift = shift;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    document.querySelectorAll('#shiftSelector .shift-btn').forEach(btn => {
-        btn.classList.toggle('selected', btn.dataset.shift === shift);
-    });
-
-    renderTimeSlots(bookingState.doctor, shift);
-    renderPackageTypes(bookingState.doctor);
-    document.getElementById('btnStep4Next').disabled = true;
-}
-
-function selectTime(time) {
-    bookingState.time = time;
-    document.querySelectorAll('#timeSlots .time-slot').forEach(slot => {
-        slot.classList.toggle('selected', slot.dataset.time === time);
-    });
-    document.getElementById('btnStep4Next').disabled = !bookingState.time || !bookingState.packageType;
-}
-
-function selectPackageType(id) {
-    bookingState.packageType = id;
-    document.querySelectorAll('#packageTypeGrid .package-type-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.id === id);
-    });
-    document.getElementById('btnStep4Next').disabled = !bookingState.time || !bookingState.packageType;
-}
-
-// BUTTON EVENTS
-document.getElementById('btnStep1Next').addEventListener('click', () => goToStep(2));
-document.getElementById('btnStep2Next').addEventListener('click', () => goToStep(3));
-document.getElementById('btnStep3Next').addEventListener('click', () => goToStep(4));
-document.getElementById('btnStep4Next').addEventListener('click', () => {
-    renderSummary();
-    goToStep(5);
-});
-
-function getSpecialtyName(id) {
-    for (const deptId in MOCK_DATA.specialties) {
-        const spec = MOCK_DATA.specialties[deptId].find(s => s.id === id);
-        if (spec) return spec.name;
-    }
-    return '';
-}
-
-function submitBooking() {
-    const notes = document.getElementById('notes').value;
-    console.log('Booking Submitted:', { ...bookingState, notes });
-    alert('Đặt lịch thành công!');
-}
-
-// Initialize
-renderDepartments();
-
-// Update date input listener
-document.getElementById('appointmentDate').addEventListener('change', (e) => {
-    const date = e.target.value;
-    bookingState.date = date;
-    if (bookingState.specialty && date) {
-        renderDoctors(bookingState.specialty, date);
-        document.getElementById('btnStep3Next').disabled = true;
-    }
-});
-// SELECTION HANDLERS
-function selectDepartment(id) {
-    bookingState.department = id;
-    bookingState.specialty = null;
-    bookingState.doctor = null;
-    bookingState.date = null;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    // Highlight selected
-    document.querySelectorAll('#departmentGrid .selection-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.id) === id);
-    });
-
-    renderSpecialties(id);
-    document.getElementById('btnStep1Next').disabled = false;
-}
-
-function selectSpecialty(id) {
-    bookingState.specialty = id;
-    bookingState.doctor = null;
-    bookingState.date = null;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    document.querySelectorAll('#specialtyGrid .selection-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.id) === id);
-    });
-
-    document.getElementById('btnStep2Next').disabled = false;
-}
-
-function selectDate(date) {
-    bookingState.date = date;
-    bookingState.doctor = null;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-    document.getElementById('btnStep3Next').disabled = true;
-}
-
-function selectDoctor(id) {
-    bookingState.doctor = id;
-    bookingState.shift = null;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    document.querySelectorAll('#doctorGrid .doctor-card').forEach(card => {
-        card.classList.toggle('selected', parseInt(card.dataset.id) === id);
-    });
-
-    renderShifts(id);
-    document.getElementById('btnStep3Next').disabled = false;
-}
-
-function selectShift(shift) {
-    bookingState.shift = shift;
-    bookingState.time = null;
-    bookingState.packageType = null;
-
-    document.querySelectorAll('#shiftSelector .shift-btn').forEach(btn => {
-        btn.classList.toggle('selected', btn.dataset.shift === shift);
-    });
-
-    renderTimeSlots(bookingState.doctor, shift);
-    renderPackageTypes(bookingState.doctor);
-    document.getElementById('btnStep4Next').disabled = true;
-}
-
-function selectTime(time) {
-    bookingState.time = time;
-    document.querySelectorAll('#timeSlots .time-slot').forEach(slot => {
-        slot.classList.toggle('selected', slot.dataset.time === time);
-    });
-    document.getElementById('btnStep4Next').disabled = !bookingState.time || !bookingState.packageType;
-}
-
-function selectPackageType(id) {
-    bookingState.packageType = id;
-    document.querySelectorAll('#packageTypeGrid .package-type-card').forEach(card => {
-        card.classList.toggle('selected', card.dataset.id === id);
-    });
-    document.getElementById('btnStep4Next').disabled = !bookingState.time || !bookingState.packageType;
-}
-
-// BUTTON EVENTS
-document.getElementById('btnStep1Next').addEventListener('click', () => goToStep(2));
-document.getElementById('btnStep2Next').addEventListener('click', () => goToStep(3));
-document.getElementById('btnStep3Next').addEventListener('click', () => goToStep(4));
-document.getElementById('btnStep4Next').addEventListener('click', () => {
-    renderSummary();
-    goToStep(5);
-});
-
-function getSpecialtyName(id) {
-    for (const deptId in MOCK_DATA.specialties) {
-        const spec = MOCK_DATA.specialties[deptId].find(s => s.id === id);
-        if (spec) return spec.name;
-    }
-    return '';
-}
-
-function submitBooking() {
-    const notes = document.getElementById('notes').value;
-    console.log('Booking Submitted:', { ...bookingState, notes });
-    alert('Đặt lịch thành công!');
-}
-
-// Initialize
-renderDepartments();
-
-// Update date input listener
-document.getElementById('appointmentDate').addEventListener('change', (e) => {
-    const date = e.target.value;
-    bookingState.date = date;
-    if (bookingState.specialty && date) {
-        renderDoctors(bookingState.specialty, date);
-        document.getElementById('btnStep3Next').disabled = true;
-    }
-});
-
+        // Helper function
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        }
     </script>
 </body>
 </html>
