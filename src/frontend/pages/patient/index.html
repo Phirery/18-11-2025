@@ -99,7 +99,7 @@
         }
 
         .btn-auth {
-            padding: 8px 22px;
+            padding: 6px 22px;
             border-radius: 25px;
             font-weight: 600;
             transition: all 0.3s;
@@ -1007,6 +1007,19 @@
             text-overflow: ellipsis;
         }
 
+		.user-avatar {
+			width: 38px;
+			height: 38px;
+			background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-weight: 600;
+			font-size: 1rem;
+		}
+
         /* Nút đăng xuất style dashboard */
         .btn-logout-custom {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -1327,7 +1340,7 @@
 
     <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-chevron-up"></i></button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // CẤU HÌNH ĐƯỜNG DẪN API (Sửa lại cho đúng với cấu trúc thư mục của bạn)
         const API_BASE_PATIENT = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
