@@ -405,19 +405,6 @@
     </style>
 </head>
 <body>
-
-<!-- Navbar -->
-    <div class="sticky-top">
-        <div id="navbar"></div>
-    </div>
-    <script>
-        // Dùng fetch để load file header.html 
-        fetch("../../components/navbar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("navbar").innerHTML = data);
-    </script>
-
-
 <!-- Header -->
 <section class="contact-header">
     <div class="container">
@@ -436,10 +423,7 @@
                     <i class="fas fa-map-marker-alt"></i>
                 </div>
                 <h4>Địa Chỉ</h4>
-                <p><strong>Chi nhánh An Hòa:</strong></p>
-                <p>Tòa nhà 317, Nguyễn Văn Cừ, Quận Ninh Kiều, TP.CT</p>
-                <p><strong>Chi nhánh An Bình:</strong></p>
-                <p>Lầu 2, VinCom Xuân Khách, Ninh Kiều, TP.CT</p>
+                <p>Nguyễn Văn Cừ, Quận Ninh Kiều, Thành Phố Cần Thơ</p>
             </div>
         </div>
 
@@ -451,12 +435,7 @@
                 <h4>Liên Hệ</h4>
                 <p><strong>Hotline:</strong> 1800 6116</p>
                 <p><strong>Điện thoại:</strong> 0798576605</p>
-                <p><strong>Email:</strong> kietcho@gmail.com.vn</p>
-                <div class="social-icons mt-3">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
+                <p><strong>Email:</strong> edenhealth@gmail.com.vn</p>
             </div>
         </div>
 
@@ -466,12 +445,8 @@
                     <i class="fas fa-clock"></i>
                 </div>
                 <h4>Giờ Làm Việc</h4>
-                <p><strong>Thứ 2 - Thứ 7:</strong></p>
-                <p>08:00 - 17:00 (Tất cả chuyên khoa)</p>
-                <p><strong>Thứ 2 - Thứ 6:</strong></p>
-                <p>17:00 - 20:00 (CN An Hòa)</p>
-                <p><strong>Chủ nhật:</strong></p>
-                <p>08:00 - 17:00 (Nghỉ trưa 12:00 - 14:00)</p>
+                <p><strong>Thứ 2 - Chủ Nhật:</strong></p>
+                <p>07:00 - 17:00 (Nghỉ trưa 11:00 - 13:00)</p>
             </div>
         </div>
     </div>
@@ -534,81 +509,6 @@
             </div>
         </div>
     </div>
-
-    
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <!-- Quick Links -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5><i class="fas fa-link"></i> LIÊN KẾT NHANH</h5>
-                <ul class="list-unstyled">
-                    <li><a href="vechungtoi.html"><i class="fas fa-chevron-right"></i> Giới thiệu</a></li>
-                    <li><a href="chuyenkhoa.html"><i class="fas fa-chevron-right"></i> Các chuyên khoa</a></li>
-                    <li><a href="dsBacSi.html"><i class="fas fa-chevron-right"></i> Bác sĩ</a></li>
-                </ul>
-                <p class="mt-3" style="font-size: 0.85rem; opacity: 0.7;">
-                    Công ty TNHH Enden Health<br>
-                    Số ĐKKD 0313149135 do Sở KHĐT Tp.CT cấp ngày 27/02/2010
-                </p>
-            </div>
-
-            <!-- System -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5><i class="fas fa-hospital"></i> HỆ THỐNG PHÒNG KHÁM</h5>
-                <p><strong>Phòng khám An Hòa</strong><br>
-                Tòa nhà 317, Nguyễn Văn Cừ<br>
-                <a href="#" class="text-warning"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</a></p>
-                <p><strong>Phòng khám An Bình</strong><br>
-                Lầu 2, VinCom Xuân Khách, Ninh Kiều<br>
-                <a href="#" class="text-warning"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</a></p>
-                <p><strong>Phòng khám Tân Bình</strong><br>
-                107, Đường Tân Hải, Quận Tân Bình<br>
-                <a href="#" class="text-warning"><i class="fas fa-map-marker-alt"></i> Xem bản đồ</a></p>
-            </div>
-
-            <!-- Services -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5><i class="fas fa-notes-medical"></i> GÓI KHÁM CƠ BẢN</h5>
-                <ul class="list-unstyled">
-                    <li><a href="dsGoiKham.html"><i class="fas fa-chevron-right"></i> Các gói khám cơ bản</a></li>
-                </ul>
-                 <h5><i class="fas fa-notes-medical"></i> GÓI KHÁM NÂNG CAO</h5>
-                <ul class="list-unstyled">
-                    <li><a href="dsGoiKham.html"><i class="fas fa-chevron-right"></i> Các gói khám nâng cao</a></li>
-                </ul>
-                 <h5><i class="fas fa-notes-medical"></i> GÓI KHÁM VIP</h5>
-                <ul class="list-unstyled">
-                    <li><a href="dsGoiKham.html"><i class="fas fa-chevron-right"></i> Các gói khám vip</a></li>
-                </ul>
-            </div>
-
-            <!-- Contact -->
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5><i class="fas fa-phone-volume"></i> LIÊN HỆ</h5>
-                <p>
-                    <i class="fas fa-phone-alt text-warning"></i> Hotline: <span class="text-warning">1800 6116</span><br>
-                    <i class="fas fa-envelope text-warning"></i> Email: <span class="text-warning">info@vietlifeclinic.vn</span>
-                </p>
-                <h5 class="mt-3"><i class="fas fa-business-time"></i> LỊCH LÀM VIỆC</h5>
-                <p style="font-size: 0.9rem;">
-                    <i class="fas fa-calendar-check"></i> <strong>Thứ 2 - Thứ 7</strong><br>
-                    08:00 - 17:00: Tất cả chuyên khoa<br>
-                    <i class="fas fa-calendar-week"></i> <strong>Thứ 2 - Thứ 6</strong><br>
-                    17:00 - 20:00: CN An Hòa<br>
-                    <i class="fas fa-calendar-day"></i> <strong>Chủ nhật</strong><br>
-                    08:00 - 12:00<br>
-                    <small>Giờ nghỉ trưa: 12:00 - 13:00</small>
-                </p>
-            </div>
-        </div>
-        
-        
-    </div>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script>
