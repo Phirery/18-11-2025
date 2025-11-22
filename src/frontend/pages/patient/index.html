@@ -42,7 +42,7 @@
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            padding: 12px 0;
+            padding: 8px 0;
             transition: all 0.3s ease;
         }
 
@@ -99,12 +99,16 @@
         }
 
         .btn-auth {
-            padding: 6px 22px;
+            padding: 8px 20px;
             border-radius: 25px;
             font-weight: 600;
             transition: all 0.3s;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            justify-content: center ;
+            display: inline-flex;
+            align-items: center;
+            height: 35px;
         }
 
         .btn-login {
@@ -971,7 +975,7 @@
             .trust-item .number { font-size: 1.8rem; }
             .section-header h2 { font-size: 1.8rem; }
             .auth-buttons { flex-direction: column; gap: 5px; }
-            .btn-auth { padding: 8px 18px; font-size: 0.85rem; }
+            .btn-auth { padding: 8px 20px; font-size: 0.85rem; }
         }
         /* 1. Thu hẹp khoảng cách logo và menu */
         .navbar-nav {
@@ -1025,15 +1029,19 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 8px 18px;
+            padding: 8px 20px;
             border-radius: 20px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             transition: all 0.3s;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 5px;
+            justify-content: center;
+            align-items: center;
+            height: 35px;
+
         }
 
         .btn-logout-custom:hover {
@@ -1446,14 +1454,15 @@
         // --- CÁC HÀM CŨ GIỮ NGUYÊN (đã tối ưu code gọn hơn) ---
 
         function setupScrollEffects() {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            
             window.addEventListener('scroll', function() {
-                const navbar = document.querySelector('.navbar-custom');
-                const scrollBtn = document.getElementById('scrollTopBtn');
+                // XÓA BỎ logic thêm/bớt class .scrolled cho navbar và breadcrumb ở đây
                 
-                if (window.scrollY > 50) navbar.classList.add('scrolled');
-                else navbar.classList.remove('scrolled');
-                
-                scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+                // Chỉ giữ lại nút lên đầu trang
+                if (scrollBtn) {
+                    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+                }
             });
         }
 

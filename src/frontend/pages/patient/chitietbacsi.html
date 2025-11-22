@@ -29,7 +29,7 @@
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            padding: 12px 0;
+            padding: 8px 0;
             transition: all 0.3s ease;
         }
 
@@ -175,20 +175,46 @@
         /* === BREADCRUMB === */
         .breadcrumb-section {
             background: white;
-            padding: 15px 0;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 10px 0; /* Giảm padding một chút cho gọn */
+            border-bottom: 1px solid #f2f4fa;
+            position: sticky;
+            z-index: 990; /* Thấp hơn Header (thường là 1000) */
+            
+            /* TRẠNG THÁI 1: KHI Ở ĐẦU TRANG (Header to) */
+            /* Bạn có thể cần chỉnh số 76px này lên/xuống tùy độ cao thực tế Header của bạn */
+            top: 0px; 
+            
+            /* QUAN TRỌNG: Hiệu ứng trượt mượt mà đồng bộ với Header */
+            transition: top 0.3s ease, padding 0.3s ease; 
         }
 
-        .breadcrumb { font-size: 0.9rem; }
+        .breadcrumb-section.scrolled-mode {
+            /* TRẠNG THÁI 2: KHI ĐÃ CUỘN (Header thu nhỏ) */
+            /* Header thu nhỏ lại bao nhiêu thì giảm số này bấy nhiêu (thường là khoảng 60px-65px) */
+            top: 57px; 
+            
+            /* Tùy chọn: Thu nhỏ breadcrumb thêm chút nữa khi cuộn cho gọn */
+            padding: 8px 0; 
+        }
+
+        .breadcrumb {
+            font-size: 0.8rem; 
+            margin-bottom: 0 !important;
+        }
 
         .breadcrumb-item a {
-            color: var(--text-muted);
+            color: var(--text-muted); /* Giữ màu chữ link */
             text-decoration: none;
             transition: color 0.3s;
         }
 
-        .breadcrumb-item a:hover { color: var(--primary-purple); }
-        .breadcrumb-item.active { color: var(--primary-purple); font-weight: 600; }
+        .breadcrumb-item a:hover { 
+            color: var(--secondary-purple); /* Đổi màu khi hover sang tím đậm hơn */
+        }
+        .breadcrumb-item.active { 
+            color: var(--primary-purple); /* Giữ màu chữ trang hiện tại là tím nhạt */
+            font-weight: 600; 
+        }
 
         /* === LOADING & ERROR === */
         .loading-container, .error-container {
@@ -741,9 +767,9 @@
         <div class="container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home"></i> Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="breadcrumb-item active" id="breadcrumbName">Chi tiết bác sĩ</li>
+                    <li class="breadcrumb-item"><a href="index.html"><strong>Trang chủ</strong></a></li>
+                    <li class="breadcrumb-item"><a href="danhsachbacsi.html"><strong>Bác sĩ</strong></a></li>
+                    <li class="breadcrumb-item active" id="breadcrumbName"><strong>Chi tiết bác sĩ</strong></li>
                 </ol>
             </nav>
         </div>
@@ -1152,17 +1178,28 @@
 
         // Setup scroll effects
         function setupScrollEffects() {
+            // Lấy cả Navbar và Breadcrumb
+            const navbar = document.querySelector('.navbar-custom');
+            const breadcrumb = document.querySelector('.breadcrumb-section');
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            
+            if (!navbar) return;
+
             window.addEventListener('scroll', function() {
-                const navbar = document.querySelector('.navbar-custom');
-                const scrollBtn = document.getElementById('scrollTopBtn');
-                
                 if (window.scrollY > 50) {
+                    // Khi cuộn xuống
                     navbar.classList.add('scrolled');
+                    if (breadcrumb) breadcrumb.classList.add('scrolled-mode'); // Thêm class này
                 } else {
+                    // Khi ở đầu trang
                     navbar.classList.remove('scrolled');
+                    if (breadcrumb) breadcrumb.classList.remove('scrolled-mode'); // Xóa class này
                 }
                 
-                scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+                // Logic nút scroll to top (giữ nguyên)
+                if (scrollBtn) {
+                    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+                }
             });
         }
 
