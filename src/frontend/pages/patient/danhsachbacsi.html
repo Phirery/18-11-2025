@@ -30,24 +30,59 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             padding: 12px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            transition: all 0.3s ease;
         }
+        .navbar-custom.scrolled {
+            padding: 8px 0;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+        }
+
 
         .navbar-brand-header {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-purple) !important;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .navbar-brand-header:hover {
+            transform: scale(1.02);
+            color: var(--secondary-purple) !important;
         }
 
         .navbar-brand-header i {
             color: var(--secondary-purple);
         }
+
+        .nav-link-header {
+            color: #333 !important;
+            font-weight: 500;
+            margin: 0 8px;
+            padding: 8px 12px !important;
+            position: relative;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-link-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-link-header:hover,
+        .nav-link-header.active { color: var(--primary-purple) !important; }
+
+        .nav-link-header:hover::after,
+        .nav-link-header.active::after { width: 80%; }
+
 
         .user-info {
             display: flex;
@@ -384,15 +419,47 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
             <a class="navbar-brand-header" href="index.html">
-                <i class="fas fa-clinic-medical"></i>
-                <span><span style="font-weight: 800;">Eden</span> Health</span>
+                <i class="fas fa-clinic-medical me-2"></i>
+                <span>Eden</span> Health
             </a>
-            <div class="ms-auto user-info">
-                <div class="user-avatar" id="userAvatar">U</div>
-                <span id="userName">Người dùng</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="danhsachkhoa.html">Chuyên khoa</a></li>
+                    <li class="nav-item"><a class="nav-link-header active" href="danhsachbacsi.html">Bác sĩ</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="vechungtoi.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
+                    <li class="nav-item" id="navProfileItem" style="display: none;">
+                        <a class="nav-link-header" href="hosocanhan.html">Hồ sơ cá nhân</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="auth-buttons" id="authButtons">
+                        <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                        </a>
+                        <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
+                            <i class="fas fa-user-plus me-1"></i> Đăng ký
+                        </a>
+                    </div>
+                    <div class="user-dropdown dropdown" id="userDropdown">
+                        <div class="user-avatar" data-bs-toggle="dropdown" id="userAvatar">N</div>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom">
+                            <li><span class="dropdown-item-text fw-bold" id="dropdownUserName">Người dùng</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="hosocanhan.html"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a></li>
+                            <li><a class="dropdown-item" href="lichkham.html"><i class="fas fa-calendar-check"></i> Lịch khám của tôi</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

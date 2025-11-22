@@ -132,70 +132,9 @@
             transform: translateY(-2px);
         }
 
-        /* User logged in dropdown */
-        .user-dropdown {
-            display: none;
-        }
-
-        .user-dropdown.show {
-            display: flex;
-        }
-
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .dropdown-menu-custom {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-            padding: 8px 0;
-            min-width: 200px;
-            animation: fadeDown 0.25s ease;
-        }
-
         @keyframes fadeDown {
             from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dropdown-menu-custom .dropdown-item {
-            padding: 10px 18px;
-            font-weight: 500;
-            color: #333;
-            transition: all 0.2s;
-        }
-
-        .dropdown-menu-custom .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            color: var(--secondary-purple);
-        }
-
-        .dropdown-menu-custom .dropdown-item i {
-            width: 20px;
-            margin-right: 10px;
-            color: var(--primary-purple);
-        }
-
-        .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         /* === BANNER === */
@@ -1034,6 +973,66 @@
             .auth-buttons { flex-direction: column; gap: 5px; }
             .btn-auth { padding: 8px 18px; font-size: 0.85rem; }
         }
+        /* 1. Thu hẹp khoảng cách logo và menu */
+        .navbar-nav {
+            margin: 0 auto !important; /* CŨ: margin-left: 20px; margin-right: auto; */
+            /* MỚI: margin: 0 auto để nó tự động căn đều khoảng cách 2 bên */
+        }
+        
+        /* 2. Style cho phần thông tin người dùng (Lấy từ Dashboard & tinh giản) */
+        .logout-header {
+            display: none; /* Mặc định ẩn */
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-header.active {
+            display: flex; /* Hiện khi đăng nhập */
+        }
+
+        .user-info-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .header-user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Nút đăng xuất style dashboard */
+        .btn-logout-custom {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-logout-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        /* Ẩn hiện menu item khi đăng nhập */
+        .nav-item-loggedin {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1050,19 +1049,22 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="danhsachkhoa.html">Chuyên khoa</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="vechungtoi.html">Về chúng tôi</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
-                    <li class="nav-item" id="navProfileItem" style="display: none;">
+                    
+                    <li class="nav-item nav-item-loggedin" id="navLichKham">
+                        <a class="nav-link-header" href="lichkham.html">Lịch khám</a>
+                    </li>
+                    <li class="nav-item nav-item-loggedin" id="navHoSo">
                         <a class="nav-link-header" href="hosocanhan.html">Hồ sơ cá nhân</a>
                     </li>
+
+                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
                 </ul>
 
-                <div class="d-flex align-items-center">
-                    <!-- Auth buttons (chưa đăng nhập) -->
+                <div class="d-flex align-items-center ms-auto">
                     <div class="auth-buttons" id="authButtons">
                         <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
                             <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
@@ -1072,17 +1074,15 @@
                         </a>
                     </div>
 
-                    <!-- User dropdown (đã đăng nhập) -->
-                    <div class="user-dropdown dropdown" id="userDropdown">
-                        <div class="user-avatar" data-bs-toggle="dropdown" id="userAvatar">N</div>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom">
-                            <li><span class="dropdown-item-text fw-bold" id="dropdownUserName">Người dùng</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="hosocanhan.html"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a></li>
-                            <li><a class="dropdown-item" href="lichkham.html"><i class="fas fa-calendar-check"></i> Lịch khám của tôi</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
-                        </ul>
+                    <div class="logout-header" id="logoutHeader">
+                        <div class="user-info-group" onclick="window.location.href='hosocanhan.html'">
+                            <div class="user-avatar" id="userAvatar">A</div>
+                            <div class="header-user-name" id="headerUserName">Khách</div>
+                        </div>
+                        
+                        <button class="btn-logout-custom" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1327,16 +1327,112 @@
 
     <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-chevron-up"></i></button>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+        // CẤU HÌNH ĐƯỜNG DẪN API (Sửa lại cho đúng với cấu trúc thư mục của bạn)
+        const API_BASE_PATIENT = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+        const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
 
         document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
+            checkLoginStatus(); // Kiểm tra session thật từ server
             loadStatistics();
             loadTopDoctors();
+            setupScrollEffects();
+            setupScrollAnimations();
+        });
 
-            // Scroll effects
+// --- 1. LOGIC KIỂM TRA ĐĂNG NHẬP MỚI (Cập nhật UI theo Tên đầy đủ) ---
+        async function checkLoginStatus() {
+            try {
+                // (Giữ nguyên API call)
+                const response = await fetch(`${API_BASE_AUTH}/get-current-user.php`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await response.json();
+
+                // Lấy các phần tử UI
+                const authButtons = document.getElementById('authButtons');
+                const logoutHeader = document.getElementById('logoutHeader');
+                const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin'); 
+                const userAvatar = document.getElementById('userAvatar');
+                const headerUserName = document.getElementById('headerUserName');
+
+                if (data.success) {
+                    // === TRẠNG THÁI: ĐÃ ĐĂNG NHẬP ===
+                    
+                    // 1. Ẩn nút đăng nhập/đăng ký
+                    authButtons.style.display = 'none';
+
+                    // 2. Hiện Header User kiểu Dashboard
+                    logoutHeader.classList.add('active');
+
+                    // 3. Hiện 2 mục menu "Lịch khám" và "Hồ sơ"
+                    navLoggedInItems.forEach(item => item.style.display = 'block');
+
+                    // 4. Cập nhật thông tin (Tên & Avatar)
+                    // !!! Lấy TÊN ĐẦY ĐỦ (fullName) từ response API đã sửa !!!
+                    const fullName = data.data.fullName; 
+                    
+                    // Lấy ký tự đầu tiên của tên đầy đủ
+                    userAvatar.textContent = fullName.charAt(0).toUpperCase();
+                    // Hiển thị tên đầy đủ
+                    headerUserName.textContent = fullName; 
+
+                    // 5. Logic điều hướng đặc biệt cho Bác sĩ/Admin
+                    updateProfileLink(data.data.role);
+
+                } else {
+                    // === TRẠNG THÁI: CHƯA ĐĂNG NHẬP ===
+                    authButtons.style.display = 'flex';
+                    logoutHeader.classList.remove('active');
+                    navLoggedInItems.forEach(item => item.style.display = 'none');
+                }
+
+            } catch (error) {
+                console.error('Lỗi kiểm tra đăng nhập:', error);
+                document.getElementById('authButtons').style.display = 'flex';
+                if(document.getElementById('logoutHeader')) 
+                    document.getElementById('logoutHeader').classList.remove('active');
+            }
+        }
+
+        function updateProfileLink(role) {
+            // Nếu là bác sĩ/admin mà lỡ vào trang chủ, link hồ sơ sẽ trỏ về dashboard
+            const profileLinks = document.querySelectorAll('a[href="hosocanhan.html"]');
+            if (role === 'bacsi') {
+                profileLinks.forEach(link => link.href = '../doctor/dashboard.html');
+            } else if (role === 'quantri') {
+                profileLinks.forEach(link => link.href = '../admin/dashboard.html');
+            }
+        }
+
+        // --- 2. LOGIC ĐĂNG XUẤT MỚI ---
+        async function logout() {
+            try {
+                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    // Xóa localStorage chỉ để dọn dẹp rác (nếu có từ code cũ)
+                    localStorage.clear(); 
+                    // Tải lại trang để cập nhật giao diện về trạng thái chưa đăng nhập
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Lỗi đăng xuất:', error);
+                alert('Có lỗi xảy ra khi đăng xuất');
+            }
+        }
+
+        // --- CÁC HÀM CŨ GIỮ NGUYÊN (đã tối ưu code gọn hơn) ---
+
+        function setupScrollEffects() {
             window.addEventListener('scroll', function() {
                 const navbar = document.querySelector('.navbar-custom');
                 const scrollBtn = document.getElementById('scrollTopBtn');
@@ -1346,13 +1442,12 @@
                 
                 scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
             });
+        }
 
-            // Animate elements on scroll
+        function setupScrollAnimations() {
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
             }, { threshold: 0.1 });
 
@@ -1361,28 +1456,11 @@
                     el.classList.add('reveal');
                     observer.observe(el);
                 });
-        });
-
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-            const username = localStorage.getItem('username');
-
-            if (isLoggedIn && username) {
-                document.getElementById('authButtons').style.display = 'none';
-                document.getElementById('userDropdown').classList.add('show');
-                document.getElementById('navProfileItem').style.display = 'block';
-                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
-                document.getElementById('dropdownUserName').textContent = username;
-            } else {
-                document.getElementById('authButtons').style.display = 'flex';
-                document.getElementById('userDropdown').classList.remove('show');
-                document.getElementById('navProfileItem').style.display = 'none';
-            }
         }
 
         async function loadStatistics() {
             try {
-                const response = await fetch(`${API_BASE}/get-statistics.php`);
+                const response = await fetch(`${API_BASE_PATIENT}/get-statistics.php`);
                 const data = await response.json();
                 
                 if (data.success) {
@@ -1391,21 +1469,17 @@
                     animateNumber('statSpecialties', data.data.specialties, 10);
                 }
             } catch (error) {
-                console.error('Error loading statistics:', error);
-                document.getElementById('statPatients').textContent = '50+';
-                document.getElementById('statDoctors').textContent = '10+';
-                document.getElementById('statSpecialties').textContent = '10+';
+                console.error('Error stats:', error);
             }
         }
 
         function animateNumber(elementId, target, roundTo) {
             const element = document.getElementById(elementId);
+            if(!element) return;
+            // Giữ nguyên logic animation của bạn...
             const roundedTarget = Math.ceil(target / roundTo) * roundTo;
             let current = 0;
             const increment = Math.ceil(roundedTarget / 40);
-            const duration = 1500;
-            const stepTime = duration / 40;
-            
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= roundedTarget) {
@@ -1414,93 +1488,49 @@
                 } else {
                     element.textContent = current.toLocaleString('vi-VN') + '+';
                 }
-            }, stepTime);
+            }, 1500 / 40);
         }
 
         async function loadTopDoctors() {
             try {
-                const response = await fetch(`${API_BASE}/get-top-doctors.php`);
+                const response = await fetch(`${API_BASE_PATIENT}/get-top-doctors.php`);
                 const data = await response.json();
-                
-                if (data.success && data.data.length > 0) {
-                    renderDoctors(data.data);
-                } else {
-                    document.getElementById('topDoctorsContainer').innerHTML = '<div class="col-12 text-center py-5 text-muted">Chưa có dữ liệu bác sĩ</div>';
-                }
+                if (data.success && data.data.length > 0) renderDoctors(data.data);
+                else document.getElementById('topDoctorsContainer').innerHTML = '<div class="col-12 text-center py-5 text-muted">Chưa có dữ liệu</div>';
             } catch (error) {
-                console.error('Error loading doctors:', error);
-                document.getElementById('topDoctorsContainer').innerHTML = '<div class="col-12 text-center py-5 text-muted">Không thể tải dữ liệu</div>';
+                console.error('Error doctors:', error);
             }
         }
 
         function renderDoctors(doctors) {
             const container = document.getElementById('topDoctorsContainer');
+            if(!container) return;
             const currentYear = new Date().getFullYear();
             
             container.innerHTML = doctors.map(doc => {
                 const experience = doc.namLamViec ? currentYear - doc.namLamViec : 'N/A';
-                const appointments = roundNumber(doc.totalAppointments || 0);
-                const patients = roundNumber(doc.totalPatients || 0);
                 const imgSrc = doc.gioiTinh === 'nu' ? '../../assets/images/doctor_female.png' : '../../assets/images/doctor_male.png';
                 
                 return `
                 <div class="col-lg-4 col-md-6">
                     <div class="doctor-card-modern">
                         <div class="doctor-image-wrapper">
-                            <img src="${imgSrc}" alt="${doc.tenBacSi}">
+                            <img src="${imgSrc}" alt="${doc.tenBacSi}" onerror="this.src='../../assets/images/default-doctor.png'">
                             <span class="doctor-badge"><i class="fas fa-star me-1"></i>Top bác sĩ</span>
                         </div>
                         <div class="doctor-info-modern">
                             <h5 class="doctor-name-modern">${doc.tenBacSi}</h5>
                             <p class="doctor-specialty-modern">${doc.tenChuyenKhoa || 'Đa khoa'}</p>
                             <div class="doctor-stats">
-                                <div class="stat-item">
-                                    <span class="stat-value">${experience === 'N/A' ? 'N/A' : experience + '+'}</span>
-                                    <span class="stat-label">Năm KN</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value">${appointments}+</span>
-                                    <span class="stat-label">Lịch khám</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value">${patients}+</span>
-                                    <span class="stat-label">Bệnh nhân</span>
-                                </div>
+                                <div class="stat-item"><span class="stat-value">${experience}+</span><span class="stat-label">Năm KN</span></div>
+                                <div class="stat-item"><span class="stat-value">${doc.totalAppointments || 0}</span><span class="stat-label">Lịch khám</span></div>
+                                <div class="stat-item"><span class="stat-value">${doc.totalPatients || 0}</span><span class="stat-label">Bệnh nhân</span></div>
                             </div>
-                            <button class="btn-view-profile" onclick="window.location.href='chitietbacsi.html?id=${doc.maBacSi}'">
-                                <i class="fas fa-user me-2"></i>Xem hồ sơ
-                            </button>
+                            <button class="btn-view-profile" onclick="window.location.href='chitietbacsi.html?id=${doc.maBacSi}'">Xem hồ sơ</button>
                         </div>
                     </div>
                 </div>`;
             }).join('');
-        }
-
-        function roundNumber(num) {
-            if (num < 10) return num;
-            if (num < 100) return Math.floor(num / 10) * 10;
-            if (num < 1000) return Math.floor(num / 100) * 100;
-            return Math.floor(num / 1000) * 1000;
-        }
-
-        function logout() {
-            // Xóa tất cả localStorage
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            localStorage.removeItem('userRole');
-            localStorage.removeItem('maBenhNhan');
-            localStorage.removeItem('hoTen');
-            localStorage.removeItem('maBacSi');
-            localStorage.removeItem('maQuanTriVien');
-            
-            // Gọi API logout (optional, để xóa session)
-            fetch('http://localhost/DO_AN_1/code_doan1/src/backend/api/auth/logout.php', {
-                method: 'POST',
-                credentials: 'include'
-            });
-            
-            // Reload trang
-            window.location.reload();
         }
     </script>
 </body>

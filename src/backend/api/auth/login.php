@@ -1,9 +1,4 @@
 <?php
-/*
-   SỬA FILE: src/backend/api/auth/login.php
-   Thay thế toàn bộ nội dung
-*/
-
 require_once '../../config/cors.php';
 require_once '../../core/dp.php';
 
@@ -24,6 +19,7 @@ $username = trim($input['username']);
 $password = $input['password'];
 
 try {
+
     $stmt = $conn->prepare("
         SELECT id, tenDangNhap, matKhau, vaiTro, trangThai 
         FROM nguoidung 
@@ -45,119 +41,56 @@ try {
     }
     
     $user = $result->fetch_assoc();
-    $stmt->close();
 
     if ($user['trangThai'] === 'Khóa') {
         echo json_encode([
             'success' => false,
             'message' => 'Tài khoản đã bị khóa. Không thể đăng nhập'
         ]);
+        $stmt->close();
         $conn->close();
         exit;
     }
 
-    // Verify password
     $dbPassword = $user['matKhau'];
     $isHashVerified = password_verify($password, $dbPassword);
 
-    if (!$isHashVerified) {
-        // Check plaintext (for legacy passwords)
+    if ($isHashVerified) {
+    } else {
         $isPlaintextVerified = hash_equals($dbPassword, $password);
 
         if ($isPlaintextVerified) {
-            // Update to hashed password
             $newHash = password_hash($password, PASSWORD_DEFAULT);
-            $update = $conn->prepare("UPDATE nguoidung SET matKhau = ? WHERE id = ?");
+
+            $update = $conn->prepare("
+                UPDATE nguoidung SET matKhau = ? WHERE id = ?
+            ");
             $update->bind_param("si", $newHash, $user['id']);
             $update->execute();
             $update->close();
+
         } else {
             echo json_encode([
                 'success' => false,
-                'message' => 'Tên đăng nhập hoặc mật khẩu không đúng'
+                'message' => 'Tên đăng nhập hoặc mật khẩu không đúng',
             ]);
+            $stmt->close();
             $conn->close();
             exit;
         }
     }
 
-    // Set session
     $_SESSION['id'] = $user['id'];
     $_SESSION['vaiTro'] = $user['vaiTro'];
     $_SESSION['tenDangNhap'] = $user['tenDangNhap'];
 
-    // ===== THÊM: Lấy thông tin bổ sung dựa theo vai trò =====
-    $extraData = [];
-    
-    if ($user['vaiTro'] === 'benhnhan') {
-        $stmt = $conn->prepare("
-            SELECT maBenhNhan, tenBenhNhan 
-            FROM benhnhan 
-            WHERE nguoiDungId = ?
-        ");
-        $stmt->bind_param("i", $user['id']);
-        $stmt->execute();
-        $patientResult = $stmt->get_result();
-        
-        if ($patientResult->num_rows > 0) {
-            $patient = $patientResult->fetch_assoc();
-            $extraData['maBenhNhan'] = $patient['maBenhNhan'];
-            $extraData['hoTen'] = $patient['tenBenhNhan'];
-            
-            // Lưu vào session
-            $_SESSION['maBenhNhan'] = $patient['maBenhNhan'];
-            $_SESSION['hoTen'] = $patient['tenBenhNhan'];
-        }
-        $stmt->close();
-        
-    } elseif ($user['vaiTro'] === 'bacsi') {
-        $stmt = $conn->prepare("
-            SELECT maBacSi, tenBacSi 
-            FROM bacsi 
-            WHERE nguoiDungId = ?
-        ");
-        $stmt->bind_param("i", $user['id']);
-        $stmt->execute();
-        $doctorResult = $stmt->get_result();
-        
-        if ($doctorResult->num_rows > 0) {
-            $doctor = $doctorResult->fetch_assoc();
-            $extraData['maBacSi'] = $doctor['maBacSi'];
-            $extraData['hoTen'] = $doctor['tenBacSi'];
-            
-            // Lưu vào session
-            $_SESSION['maBacSi'] = $doctor['maBacSi'];
-            $_SESSION['hoTen'] = $doctor['tenBacSi'];
-        }
-        $stmt->close();
-        
-    } elseif ($user['vaiTro'] === 'quantri') {
-        $stmt = $conn->prepare("
-            SELECT maQuanTriVien 
-            FROM quantrivien 
-            WHERE nguoiDungId = ?
-        ");
-        $stmt->bind_param("i", $user['id']);
-        $stmt->execute();
-        $adminResult = $stmt->get_result();
-        
-        if ($adminResult->num_rows > 0) {
-            $admin = $adminResult->fetch_assoc();
-            $extraData['maQuanTriVien'] = $admin['maQuanTriVien'];
-            
-            // Lưu vào session
-            $_SESSION['maQuanTriVien'] = $admin['maQuanTriVien'];
-        }
-        $stmt->close();
-    }
-    // ===== KẾT THÚC PHẦN THÊM =====
-
-    echo json_encode(array_merge([
+    echo json_encode([
         'success' => true,
         'message' => 'Đăng nhập thành công',
-        'role' => $user['vaiTro'],
-        'username' => $user['tenDangNhap']
-    ], $extraData));
+        'role' => $user['vaiTro']
+    ]);
+
+    $stmt->close();
 
 } catch (Exception $e) {
     echo json_encode([
@@ -167,4 +100,3 @@ try {
 }
 
 $conn->close();
-?>
