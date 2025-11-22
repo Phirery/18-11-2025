@@ -701,7 +701,7 @@
                 
                 if (!data.success || data.role !== 'benhnhan') {
                     alert('Vui lòng đăng nhập với tài khoản bệnh nhân để đặt lịch!');
-                    window.location.href = 'dangnhap.html';
+                    window.location.href = '../auth/login.html';
                     return;
                 }
                 
@@ -712,7 +712,7 @@
             } catch (error) {
                 console.error('Auth error:', error);
                 alert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!');
-                window.location.href = 'dangnhap.html';
+                window.location.href = '../auth/login.html';
             }
         }
 
@@ -1159,6 +1159,19 @@
         function formatDate(dateStr) {
             const d = new Date(dateStr);
             return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        }
+        
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
         }
     </script>
 </body>
