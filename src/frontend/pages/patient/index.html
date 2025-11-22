@@ -43,7 +43,8 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             padding: 10px 0;
-            transition: all 0.3s ease;
+            min-height: 58px;
+            /* transition: all 0.3s ease; */
         }
 
         .navbar-custom.scrolled {
@@ -1230,8 +1231,8 @@
         }
 
         .mobile-user-details .user-avatar {
-            width: 45px;
-            height: 45px;
+            width: 35px;
+            height: 35px;
             font-size: 1.1rem;
         }
 
@@ -1371,7 +1372,7 @@
                         <div class="user-avatar" id="userAvatar">K</div>
                         <div class="header-user-name" id="headerUserName">Khách</div>
                     </div>
-                    <button class="btn-logout-custom" id="btnDesktopLogout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+                    <button class="btn-logout-custom" id="btnDesktopLogout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
                 </div>
 
                 <button class="menu-toggle ms-2" id="menuToggle">
@@ -1821,9 +1822,7 @@
 
                 const data = await response.json();
                 if (data.success) {
-                    // Xóa localStorage chỉ để dọn dẹp rác (nếu có từ code cũ)
-                    localStorage.clear(); 
-                    // Tải lại trang để cập nhật giao diện về trạng thái chưa đăng nhập
+                    localStorage.clear();
                     window.location.reload();
                 }
             } catch (error) {
