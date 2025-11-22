@@ -13,10 +13,51 @@ CREATE TABLE `bacsi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `bacsi` (`nguoiDungId`, `maBacSi`, `tenBacSi`, `maChuyenKhoa`, `moTa`, `chuyenGia`, `gioiTinh`, `namLamViec`) VALUES
-(2, 'bs1', 'Trần Văn BBD', 'EYE102501', '', 0, NULL, NULL),
-(5, 'BS202511090112882', 'Nguyễn Thành C', 'SUR102501', NULL, 0, NULL, NULL),
-(7, 'BS202511090152610', 'Lê Văn D', 'INT102503', '1111111111111', 0, NULL, NULL),
-(13, 'BS202511102320635', 'Nguyễn Z', 'DER102502', NULL, 0, NULL, NULL);
+(2, 'bs1', 'Trần Văn BBD', 'EYE102501', '', 0, 'nam', 2021),
+(5, 'BS202511090112882', 'Nguyễn Thành C', 'SUR102501', '', 0, 'nam', 2018),
+(13, 'BS202511102320635', 'Nguyễn Z', 'DER102502', '', 0, 'nu', 2022),
+(16, 'BS20251121009', 'Lê Thanh Bình', 'PED102501', 'Bác sĩ chuyên khoa II Nhi khoa. 10 năm công tác tại Bệnh viện Nhi Đồng 1. Rất mát tay và yêu trẻ, chuyên điều trị các bệnh hô hấp ở trẻ nhỏ.', 0, 'nam', 2015),
+(17, 'BS20251121010', 'Nguyễn Thị Kim Anh', 'PED102502', 'Tốt nghiệp loại Giỏi Đại học Y Dược. Chuyên gia về chăm sóc và nuôi dưỡng trẻ sơ sinh, đặc biệt là trẻ sinh non nhẹ cân.', 0, 'nu', 2013),
+(18, 'BS20251121011', 'Trần Quốc Đạt', 'OBG102501', 'Trưởng khoa Sản bệnh viện Đa khoa Khu vực. Hơn 15 năm kinh nghiệm đỡ sinh và phẫu thuật sản khoa (mổ lấy thai) phức tạp.', 0, 'nam', 2018),
+(19, 'BS20251121012', 'Phạm Thị Thanh Thủy', 'OBG102502', 'Chuyên gia tư vấn sức khỏe sinh sản và điều trị các bệnh lý phụ khoa. Tốt nghiệp Thạc sĩ y học tại Pháp. Nhẹ nhàng, tâm lý.', 0, 'nu', 2011),
+(20, 'BS20251121013', 'Hoàng Văn Sơn', 'DER102501', 'Chuyên điều trị các bệnh lý về da mãn tính: Vảy nến, Viêm da cơ địa, Nấm da. 7 năm kinh nghiệm tại Bệnh viện Da Liễu.', 0, 'nam', 2018),
+(21, 'BS20251121014', 'Vương Thị Mai', 'DER102502', 'Bác sĩ trẻ tài năng, chuyên sâu về Laser thẩm mỹ, trị sẹo rỗ và trẻ hóa da. Chứng chỉ hành nghề thẩm mỹ quốc tế.', 0, 'nu', 2005),
+(22, 'BS20251121015', 'Đặng Minh Hiếu', 'ENT102502', 'Kinh nghiệm dày dặn trong phẫu thuật nội soi mũi xoang và điều trị viêm xoang mãn tính.', 0, 'nam', 2008),
+(23, 'BS20251121016', 'Bùi Thị Lan', 'ENT102501', 'Chuyên khám và đo thính lực, điều trị viêm tai giữa ở trẻ em và người lớn. Nhẹ nhàng, cẩn thận.', 0, 'nu', 2011),
+(24, 'BS20251121017', 'Phan Thành Long', 'DEN102503', 'Chuyên gia cấy ghép Implant và phẫu thuật chấn thương hàm mặt. Tu nghiệp 2 năm tại Hàn Quốc.', 0, 'nam', 2011),
+(25, 'BS20251121018', 'Lý Thị Bích Ngọc', 'DEN102502', 'Chuyên sâu về chỉnh nha (niềng răng) thẩm mỹ invisalign. Đã thực hiện thành công hơn 500 ca chỉnh nha phức tạp.', 0, 'nu', 2010),
+(26, 'BS20251121019', 'Nguyễn Quang Dũng', 'CAR102502', 'Phó giáo sư, Tiến sĩ y học. Chuyên gia hàng đầu về đặt stent và chụp mạch vành. 25 năm kinh nghiệm.', 0, 'nam', 2019),
+(27, 'BS20251121020', 'Trần Thị Hương Giang', 'CAR102501', 'Chuyên điều trị tăng huyết áp, suy tim và rối loạn nhịp tim bằng thuốc. Theo dõi sát sao sức khỏe bệnh nhân cao tuổi.', 0, 'nu', 2019),
+(28, 'BS20251121021', 'Vũ Minh Đức', 'INT102503', 'Chuyên điều trị đau đầu, mất ngủ, rối loạn tiền đình và phục hồi sau đột quỵ.', 0, 'nam', 2011),
+(29, 'BS20251121022', 'Nguyễn Hoàng Anh', 'INT102503', 'Bác sĩ trẻ, cập nhật các phác đồ điều trị mới về bệnh Parkinson và Alzheimer.', 0, 'nam', 2015),
+(30, 'BS20251121023', 'Lê Trung Kiên', 'INT102502', 'Chuyên gia nội soi tiêu hóa (dạ dày, đại tràng) không đau. Tầm soát ung thư đường tiêu hóa sớm.', 0, 'nam', 2013),
+(31, 'BS20251121024', 'Trần Thị Kim Huệ', 'INT102502', 'Điều trị viêm loét dạ dày do vi khuẩn HP, bệnh lý gan mật và tư vấn dinh dưỡng tiêu hóa.', 0, 'nu', 2020),
+(32, 'BS20251121025', 'Phạm Thanh Hải', 'SUR102502', 'Chuyên gia phẫu thuật thay khớp gối, khớp háng và nội soi khớp vai. Đã thực hiện hơn 1000 ca mổ thành công.', 0, 'nam', 2020),
+(33, 'BS20251121026', 'Nguyễn Thị Thu Phương', 'SUR102502', 'Chuyên điều trị bảo tồn (không phẫu thuật) các chấn thương thể thao, thoái hóa khớp và loãng xương.', 0, 'nu', 2019),
+(34, 'BS20251121027', 'Trần Trung Nghĩa', 'EYE102502', 'Chuyên điều trị các bệnh lý đáy mắt, võng mạc tiểu đường và thoái hóa điểm vàng. 8 năm kinh nghiệm tại Viện Mắt.', 0, 'nam', 2016),
+(35, 'BS20251121028', 'Đỗ Thị Bích', 'EYE102502', 'Điều trị viêm kết mạc, khô mắt và các bệnh lý bề mặt nhãn cầu. Tận tâm, nhẹ nhàng với người cao tuổi.', 0, 'nu', 2020),
+(36, 'BS20251121029', 'Nguyễn Hoàng Sơn', 'EYE102503', 'Bàn tay vàng trong phẫu thuật Phaco (đục thủy tinh thể). Đã thực hiện thành công hơn 5000 ca mổ mắt.', 0, 'nam', 2000),
+(37, 'BS20251121030', 'Lê Thị Mai Hương', 'EYE102503', 'Chuyên phẫu thuật mộng thịt, quặm mi và thẩm mỹ mắt. Được đào tạo chuyên sâu về tạo hình nhãn khoa.', 0, 'nu', 2014),
+(38, 'BS20251121031', 'Phạm Văn Quang', 'INT102501', 'Chuyên gia điều trị Hen suyễn và Phổi tắc nghẽn mạn tính (COPD). Có nhiều công trình nghiên cứu về chức năng hô hấp.', 0, 'nam', 2014),
+(39, 'BS20251121032', 'Nguyễn Thị Lan Phương', 'INT102501', 'Chuyên khám và điều trị viêm phổi, viêm phế quản. Tư vấn cai thuốc lá và phục hồi chức năng hô hấp hậu Covid.', 0, 'nu', 2014),
+(40, 'BS20251121033', 'Hoàng Văn Khải', 'INT102504', 'Chuyên gia điều trị Đái tháo đường và các bệnh lý Tuyến giáp. Giúp bệnh nhân kiểm soát đường huyết ổn định lâu dài.', 0, 'nam', 2016),
+(41, 'BS20251121034', 'Vũ Thị Tú Oanh', 'INT102504', 'Tư vấn dinh dưỡng và điều trị rối loạn chuyển hóa, béo phì, mỡ máu cao. Tốt nghiệp Đại học Y Hà Nội.', 0, 'nu', 2010),
+(42, 'BS20251121035', 'Đặng Văn Hùng', 'INT102505', 'Chuyên điều trị hội chứng thận hư, suy thận mạn. Tư vấn các phương pháp lọc máu và bảo tồn chức năng thận.', 0, 'nam', 2017),
+(43, 'BS20251121036', 'Lý Thị Minh', 'INT102505', 'Điều trị viêm đường tiết niệu, sỏi thận nhỏ bằng phương pháp nội khoa. Nhẹ nhàng, chu đáo.', 0, 'nu', 2009),
+(44, 'BS20251121037', 'Nguyễn Văn Phúc', 'SUR102503', 'Phẫu thuật viên thần kinh sọ não hàng đầu. Chuyên mổ u não, chấn thương sọ não và phẫu thuật cột sống ít xâm lấn.', 0, 'nam', 2019),
+(45, 'BS20251121038', 'Trần Thị Yến', 'SUR102503', 'Chuyên gia về phẫu thuật điều trị thoát vị đĩa đệm và đau thần kinh tọa. Áp dụng công nghệ vi phẫu hiện đại.', 0, 'nu', 2009),
+(46, 'BS20251121039', 'Bùi Văn Toàn', 'SUR102504', 'Chuyên tán sỏi thận qua da và nội soi ngược dòng. Điều trị phì đại tuyến tiền liệt bằng Laser.', 0, 'nam', 2007),
+(47, 'BS20251121040', 'Phạm Thị Hương', 'SUR102504', 'Bác sĩ nữ hiếm hoi trong ngành ngoại tiết niệu. Chuyên điều trị són tiểu, bàng quang tăng hoạt ở phụ nữ.', 0, 'nu', 2014),
+(48, 'BS20251121041', 'Lê Minh Vương', 'SUR102505', 'Bàn tay vàng phẫu thuật tim hở và bắc cầu động mạch vành. 15 năm tu nghiệp tại Đức và Pháp.', 0, 'nam', 2013),
+(49, 'BS20251121042', 'Nguyễn Thị Kiều Trinh', 'SUR102505', 'Chuyên phẫu thuật nội soi lồng ngực điều trị tăng tiết mồ hôi tay và các bệnh lý phổi, màng phổi.', 0, 'nu', 2016),
+(50, 'BS20251121043', 'Đỗ Vũ Hoàng', 'PED102503', 'Chuyên gia tầm soát bệnh tim bẩm sinh ở trẻ em. Từng tu nghiệp 3 năm tại Singapore về can thiệp tim mạch nhi.', 0, 'nam', 2022),
+(51, 'BS20251121044', 'Lưu Thị Minh', 'PED102503', 'Nguyên trưởng khoa Nhi Bệnh viện Tim. Hơn 30 năm kinh nghiệm theo dõi và điều trị nội khoa tim mạch cho trẻ sinh non.', 0, 'nu', 2012),
+(52, 'BS20251121045', 'Mạc Văn Khoa', 'INT102506', 'Bác sĩ nội trú tốt nghiệp loại xuất sắc. Năng động, cập nhật nhanh các phác đồ điều trị mới về bệnh lý nhiễm trùng và miễn dịch.', 0, 'nam', 2022),
+(53, 'BS20251121046', 'Tống Thị Kim', 'INT102506', 'Chuyên khám sức khỏe tổng quát và tư vấn tầm soát ung thư sớm. Có kinh nghiệm dày dặn trong điều trị các bệnh lão khoa.', 0, 'nu', 2008),
+(54, 'BS20251121047', 'Nguyễn Bá Duy', 'ENT102503', 'Chuyên phẫu thuật cắt Amidan bằng công nghệ Plasma. Điều trị hiệu quả các bệnh lý khàn tiếng, hạt xơ dây thanh.', 0, 'nam', 2019),
+(55, 'BS20251121048', 'Hồ Tiên', 'ENT102503', 'Chuyên gia đầu ngành về bệnh lý ung thư vòm họng và thanh quản. Giảng viên kiêm nhiệm Đại học Y Dược.', 0, 'nu', 2019),
+(56, 'BS20251121049', 'Trịnh Quốc Thái', 'DEN102501', 'Bác sĩ trẻ nhiệt huyết, tốt nghiệp Thủ khoa Răng Hàm Mặt. Ứng dụng công nghệ kỹ thuật số trong hàn răng và điều trị tủy.', 0, 'nam', 2024),
+(57, 'BS20251121050', 'Bùi Thị Xuân', 'DEN102501', 'Hơn 20 năm kinh nghiệm trong nha khoa gia đình. Nhẹ nhàng, tâm lý, chuyên điều trị sâu răng cho trẻ em không gây đau.', 0, 'nu', 2010);
 
 CREATE TABLE `benhnhan` (
   `nguoiDungId` int(11) NOT NULL,
@@ -28,7 +69,7 @@ CREATE TABLE `benhnhan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `benhnhan` (`nguoiDungId`, `maBenhNhan`, `tenBenhNhan`, `ngaySinh`, `gioiTinh`, `soTheBHYT`) VALUES
-(1, 'bn1', 'Nguyễn Văn A', '2000-01-01', 'nam', NULL),
+(1, 'bn1', 'Nguyễn Văn Anh', '2000-01-01', 'nam', ''),
 (8, 'BN202511082304701', 'ABCs', '2005-10-09', 'nam', ''),
 (11, 'BN202511101515250', 'AAAAAAAA', '2025-11-09', 'khac', 'BH189318214111'),
 (15, 'BN2025111712142915', 'Trần Văn H', '2000-12-31', 'nam', NULL);
@@ -108,7 +149,8 @@ CREATE TABLE `doimatkhau` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `doimatkhau` (`id`, `nguoiDungId`, `trangThai`, `thoiGianYeuCau`, `thoiGianXuLy`, `nguoiXuLy`) VALUES
-(1, 2, 'Đã xử lý', '2025-11-19 10:30:56', '2025-11-19 11:49:57', 3);
+(1, 2, 'Đã xử lý', '2025-11-19 10:30:56', '2025-11-19 11:49:57', 3),
+(2, 2, 'Đã xử lý', '2025-11-21 00:26:03', '2025-11-21 00:26:19', 3);
 DELIMITER $$
 CREATE TRIGGER `after_doimatkhau_insert` AFTER INSERT ON `doimatkhau` FOR EACH ROW BEGIN
     DECLARE userName VARCHAR(100);
@@ -241,7 +283,14 @@ INSERT INTO `lichkham` (`maLichKham`, `maBacSi`, `maBenhNhan`, `ngayKham`, `maCa
 (27, 'bs1', 'BN202511101515250', '2025-11-19', 1, 1, 1, 'Hoàn thành', NULL),
 (28, 'bs1', 'BN202511082304701', '2025-11-19', 1, 6, 1, 'Hoàn thành', NULL),
 (29, 'bs1', 'bn1', '2025-11-19', 2, 7, 2, 'Hoàn thành', NULL),
-(30, 'bs1', 'BN2025111712142915', '2025-11-19', 2, 12, 2, 'Hoàn thành', NULL);
+(30, 'bs1', 'BN2025111712142915', '2025-11-19', 2, 12, 2, 'Hoàn thành', NULL),
+(31, 'BS20251121031', 'bn1', '0000-00-00', 1, 4, 2, 'Đã đặt', 'test 1'),
+(32, 'BS20251121022', 'bn1', '0000-00-00', 1, 1, 1, 'Đã đặt', ''),
+(33, 'BS20251121022', 'bn1', '0000-00-00', 1, 1, 2, 'Đã đặt', ''),
+(34, 'BS20251121022', 'bn1', '0000-00-00', 1, 1, 1, 'Đã đặt', '1'),
+(35, 'BS20251121022', 'bn1', '2025-11-22', 1, 1, 1, 'Đã đặt', '1'),
+(36, 'BS20251121022', 'bn1', '2025-11-22', 1, 2, 1, 'Đã đặt', '1'),
+(37, 'BS202511102320635', 'bn1', '2025-11-21', 2, 8, 2, 'Đã đặt', '');
 DELIMITER $$
 CREATE TRIGGER `after_lichkham_insert` AFTER INSERT ON `lichkham` FOR EACH ROW BEGIN
     DECLARE patientName VARCHAR(100);
@@ -302,6 +351,20 @@ CREATE TRIGGER `after_lichkham_update` AFTER UPDATE ON `lichkham` FOR EACH ROW B
 END
 $$
 DELIMITER ;
+
+CREATE TABLE `lienhe` (
+  `maLienHe` int(11) NOT NULL,
+  `hoTen` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `soDienThoai` varchar(15) NOT NULL,
+  `chuDe` varchar(100) NOT NULL,
+  `noiDung` text NOT NULL,
+  `trangThai` enum('Chưa xử lý','Đang xử lý','Đã xử lý') NOT NULL DEFAULT 'Chưa xử lý',
+  `thoiGianGui` datetime NOT NULL DEFAULT current_timestamp(),
+  `nguoiXuLy` int(11) DEFAULT NULL,
+  `thoiGianXuLy` datetime DEFAULT NULL,
+  `ghiChu` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `ngaynghi` (
   `maNghi` int(11) NOT NULL,
@@ -424,8 +487,8 @@ CREATE TABLE `nguoidung` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `nguoidung` (`id`, `tenDangNhap`, `matKhau`, `soDienThoai`, `vaiTro`, `trangThai`, `ngayCapNhatTaiKhoan`, `ngayCapNhatMatKhau`) VALUES
-(1, 'nguoidung1', 'passwork', '0987654322', 'benhnhan', 'Hoạt Động', NULL, NULL),
-(2, 'nguoidung2', '$2y$10$7uT9tzPJEZVZElWaV6SUD.SdpBeuIiD7cHpc1eZ6RvymOS5hz/Jpm', '0987654323', 'bacsi', 'Hoạt Động', '2025-11-19 10:30:38', NULL),
+(1, 'nguoidung1', '$2y$10$WOub5LzDY5orp0Kf3Yuphe3MBLcafNC5VIA6C0zvXHaZ.uUT1AILW', '0987654322', 'benhnhan', 'Hoạt Động', '2025-11-21 15:25:43', NULL),
+(2, 'nguoidung2', '$2y$10$J8OsJlHOsaa07Kvz4AmiRehJ0csjW4ef16ogQ.tYyKPbYTts5G4n2', '0987654323', 'bacsi', 'Hoạt Động', '2025-11-19 10:30:38', NULL),
 (3, 'nguoidung3', '$2y$10$55XC.J1xbMe0tIWNJb9UneupzHgh1x1fioWqKiF/y8eAbcGpERYHC', '0987654321', 'quantri', 'Hoạt Động', NULL, NULL),
 (5, 'nguyenthanhccur1025', '$2y$10$j/IqnU9fT0QPeHyZNU1uuum/5IktMdkELYMVs.Uvu9KOgu1PzjXoq', '0917382642', 'bacsi', 'Hoạt Động', NULL, NULL),
 (7, 'levand', '$2y$10$0w2wLh5q8dn.05WVbEYjc.Epw.C4BLmppiM5Hwj4QO7fbSDvqfOkK', '0361846731', 'bacsi', 'Hoạt Động', NULL, NULL),
@@ -433,7 +496,49 @@ INSERT INTO `nguoidung` (`id`, `tenDangNhap`, `matKhau`, `soDienThoai`, `vaiTro`
 (11, '0000000000', '$2y$10$dPxrzHJVA454.TgEO/rLXeta9uL32XKD3jHgx4x6F7VWRX0MSnCW2', '0000000000', 'benhnhan', 'Hoạt Động', NULL, NULL),
 (13, 'ndagidyawbda', '$2y$10$CyYX/o4kjkEJwQY7d2EOqOvlDdwBPAhKKZWnILRQJj3oq3wTKYXKq', '0388888888', 'bacsi', 'Hoạt Động', NULL, NULL),
 (14, '1234', '$2y$10$9fgoU9a7DmIzfT9lBeEIeOyck4vHWoGcUB4jWO3zG7iADAbjX1YBS', '0123456789', 'quantri', 'Hoạt Động', NULL, NULL),
-(15, 'tranvanh2000', '$2y$10$b6vPWLbfLDSGTIy1FLdeau.aEyVNEA47aYMKQ7VttOy8umBOyQKBi', '0345678921', 'benhnhan', 'Hoạt Động', NULL, NULL);
+(15, 'tranvanh2000', '$2y$10$b6vPWLbfLDSGTIy1FLdeau.aEyVNEA47aYMKQ7VttOy8umBOyQKBi', '0345678921', 'benhnhan', 'Hoạt Động', NULL, NULL),
+(16, 'lethanhbinh', 'lethanhbinh1993', '0912001001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(17, 'nguyenthikimanh', 'nguyenthikimanh1999', '0912001002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(18, 'tranquocdat', 'tranquocdat1990', '0912002001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(19, 'phamthithanhthuy', 'phamthithanhthuy2001', '0912002002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(20, 'hoangvanson', 'hoangvanson1996', '0912003001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(21, 'vuongthimai', 'vuongthimai2002', '0912003002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(22, 'dangminhhieu', 'dangminhhieu1994', '0912004001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(23, 'buithilan', 'buithilan2000', '0912004002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(24, 'phanthanhlong', 'phanthanhlong1991', '0912005001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(25, 'lythibichngoc', 'lythibichngoc2003', '0912005002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(26, 'nguyenquangdung', 'nguyenquangdung1988', '0912006001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(27, 'tranthihuonggiang', 'tranthihuonggiang1998', '0912006002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(28, 'vuminhduc', 'vuminhduc1992', '0912007001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(29, 'nguyenhoanganh', 'nguyenhoanganh2004', '0912007002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(30, 'letrungkien', 'letrungkien1995', '0912008001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(31, 'tranthikimhue', 'tranthikimhue1997', '0912008002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(32, 'phamthanhhai', 'phamthanhhai1990', '0912009001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(33, 'nguyenthithuphuong', 'nguyenthithuphuong2000', '0912009002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(34, 'trantrungnghia', 'trantrungnghia1994', '0922001001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(35, 'dothibich', 'dothibich2001', '0922001002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(36, 'nguyenhoangson', 'nguyenhoangson1990', '0922002001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(37, 'lethimaihuong', 'lethimaihuong1999', '0922002002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(38, 'phamvanquang', 'phamvanquang1992', '0922003001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(39, 'nguyenthilanphuong', 'nguyenthilanphuong2000', '0922003002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(40, 'hoangvankhai', 'hoangvankhai1995', '0922004001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(41, 'vuthituoanh', 'vuthituoanh1998', '0922004002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(42, 'dangvanhung', 'dangvanhung1991', '0922005001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(43, 'lythiminh', 'lythiminh2003', '0922005002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(44, 'nguyenvanphuc', 'nguyenvanphuc1989', '0922006001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(45, 'tranthiyen', 'tranthiyen2002', '0922006002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(46, 'buivantoan', 'buivantoan1996', '0922007001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(47, 'phamthihuong', 'phamthihuong2000', '0922007002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(48, 'leminhvuong', 'leminhvuong1987', '0922008001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(49, 'nguyenthikieutrinh', 'nguyenthikieutrinh1999', '0922008002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(50, 'dovuhoang', 'dovuhoang2011', '0933001001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(51, 'luuthiminh', 'luuthiminh1993', '0933001002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(52, 'macvankhoa', 'macvankhoa2022', '0933002001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(53, 'tongthikim', 'tongthikim2008', '0933002002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(54, 'nguyenbaduy', 'nguyenbaduy2019', '0933003001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(55, 'hotien', 'hotien1991', '0933003002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(56, 'trinhquocthai', 'trinhquocthai2024', '0933004001', 'bacsi', 'Hoạt Động', NULL, NULL),
+(57, 'buithixuan', 'buithixuan2004', '0933004002', 'bacsi', 'Hoạt Động', NULL, NULL);
 
 CREATE TABLE `quantrivien` (
   `nguoiDungId` int(11) NOT NULL,
@@ -484,7 +589,9 @@ INSERT INTO `thongbaoadmin` (`maThongBao`, `maNghi`, `requestId`, `soDienThoai`,
 (2, 4, NULL, NULL, 'BS202511090112882', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Nguyễn Thành C xin nghỉ phép vào ngày 17/11/2025 - Ca chiều. Lý do: ???', '2025-11-15 20:22:57', 1, NULL, NULL),
 (3, 5, NULL, NULL, 'bs1', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Trần Văn B xin nghỉ phép vào ngày 19/11/2025 - Ca sáng. Lý do: 0', '2025-11-18 19:52:10', 1, NULL, NULL),
 (4, 6, NULL, NULL, 'bs1', 'Nghỉ phép', 'Đơn xin nghỉ phép', 'Bác sĩ Trần Văn B xin nghỉ phép vào ngày 19/11/2025 - Ca chiều. Lý do: ........', '2025-11-18 19:52:10', 1, NULL, NULL),
-(5, NULL, 1, NULL, 'bs1', 'Cấp lại mật khẩu', 'Yêu cầu cấp lại mật khẩu', 'Người dùng nguoidung2 yêu cầu cấp lại mật khẩu', '2025-11-19 10:30:56', 1, 'Đã xử lý', '2025-11-19 11:49:57');
+(5, NULL, 1, NULL, 'bs1', 'Cấp lại mật khẩu', 'Yêu cầu cấp lại mật khẩu', 'Người dùng nguoidung2 yêu cầu cấp lại mật khẩu', '2025-11-19 10:30:56', 1, 'Đã xử lý', '2025-11-19 11:49:57'),
+(6, NULL, 2, '0987654323', 'bs1', 'Cấp lại mật khẩu', 'Yêu cầu cấp lại mật khẩu', 'Người dùng nguoidung2 (bacsi) yêu cầu cấp lại mật khẩu', '2025-11-21 00:26:03', 1, 'Đã xử lý', '2025-11-21 00:26:19'),
+(7, NULL, NULL, NULL, 'bs1', 'Nghỉ phép', 'Yêu cầu cấp lại mật khẩu', 'Người dùng nguoidung2 yêu cầu cấp lại mật khẩu', '2025-11-21 00:26:03', 1, NULL, NULL);
 
 CREATE TABLE `thongbaobenhnhan` (
   `maThongBao` int(11) NOT NULL,
@@ -513,7 +620,15 @@ INSERT INTO `thongbaolichkham` (`maThongBao`, `maBacSi`, `maLichKham`, `loai`, `
 (3, 'bs1', 28, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân ABCs đã đặt lịch khám vào ngày 19/11/2025 - Ca sáng', '2025-11-18 18:48:59', 1),
 (4, 'bs1', 29, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 19/11/2025 - Ca chiều', '2025-11-18 18:49:11', 1),
 (5, 'bs1', 30, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Trần Văn H đã đặt lịch khám vào ngày 19/11/2025 - Ca chiều', '2025-11-18 18:49:24', 1),
-(6, 'bs1', NULL, 'Đặt lịch', 'Cấp lại mật khẩu', 'Mật khẩu mới của bạn là: Eden19112025. Vui lòng đổi mật khẩu sau khi đăng nhập.', '2025-11-19 11:49:57', 1);
+(6, 'bs1', NULL, 'Đặt lịch', 'Cấp lại mật khẩu', 'Mật khẩu mới của bạn là: Eden19112025. Vui lòng đổi mật khẩu sau khi đăng nhập.', '2025-11-19 11:49:57', 1),
+(7, 'bs1', NULL, 'Đặt lịch', 'Cấp lại mật khẩu', 'Mật khẩu mới của bạn là: Eden21112025. Vui lòng đổi mật khẩu sau khi đăng nhập.', '2025-11-21 00:26:19', 1),
+(8, 'BS20251121031', 31, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 00/00/0000 - Ca sáng', '2025-11-21 13:12:04', 0),
+(9, 'BS20251121022', 32, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 00/00/0000 - Ca sáng', '2025-11-21 13:48:36', 0),
+(10, 'BS20251121022', 33, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 00/00/0000 - Ca sáng', '2025-11-21 13:49:07', 0),
+(11, 'BS20251121022', 34, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 00/00/0000 - Ca sáng', '2025-11-21 13:56:45', 0),
+(12, 'BS20251121022', 35, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 22/11/2025 - Ca sáng', '2025-11-21 14:12:55', 0),
+(13, 'BS20251121022', 36, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 22/11/2025 - Ca sáng', '2025-11-21 14:13:35', 0),
+(14, 'BS202511102320635', 37, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 21/11/2025 - Ca chiều', '2025-11-21 14:30:28', 0);
 
 
 ALTER TABLE `bacsi`
@@ -556,6 +671,12 @@ ALTER TABLE `lichkham`
   ADD KEY `maCa` (`maCa`),
   ADD KEY `maSuat` (`maSuat`),
   ADD KEY `maGoi` (`maGoi`);
+
+ALTER TABLE `lienhe`
+  ADD PRIMARY KEY (`maLienHe`),
+  ADD KEY `fk_lienhe_nguoixuly` (`nguoiXuLy`),
+  ADD KEY `idx_trangThai` (`trangThai`),
+  ADD KEY `idx_thoiGianGui` (`thoiGianGui`);
 
 ALTER TABLE `ngaynghi`
   ADD PRIMARY KEY (`maNghi`),
@@ -601,31 +722,34 @@ ALTER TABLE `calamviec`
   MODIFY `maCa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `doimatkhau`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `goikham`
   MODIFY `maGoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `lichkham`
-  MODIFY `maLichKham` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `maLichKham` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+ALTER TABLE `lienhe`
+  MODIFY `maLienHe` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `ngaynghi`
   MODIFY `maNghi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 ALTER TABLE `nguoidung`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 ALTER TABLE `suatkham`
   MODIFY `maSuat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 ALTER TABLE `thongbaoadmin`
-  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 ALTER TABLE `thongbaobenhnhan`
   MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `thongbaolichkham`
-  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 
 ALTER TABLE `bacsi`
@@ -653,6 +777,9 @@ ALTER TABLE `lichkham`
   ADD CONSTRAINT `lichkham_ibfk_3` FOREIGN KEY (`maCa`) REFERENCES `calamviec` (`maCa`),
   ADD CONSTRAINT `lichkham_ibfk_4` FOREIGN KEY (`maSuat`) REFERENCES `suatkham` (`maSuat`),
   ADD CONSTRAINT `lichkham_ibfk_5` FOREIGN KEY (`maGoi`) REFERENCES `goikham` (`maGoi`);
+
+ALTER TABLE `lienhe`
+  ADD CONSTRAINT `fk_lienhe_nguoixuly` FOREIGN KEY (`nguoiXuLy`) REFERENCES `nguoidung` (`id`) ON DELETE SET NULL;
 
 ALTER TABLE `ngaynghi`
   ADD CONSTRAINT `ngaynghi_ibfk_1` FOREIGN KEY (`maBacSi`) REFERENCES `bacsi` (`maBacSi`),
