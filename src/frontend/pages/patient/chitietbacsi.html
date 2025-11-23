@@ -6,36 +6,39 @@
     <title>Chi Tiết Bác Sĩ - Eden Health</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
     <style>
+        /* ========== VARIABLES ========== */
         :root {
             --primary-purple: #667eea;
             --secondary-purple: #764ba2;
             --primary-blue: #00AEEF;
-            --light-bg: #f8f9fa;
             --text-dark: #1e293b;
             --text-muted: #64748b;
+            --light-bg: #f8f9fa;
+            --border-color: #e5e7eb;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f7fa;
-            min-height: 100vh;
+            color: var(--text-dark);
         }
 
-        /* === NAVBAR === */
+        /* ========== NAVBAR (Giống Index) ========== */
         .navbar-custom {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            padding: 8px 0;
+            padding: 10px 0;
+            min-height: 58px;
             transition: all 0.3s ease;
-        }
-
-        .navbar-custom.scrolled {
-            padding: 8px 0;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
         }
 
         .navbar-brand-header {
@@ -51,7 +54,9 @@
             color: var(--secondary-purple) !important;
         }
 
-        .navbar-brand-header i { color: var(--secondary-purple); }
+        .navbar-brand-header i {
+            color: var(--secondary-purple);
+        }
 
         .nav-link-header {
             color: #333 !important;
@@ -76,21 +81,26 @@
         }
 
         .nav-link-header:hover,
-        .nav-link-header.active { color: var(--primary-purple) !important; }
+        .nav-link-header.active {
+            color: var(--primary-purple) !important;
+        }
 
         .nav-link-header:hover::after,
-        .nav-link-header.active::after { width: 80%; }
-
-        /* Auth Buttons */
-        .auth-buttons { display: flex; align-items: center; gap: 8px; }
+        .nav-link-header.active::after {
+            width: 80%;
+        }
 
         .btn-auth {
-            padding: 8px 22px;
+            padding: 8px 20px;
             border-radius: 25px;
             font-weight: 600;
             transition: all 0.3s;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
         }
 
         .btn-login {
@@ -117,107 +127,353 @@
             transform: translateY(-2px);
         }
 
-        /* User Dropdown */
-        .user-dropdown { display: none; }
-        .user-dropdown.show { display: flex; }
+        .logout-header {
+            display: none;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-header.active {
+            display: flex;
+        }
+
+        .user-info-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .header-user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .user-avatar {
             width: 38px;
             height: 38px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-size: 1rem;
         }
 
-        .user-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .dropdown-menu-custom {
-            border-radius: 12px;
+        .btn-logout-custom {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             border: none;
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-            padding: 8px 0;
-            min-width: 200px;
-            animation: fadeDown 0.25s ease;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 35px;
         }
 
-        @keyframes fadeDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-logout-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+            color: white;
         }
 
-        .dropdown-menu-custom .dropdown-item {
-            padding: 10px 18px;
-            font-weight: 500;
+        .nav-item-loggedin {
+            display: none;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .navbar-center {
+            display: flex;
+            margin: 0 auto;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* ========== MOBILE SIDEBAR ========== */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1021;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1021;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .mobile-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .mobile-sidebar-header h4 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s;
+        }
+
+        .close-sidebar:hover {
+            transform: scale(1.1);
+        }
+
+        .mobile-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu li {
+            margin: 0;
+        }
+
+        .mobile-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
             color: #333;
-            transition: all 0.2s;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
         }
 
-        .dropdown-menu-custom .dropdown-item:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            color: var(--secondary-purple);
-        }
-
-        .dropdown-menu-custom .dropdown-item i {
-            width: 20px;
-            margin-right: 10px;
+        .mobile-menu a:hover,
+        .mobile-menu a.active {
+            background: #f8f9fa;
+            border-left-color: var(--primary-purple);
             color: var(--primary-purple);
         }
 
-        /* === BREADCRUMB === */
-        .breadcrumb-section {
-            background: white;
-            padding: 10px 0; /* Giảm padding một chút cho gọn */
-            border-bottom: 1px solid #f2f4fa;
-            position: sticky;
-            z-index: 990; /* Thấp hơn Header (thường là 1000) */
-            
-            /* TRẠNG THÁI 1: KHI Ở ĐẦU TRANG (Header to) */
-            /* Bạn có thể cần chỉnh số 76px này lên/xuống tùy độ cao thực tế Header của bạn */
-            top: 0px; 
-            
-            /* QUAN TRỌNG: Hiệu ứng trượt mượt mà đồng bộ với Header */
-            transition: top 0.3s ease, padding 0.3s ease; 
+        .mobile-menu a i {
+            width: 25px;
+            margin-right: 12px;
+            font-size: 1.1rem;
         }
 
-        .breadcrumb-section.scrolled-mode {
-            /* TRẠNG THÁI 2: KHI ĐÃ CUỘN (Header thu nhỏ) */
-            /* Header thu nhỏ lại bao nhiêu thì giảm số này bấy nhiêu (thường là khoảng 60px-65px) */
-            top: 57px; 
-            
-            /* Tùy chọn: Thu nhỏ breadcrumb thêm chút nữa khi cuộn cho gọn */
-            padding: 8px 0; 
+        .mobile-menu-loggedin {
+            display: none;
+        }
+
+        .mobile-sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            background: #f8f9fa;
+        }
+
+        .mobile-auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-mobile-login,
+        .btn-mobile-register {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-mobile-login {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+        }
+
+        .btn-mobile-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .btn-mobile-register {
+            background: white;
+            color: var(--primary-purple);
+            border: 2px solid var(--primary-purple);
+        }
+
+        .btn-mobile-register:hover {
+            background: var(--primary-purple);
+            color: white;
+        }
+
+        .mobile-user-info {
+            display: none;
+        }
+
+        .mobile-user-info.active {
+            display: block;
+        }
+
+        .mobile-user-details {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .mobile-user-details .user-avatar {
+            width: 35px;
+            height: 35px;
+            font-size: 1.1rem;
+        }
+
+        .mobile-user-details .user-text {
+            flex: 1;
+        }
+
+        .mobile-user-details .user-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .btn-mobile-logout {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-mobile-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ========== BREADCRUMB ========== */
+        .breadcrumb-section {
+            background: white;
+            padding: 4px 0;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky; 
+            top: 58px;
+            z-index: 100;
         }
 
         .breadcrumb {
-            font-size: 0.8rem; 
-            margin-bottom: 0 !important;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            font-size: 0.70rem;
+        }
+
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
         }
 
         .breadcrumb-item a {
-            color: var(--text-muted); /* Giữ màu chữ link */
+            color: #64748b;
             text-decoration: none;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .breadcrumb-item a:hover { 
-            color: var(--secondary-purple); /* Đổi màu khi hover sang tím đậm hơn */
-        }
-        .breadcrumb-item.active { 
-            color: var(--primary-purple); /* Giữ màu chữ trang hiện tại là tím nhạt */
-            font-weight: 600; 
+        .breadcrumb-item a:hover {
+            color: var(--primary-purple);
         }
 
-        /* === LOADING & ERROR === */
-        .loading-container, .error-container {
+        .breadcrumb-item.active {
+            color: var(--primary-purple);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "›";
+            color: #94a3b8;
+            padding: 0 8px;
+        }
+
+        /* ========== LOADING & ERROR ========== */
+        .loading-container,
+        .error-container {
             text-align: center;
             padding: 100px 20px;
             min-height: 60vh;
@@ -227,7 +483,10 @@
             justify-content: center;
         }
 
-        .loading-container .spinner-border { width: 3rem; height: 3rem; }
+        .loading-container .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
 
         .error-container i {
             font-size: 4rem;
@@ -235,8 +494,15 @@
             margin-bottom: 20px;
         }
 
-        .error-container h4 { color: var(--text-dark); margin-bottom: 10px; }
-        .error-container p { color: var(--text-muted); margin-bottom: 20px; }
+        .error-container h4 {
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .error-container p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
 
         .btn-back {
             background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
@@ -246,6 +512,8 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
         }
 
         .btn-back:hover {
@@ -254,46 +522,45 @@
             color: white;
         }
 
-        /* === HERO SECTION === */
-        .doctor-hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 60px 0 80px;
-            position: relative;
-            overflow: hidden;
+        /* ========== DOCTOR HEADER ========== */
+        .doctor-header-section {
+            padding: 40px 0;
+            background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
         }
 
-        .hero-bg {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
+        .doctor-header-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
         }
 
         .doctor-avatar-wrapper {
             position: relative;
             display: inline-block;
-            margin-bottom: 30px;
         }
 
         .doctor-avatar {
-            width: 220px;
-            height: 220px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 6px solid rgba(255, 255, 255, 0.3);
+            border: 5px solid rgba(102, 126, 234, 0.2);
             object-fit: cover;
             background: white;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             transition: all 0.4s;
         }
 
-        .doctor-avatar:hover { transform: scale(1.05); }
+        .doctor-avatar:hover {
+            transform: scale(1.05);
+        }
 
-        .avatar-badge {
+        .verified-badge {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
-            width: 45px;
-            height: 45px;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
             background: #10b981;
             border-radius: 50%;
             display: flex;
@@ -305,87 +572,144 @@
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
-        .doctor-hero-info { color: white; }
+        .doctor-header-info {
+            padding: 0 20px;
+        }
 
         .specialty-badge {
             display: inline-flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 8px 20px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 6px 16px;
             border-radius: 50px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            color: var(--primary-purple);
+            margin-bottom: 12px;
         }
 
         .doctor-name {
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            color: var(--text-dark);
+            margin-bottom: 8px;
         }
 
-        .doctor-department {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 30px;
+        .doctor-id {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
         }
 
-        .doctor-stats-hero {
+        .quick-info {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
         }
 
-        .stat-box {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 15px 25px;
-            border-radius: 16px;
+        .info-badge {
             display: flex;
             align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
         }
 
-        .stat-box:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-3px);
+        .info-badge i {
+            color: var(--primary-purple);
         }
 
-        .stat-box i { font-size: 1.8rem; opacity: 0.9; }
-
-        .stat-info { display: flex; flex-direction: column; }
-
-        .stat-number { font-size: 1.5rem; font-weight: 700; }
-        .stat-label { font-size: 0.85rem; opacity: 0.85; }
-
-        .btn-book-now {
+        .btn-book-appointment {
             display: inline-flex;
             align-items: center;
-            background: white;
-            color: var(--primary-purple);
-            padding: 14px 35px;
-            border-radius: 30px;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 1rem;
             text-decoration: none;
             transition: all 0.3s;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
         }
 
-        .btn-book-now:hover {
+        .btn-book-appointment:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-            color: var(--secondary-purple);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+            color: white;
         }
 
-        /* === DETAIL SECTION === */
-        .doctor-detail-section { padding: 50px 0 80px; }
+        /* ========== STATISTICS ========== */
+        .statistics-section {
+            padding: 30px 0;
+        }
 
-        .detail-card {
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-card.blue .stat-icon {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .stat-card.green .stat-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-card.purple .stat-icon {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+
+        .stat-card.orange .stat-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .stat-content h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .stat-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* ========== CONTENT SECTION ========== */
+        .detail-content-section {
+            padding: 40px 0 80px;
+        }
+
+        .content-card {
             background: white;
             border-radius: 20px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
@@ -394,9 +718,8 @@
             transition: all 0.3s;
         }
 
-        .detail-card:hover {
+        .content-card:hover {
             box-shadow: 0 10px 35px rgba(102, 126, 234, 0.12);
-            transform: translateY(-3px);
         }
 
         .card-header-custom {
@@ -405,7 +728,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .card-header-custom i {
@@ -420,7 +743,9 @@
             margin: 0;
         }
 
-        .card-body-custom { padding: 25px; }
+        .card-body-custom {
+            padding: 25px;
+        }
 
         .description-text {
             color: var(--text-muted);
@@ -428,105 +753,43 @@
             font-size: 1rem;
         }
 
-        .specialty-detail h4 {
+        .specialty-info h4 {
             color: var(--primary-purple);
             font-weight: 700;
             margin-bottom: 10px;
+            font-size: 1.1rem;
         }
 
-        .specialty-detail p {
+        .specialty-info p {
             color: var(--text-muted);
             line-height: 1.7;
         }
 
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        /* ========== SIDEBAR ========== */
+        .sidebar-sticky {
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar-card {
+            margin-bottom: 20px;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
-
-        .stats-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 16px;
-            transition: all 0.3s;
-        }
-
-        .stats-item:hover {
-            background: #f1f5f9;
-            transform: translateX(5px);
-        }
-
-        .stats-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: white;
-        }
-
-        .stats-icon.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-        .stats-icon.green { background: linear-gradient(135deg, #10b981, #059669); }
-        .stats-icon.purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-        .stats-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
-
-        .stats-content { display: flex; flex-direction: column; }
-
-        .stats-number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-
-        .stats-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* === SIDEBAR === */
-        .info-sidebar {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-            position: sticky;
-            top: 100px;
-        }
-
-        .sidebar-header {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-header i { font-size: 1.3rem; }
-        .sidebar-header h4 { font-size: 1.1rem; font-weight: 700; margin: 0; }
-
-        .sidebar-body { padding: 20px; }
 
         .info-item {
             display: flex;
             align-items: flex-start;
             gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid #e5e7eb;
         }
 
-        .info-item:last-child { border-bottom: none; }
-
-        .info-item > i {
-            width: 40px;
-            height: 40px;
+        .info-icon {
+            width: 45px;
+            height: 45px;
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
             border-radius: 10px;
             display: flex;
@@ -534,40 +797,38 @@
             justify-content: center;
             color: var(--primary-purple);
             flex-shrink: 0;
+            font-size: 1.1rem;
         }
 
-        .info-item > div { display: flex; flex-direction: column; }
-        .info-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 3px; }
-        .info-value { font-size: 0.95rem; font-weight: 600; color: var(--text-dark); }
+        .info-text {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
 
-        .sidebar-footer { padding: 20px; border-top: 1px solid #e5e7eb; }
+        .info-text .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
 
-        .btn-sidebar-book {
-            display: block;
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-            padding: 14px;
-            border-radius: 12px;
-            text-align: center;
-            text-decoration: none;
+        .info-text .value {
+            font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            transition: all 0.3s;
+            color: var(--text-dark);
         }
 
-        .btn-sidebar-book:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            color: white;
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
-        .btn-sidebar-back {
+        .btn-secondary-action {
             display: block;
             width: 100%;
+            padding: 12px;
             background: #f1f5f9;
             color: var(--text-dark);
-            padding: 12px;
             border-radius: 12px;
             text-align: center;
             text-decoration: none;
@@ -575,20 +836,28 @@
             transition: all 0.3s;
         }
 
-        .btn-sidebar-back:hover {
+        .btn-secondary-action:hover {
             background: #e2e8f0;
             color: var(--primary-purple);
         }
 
-        /* === FOOTER === */
+        /* ========== FOOTER (Giống Index) ========== */
         .footer {
             background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             color: white;
-            padding: 60px 0 25px;
+            padding: 25px 0 10px;
+            margin-top: 0px;
         }
 
-        .footer-brand { font-size: 1.5rem; font-weight: 700; margin-bottom: 15px; }
-        .footer-brand i { color: var(--primary-purple); }
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand i {
+            color: var(--primary-purple);
+        }
 
         .footer-desc {
             color: #94a3b8;
@@ -616,8 +885,14 @@
             border-radius: 2px;
         }
 
-        .footer-links { list-style: none; padding: 0; }
-        .footer-links li { margin-bottom: 12px; }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
 
         .footer-links a {
             color: #94a3b8;
@@ -628,7 +903,10 @@
             gap: 8px;
         }
 
-        .footer-links a:hover { color: white; padding-left: 5px; }
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
 
         .footer-contact p {
             color: #94a3b8;
@@ -638,9 +916,16 @@
             gap: 10px;
         }
 
-        .footer-contact i { color: var(--primary-purple); width: 20px; }
+        .footer-contact i {
+            color: var(--primary-purple);
+            width: 20px;
+        }
 
-        .social-icons { display: flex; gap: 12px; margin-top: 20px; }
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
 
         .social-icons a {
             width: 40px;
@@ -661,14 +946,14 @@
 
         .copyright {
             text-align: center;
-            padding-top: 30px;
-            margin-top: 40px;
+            padding-top: 25px;
+            margin-top: 25px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #64748b;
             font-size: 0.9rem;
         }
 
-        /* Scroll Top Button */
+        /* ========== SCROLL TOP BUTTON ========== */
         #scrollTopBtn {
             position: fixed;
             bottom: 25px;
@@ -694,82 +979,222 @@
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
 
-        /* === RESPONSIVE === */
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 992px) {
-            .doctor-name { font-size: 2.2rem; }
-            .doctor-stats-hero { justify-content: center; }
-            .doctor-hero-info { text-align: center; margin-top: 20px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .info-sidebar { position: static; margin-top: 25px; }
+            .navbar-center {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.6rem;
+                padding: 5px 0 5px 10px;
+            }
+            
+            .mobile-sidebar {
+                display: block;
+            }
+
+            .sidebar-sticky {
+                position: static;
+            }
+
+            .doctor-name {
+                font-size: 1.8rem;
+            }
+
+            .quick-info {
+                justify-content: center;
+            }
+
+            .doctor-header-info {
+                text-align: center;
+                padding: 20px 0 0 0;
+            }
         }
 
         @media (max-width: 768px) {
-            .doctor-hero { padding: 40px 0 60px; }
-            .doctor-avatar { width: 180px; height: 180px; }
-            .doctor-name { font-size: 1.8rem; }
-            .stat-box { padding: 12px 18px; }
-            .stat-box i { font-size: 1.4rem; }
-            .stat-number { font-size: 1.2rem; }
-            .auth-buttons { flex-direction: column; gap: 5px; }
-            .btn-auth { padding: 8px 18px; font-size: 0.85rem; }
+            .navbar-right .auth-buttons {
+                display: none !important;
+            }
+            
+            .navbar-right .logout-header {
+                display: none !important;
+            }
+            
+            .mobile-sidebar {
+                width: 50%;
+                max-width: 320px;
+            }
+            
+            .navbar-custom {
+                padding: 8px 0;
+            }
+            
+            .navbar-brand-header {
+                font-size: 1.2rem;
+            }
+
+            .doctor-header-card {
+                padding: 30px 20px;
+            }
+
+            .doctor-avatar {
+                width: 150px;
+                height: 150px;
+            }
+
+            .doctor-name {
+                font-size: 1.5rem;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .stat-content h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .doctor-header-section {
+                padding: 30px 0;
+            }
+
+            .statistics-section {
+                padding: 20px 0;
+            }
+
+            .detail-content-section {
+                padding: 30px 0 60px;
+            }
+
+            .quick-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .info-badge {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- Mobile Overlay & Sidebar -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="mobile-sidebar-header">
+            <h4><i class="fas fa-clinic-medical me-2"></i>Eden Health</h4>
+            <button class="close-sidebar" id="closeSidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <ul class="mobile-menu">
+            <li><a href="index.html"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
+            <li><a href="danhsachchuyenkhoa.html"><i class="fas fa-hospital"></i><span>Chuyên khoa</span></a></li>
+            <li><a href="danhsachbacsi.html" class="active"><i class="fas fa-user-md"></i><span>Bác sĩ</span></a></li>
+            <li class="mobile-menu-loggedin"><a href="lichkham.html"><i class="fas fa-calendar-check"></i><span>Lịch khám</span></a></li>
+            <li class="mobile-menu-loggedin"><a href="taikhoan.html"><i class="fas fa-user-circle"></i><span>Hồ sơ cá nhân</span></a></li>
+            <li><a href="lienhe.html"><i class="fas fa-envelope"></i><span>Liên hệ</span></a></li>
+        </ul>
+
+        <div class="mobile-sidebar-footer">
+            <div class="mobile-auth-buttons" id="mobileAuthButtons">
+                <a href="/frontend/pages/auth/login.html" class="btn-mobile-login">
+                    <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+                </a>
+                <a href="/frontend/pages/auth/register.html" class="btn-mobile-register">
+                    <i class="fas fa-user-plus me-2"></i>Đăng ký
+                </a>
+            </div>
+
+            <div class="mobile-user-info" id="mobileUserInfo">
+                <div class="mobile-user-details">
+                    <div class="user-avatar" id="mobileUserAvatar">A</div>
+                    <div class="user-text">
+                        <div class="user-name" id="mobileUserName">Khách</div>
+                    </div>
+                </div>
+                <button class="btn-mobile-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand-header" href="index.html">
-                <i class="fas fa-clinic-medical me-2"></i>
-                <span>Eden</span> Health
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
+            <div class="navbar-left">
+                <a class="navbar-brand-header" href="index.html">
+                    <i class="fas fa-clinic-medical me-2"></i><span>Eden</span> Health
+                </a>
+            </div>
+
+            <div class="navbar-center" id="navbarNav">
+                <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
                     <li class="nav-item"><a class="nav-link-header active" href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="vechungtoi.html">Về chúng tôi</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="taikhoan.html">Hồ sơ</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
-                    <li class="nav-item" id="navProfileItem" style="display: none;">
-                        <a class="nav-link-header" href="hosocanhan.html">Hồ sơ cá nhân</a>
-                    </li>
                 </ul>
-                <div class="d-flex align-items-center">
-                    <div class="auth-buttons" id="authButtons">
-                        <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
-                            <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
-                        </a>
-                        <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
-                            <i class="fas fa-user-plus me-1"></i> Đăng ký
-                        </a>
-                    </div>
-                    <div class="user-dropdown dropdown" id="userDropdown">
-                        <div class="user-avatar" data-bs-toggle="dropdown" id="userAvatar">N</div>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom">
-                            <li><span class="dropdown-item-text fw-bold" id="dropdownUserName">Người dùng</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="hosocanhan.html"><i class="fas fa-user-circle"></i> Hồ sơ cá nhân</a></li>
-                            <li><a class="dropdown-item" href="lichkham.html"><i class="fas fa-calendar-check"></i> Lịch khám của tôi</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
-                        </ul>
-                    </div>
+            </div>
+
+            <div class="navbar-right ms-auto d-flex align-items-center gap-3">
+                <div class="auth-buttons" id="authButtons">
+                    <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
+                        <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                    </a>
+                    <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
+                        <i class="fas fa-user-plus me-1"></i> Đăng ký
+                    </a>
                 </div>
+
+                <div class="logout-header" id="logoutHeader">
+                    <div class="user-info-group" onclick="window.location.href='taikhoan.html'">
+                        <div class="user-avatar" id="userAvatar">K</div>
+                        <div class="header-user-name" id="headerUserName">Khách</div>
+                    </div>
+                    <button class="btn-logout-custom" id="btnDesktopLogout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+
+                <button class="menu-toggle ms-2" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Breadcrumb -->
     <div class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="index.html"><strong>Trang chủ</strong></a></li>
-                    <li class="breadcrumb-item"><a href="danhsachbacsi.html"><strong>Bác sĩ</strong></a></li>
-                    <li class="breadcrumb-item active" id="breadcrumbName"><strong>Chi tiết bác sĩ</strong></li>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="danhsachbacsi.html">Bác sĩ</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page" id="breadcrumbName">
+                        Chi tiết
+                    </li>
                 </ol>
             </nav>
         </div>
@@ -778,67 +1203,60 @@
     <!-- Loading -->
     <div id="loadingIndicator" class="loading-container">
         <div class="spinner-border text-primary"></div>
-        <p class="mt-3">Đang tải thông tin...</p>
+        <p class="mt-3">Đang tải thông tin bác sĩ...</p>
     </div>
 
     <!-- Error State -->
     <div id="errorState" class="error-container" style="display: none;">
         <i class="fas fa-exclamation-triangle"></i>
         <h4>Không tìm thấy bác sĩ</h4>
-        <p>Bác sĩ bạn tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+        <p>Bác sĩ bạn tìm kiếm không tồn tại hoặc đã bị xóa khỏi hệ thống.</p>
         <a href="danhsachbacsi.html" class="btn-back">Quay lại danh sách</a>
     </div>
 
     <!-- Main Content -->
     <main id="mainContent" style="display: none;">
-        <!-- Hero Section -->
-        <section class="doctor-hero">
-            <div class="hero-bg"></div>
+        <!-- Doctor Header -->
+        <section class="doctor-header-section">
             <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-4 text-center">
-                        <div class="doctor-avatar-wrapper">
-                            <img id="doctorAvatar" src="" alt="Avatar" class="doctor-avatar">
-                            <div class="avatar-badge">
-                                <i class="fas fa-check-circle"></i>
+                <div class="doctor-header-card">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-4 text-center">
+                            <div class="doctor-avatar-wrapper">
+                                <img id="doctorAvatar" src="" alt="Avatar" class="doctor-avatar">
+                                <div class="verified-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="doctor-hero-info">
-                            <div class="specialty-badge" id="specialtyBadge">
-                                <i class="fas fa-stethoscope me-2"></i>
-                                <span id="doctorSpecialty">Chuyên khoa</span>
-                            </div>
-                            <h1 class="doctor-name" id="doctorName">Tên Bác Sĩ</h1>
-                            <p class="doctor-department" id="doctorDepartment">
-                                <i class="fas fa-hospital me-2"></i>Khoa
-                            </p>
-                            <div class="doctor-stats-hero">
-                                <div class="stat-box">
-                                    <i class="fas fa-briefcase-medical"></i>
-                                    <div class="stat-info">
-                                        <span class="stat-number" id="statExperience">0</span>
-                                        <span class="stat-label">Năm kinh nghiệm</span>
-                                    </div>
+                        <div class="col-lg-6 col-md-8">
+                            <div class="doctor-header-info">
+                                <div class="specialty-badge" id="specialtyBadge">
+                                    <i class="fas fa-stethoscope me-2"></i>
+                                    <span id="headerSpecialty">Chuyên khoa</span>
                                 </div>
-                                <div class="stat-box">
-                                    <i class="fas fa-calendar-check"></i>
-                                    <div class="stat-info">
-                                        <span class="stat-number" id="statAppointments">0</span>
-                                        <span class="stat-label">Lịch khám</span>
+                                <h1 class="doctor-name" id="doctorName">Tên Bác Sĩ</h1>
+                                <p class="doctor-id"><i class="fas fa-id-card me-2"></i>Mã: <span id="doctorCode">---</span></p>
+                                <div class="quick-info">
+                                    <div class="info-badge">
+                                        <i class="fas fa-hospital"></i>
+                                        <span id="departmentName">Khoa</span>
                                     </div>
-                                </div>
-                                <div class="stat-box">
-                                    <i class="fas fa-users"></i>
-                                    <div class="stat-info">
-                                        <span class="stat-number" id="statPatients">0</span>
-                                        <span class="stat-label">Bệnh nhân</span>
+                                    <div class="info-badge">
+                                        <i class="fas fa-briefcase-medical"></i>
+                                        <span id="experienceYears">0 năm</span>
+                                    </div>
+                                    <div class="info-badge">
+                                        <i class="fas fa-venus-mars"></i>
+                                        <span id="doctorGender">---</span>
                                     </div>
                                 </div>
                             </div>
-                            <a href="datlich.html" class="btn-book-now" id="btnBookNow">
-                                <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám ngay
+                        </div>
+                        <div class="col-lg-3 text-center text-lg-end mt-4 mt-lg-0">
+                            <a href="datlich.html" class="btn-book-appointment" id="btnBookMain">
+                                <i class="fas fa-calendar-plus me-2"></i>
+                                <span>Đặt lịch khám</span>
                             </a>
                         </div>
                     </div>
@@ -846,138 +1264,146 @@
             </div>
         </section>
 
-        <!-- Detail Section -->
-        <section class="doctor-detail-section">
+        <!-- Statistics -->
+        <section class="statistics-section">
+            <div class="container">
+                <div class="row g-3">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="stat-card blue">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalAppointments">0</h3>
+                                <p>Tổng lịch khám</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="stat-card green">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-double"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="completedAppointments">0</h3>
+                                <p>Đã hoàn thành</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="stat-card purple">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalPatients">0</h3>
+                                <p>Bệnh nhân</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="stat-card orange">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="experienceDisplay">0</h3>
+                                <p>Năm kinh nghiệm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detail Content -->
+        <section class="detail-content-section">
             <div class="container">
                 <div class="row g-4">
-                    <!-- Left Column -->
+                    <!-- Main Content -->
                     <div class="col-lg-8">
                         <!-- About -->
-                        <div class="detail-card">
+                        <div class="content-card">
                             <div class="card-header-custom">
                                 <i class="fas fa-user-md"></i>
                                 <h3>Giới thiệu</h3>
                             </div>
                             <div class="card-body-custom">
                                 <p id="doctorDescription" class="description-text">
-                                    Chưa có thông tin giới thiệu.
+                                    Đang tải thông tin...
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Specialty Info -->
-                        <div class="detail-card">
+                        <!-- Specialty -->
+                        <div class="content-card">
                             <div class="card-header-custom">
                                 <i class="fas fa-heartbeat"></i>
-                                <h3>Chuyên khoa điều trị</h3>
+                                <h3>Chuyên khoa</h3>
                             </div>
                             <div class="card-body-custom">
-                                <div class="specialty-detail">
+                                <div class="specialty-info">
                                     <h4 id="specialtyName">Tên chuyên khoa</h4>
                                     <p id="specialtyDescription">Mô tả chuyên khoa</p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Stats Detail -->
-                        <div class="detail-card">
-                            <div class="card-header-custom">
-                                <i class="fas fa-chart-bar"></i>
-                                <h3>Thống kê hoạt động</h3>
-                            </div>
-                            <div class="card-body-custom">
-                                <div class="stats-grid">
-                                    <div class="stats-item">
-                                        <div class="stats-icon blue">
-                                            <i class="fas fa-calendar-alt"></i>
-                                        </div>
-                                        <div class="stats-content">
-                                            <span class="stats-number" id="totalAppointments">0</span>
-                                            <span class="stats-label">Tổng lịch khám</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-item">
-                                        <div class="stats-icon green">
-                                            <i class="fas fa-check-double"></i>
-                                        </div>
-                                        <div class="stats-content">
-                                            <span class="stats-number" id="completedAppointments">0</span>
-                                            <span class="stats-label">Đã hoàn thành</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-item">
-                                        <div class="stats-icon purple">
-                                            <i class="fas fa-user-friends"></i>
-                                        </div>
-                                        <div class="stats-content">
-                                            <span class="stats-number" id="totalPatients">0</span>
-                                            <span class="stats-label">Bệnh nhân đã khám</span>
-                                        </div>
-                                    </div>
-                                    <div class="stats-item">
-                                        <div class="stats-icon orange">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
-                                        <div class="stats-content">
-                                            <span class="stats-number" id="yearsWorking">0</span>
-                                            <span class="stats-label">Năm công tác</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
-                    <!-- Right Column -->
+                    <!-- Sidebar -->
                     <div class="col-lg-4">
-                        <!-- Info Card -->
-                        <div class="info-sidebar">
-                            <div class="sidebar-header">
-                                <i class="fas fa-info-circle"></i>
-                                <h4>Thông tin liên hệ</h4>
+                        <div class="sidebar-sticky">
+                            <!-- Contact Info -->
+                            <div class="content-card sidebar-card">
+                                <div class="card-header-custom">
+                                    <i class="fas fa-info-circle"></i>
+                                    <h3>Thông tin</h3>
+                                </div>
+                                <div class="card-body-custom">
+                                    <div class="info-list">
+                                        <div class="info-item">
+                                            <div class="info-icon">
+                                                <i class="fas fa-hospital-alt"></i>
+                                            </div>
+                                            <div class="info-text">
+                                                <span class="label">Khoa</span>
+                                                <span class="value" id="sidebarDepartment">---</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-icon">
+                                                <i class="fas fa-user-nurse"></i>
+                                            </div>
+                                            <div class="info-text">
+                                                <span class="label">Chuyên khoa</span>
+                                                <span class="value" id="sidebarSpecialty">---</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-icon">
+                                                <i class="fas fa-calendar"></i>
+                                            </div>
+                                            <div class="info-text">
+                                                <span class="label">Năm bắt đầu</span>
+                                                <span class="value" id="sidebarStartYear">---</span>
+                                            </div>
+                                        </div>
+                                        <div class="info-item">
+                                            <div class="info-icon">
+                                                <i class="fas fa-briefcase"></i>
+                                            </div>
+                                            <div class="info-text">
+                                                <span class="label">Kinh nghiệm</span>
+                                                <span class="value" id="sidebarExperience">--- năm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="sidebar-body">
-                                <div class="info-item">
-                                    <i class="fas fa-id-card"></i>
-                                    <div>
-                                        <span class="info-label">Mã bác sĩ</span>
-                                        <span class="info-value" id="doctorId">---</span>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-venus-mars"></i>
-                                    <div>
-                                        <span class="info-label">Giới tính</span>
-                                        <span class="info-value" id="doctorGender">---</span>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-hospital-alt"></i>
-                                    <div>
-                                        <span class="info-label">Khoa</span>
-                                        <span class="info-value" id="doctorKhoa">---</span>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-user-nurse"></i>
-                                    <div>
-                                        <span class="info-label">Chuyên khoa</span>
-                                        <span class="info-value" id="doctorChuyenKhoa">---</span>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-calendar"></i>
-                                    <div>
-                                        <span class="info-label">Năm bắt đầu</span>
-                                        <span class="info-value" id="doctorStartYear">---</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-footer">
-                                <a href="datlich.html" class="btn-sidebar-book" id="btnSidebarBook">
-                                    <i class="fas fa-calendar-plus me-2"></i>Đặt lịch khám
-                                </a>
-                                <a href="danhsachbacsi.html" class="btn-sidebar-back">
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <a href="danhsachbacsi.html" class="btn-secondary-action">
                                     <i class="fas fa-arrow-left me-2"></i>Xem bác sĩ khác
                                 </a>
                             </div>
@@ -988,18 +1414,23 @@
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <div class="footer-brand"><i class="fas fa-clinic-medical me-2"></i>Eden Health</div>
-                    <p class="footer-desc">Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam.</p>
+                    <div class="footer-brand">
+                        <i class="fas fa-clinic-medical me-2"></i>Eden Health
+                    </div>
+                    <p class="footer-desc">
+                        Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam. 
+                        Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất.
+                    </p>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6">
@@ -1025,6 +1456,7 @@
                         <p><i class="fas fa-phone-alt"></i> Hotline: <strong>1900 0091</strong></p>
                         <p><i class="fas fa-envelope"></i> edenhealth@gmail.com</p>
                         <p><i class="fas fa-clock"></i> 07:00 - 17:00 (T2 - CN)</p>
+                        <p><i class="fas fa-map-marker-alt"></i> TP. Cần Thơ, Việt Nam</p>
                     </div>
                 </div>
             </div>
@@ -1040,39 +1472,130 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api';
+        const API_BASE_PATIENT = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+        const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
 
+        // ========== KHỞI TẠO ==========
         document.addEventListener('DOMContentLoaded', function() {
             checkLoginStatus();
             loadDoctorDetail();
             setupScrollEffects();
+            setupMobileMenu();
         });
 
-        // Check login status
-        function checkLoginStatus() {
-            const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-            const username = localStorage.getItem('username');
+        // ========== KIỂM TRA ĐĂNG NHẬP ==========
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch(`${API_BASE_AUTH}/get-current-user.php`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                });
 
-            if (isLoggedIn && username) {
-                document.getElementById('authButtons').style.display = 'none';
-                document.getElementById('userDropdown').classList.add('show');
-                document.getElementById('navProfileItem').style.display = 'block';
-                document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
-                document.getElementById('dropdownUserName').textContent = username;
-            } else {
-                document.getElementById('authButtons').style.display = 'flex';
-                document.getElementById('userDropdown').classList.remove('show');
-                document.getElementById('navProfileItem').style.display = 'none';
+                const data = await response.json();
+
+                // Desktop elements
+                const authButtons = document.getElementById('authButtons');
+                const logoutHeader = document.getElementById('logoutHeader');
+                const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin');
+                const userAvatar = document.getElementById('userAvatar');
+                const headerUserName = document.getElementById('headerUserName');
+
+                // Mobile elements
+                const mobileAuthButtons = document.getElementById('mobileAuthButtons');
+                const mobileUserInfo = document.getElementById('mobileUserInfo');
+                const mobileMenuLoggedIn = document.querySelectorAll('.mobile-menu-loggedin');
+                const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+                const mobileUserName = document.getElementById('mobileUserName');
+
+                if (data.success) {
+                    // ĐÃ ĐĂNG NHẬP
+                    const fullName = data.data.fullName;
+                    const firstLetter = fullName.charAt(0).toUpperCase();
+
+                    // Desktop
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (logoutHeader) logoutHeader.classList.add('active');
+                    navLoggedInItems.forEach(item => item.style.display = 'block');
+                    
+                    if (userAvatar) userAvatar.textContent = firstLetter;
+                    if (headerUserName) headerUserName.textContent = fullName;
+
+                    // Mobile
+                    if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
+                    if (mobileUserInfo) mobileUserInfo.classList.add('active');
+                    mobileMenuLoggedIn.forEach(item => item.style.display = 'block');
+                    
+                    if (mobileUserAvatar) mobileUserAvatar.textContent = firstLetter;
+                    if (mobileUserName) mobileUserName.textContent = fullName;
+
+                    // Update profile links
+                    updateProfileLink(data.data.role);
+
+                } else {
+                    // CHƯA ĐĂNG NHẬP
+                    
+                    // Desktop
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (logoutHeader) logoutHeader.classList.remove('active');
+                    navLoggedInItems.forEach(item => item.style.display = 'none');
+
+                    // Mobile
+                    if (mobileAuthButtons) mobileAuthButtons.style.display = 'flex';
+                    if (mobileUserInfo) mobileUserInfo.classList.remove('active');
+                    mobileMenuLoggedIn.forEach(item => item.style.display = 'none');
+                }
+
+            } catch (error) {
+                console.error('Lỗi kiểm tra đăng nhập:', error);
+                
+                // Reset to logged out state
+                if (document.getElementById('authButtons')) 
+                    document.getElementById('authButtons').style.display = 'flex';
+                if (document.getElementById('logoutHeader')) 
+                    document.getElementById('logoutHeader').classList.remove('active');
+                if (document.getElementById('mobileAuthButtons'))
+                    document.getElementById('mobileAuthButtons').style.display = 'flex';
+                if (document.getElementById('mobileUserInfo'))
+                    document.getElementById('mobileUserInfo').classList.remove('active');
             }
         }
 
-        // Get doctor ID from URL
+        function updateProfileLink(role) {
+            const profileLinks = document.querySelectorAll('a[href="taikhoan.html"]');
+            if (role === 'bacsi') {
+                profileLinks.forEach(link => link.href = '../doctor/dashboard.html');
+            } else if (role === 'quantri') {
+                profileLinks.forEach(link => link.href = '../admin/dashboard.html');
+            }
+        }
+
+        // ========== ĐĂNG XUẤT ==========
+        async function logout() {
+            try {
+                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Lỗi đăng xuất:', error);
+                alert('Có lỗi xảy ra khi đăng xuất');
+            }
+        }
+
+        // ========== LẤY MÃ BÁC SĨ TỪ URL ==========
         function getDoctorIdFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('id');
         }
 
-        // Load doctor detail
+        // ========== TẢI THÔNG TIN BÁC SĨ ==========
         async function loadDoctorDetail() {
             const maBacSi = getDoctorIdFromUrl();
             
@@ -1082,7 +1605,7 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE}/patient/get-doctor-detail.php?maBacSi=${encodeURIComponent(maBacSi)}`);
+                const response = await fetch(`${API_BASE_PATIENT}/get-doctor-detail.php?maBacSi=${encodeURIComponent(maBacSi)}`);
                 const data = await response.json();
 
                 if (data.success && data.data) {
@@ -1097,54 +1620,58 @@
             }
         }
 
-        // Render doctor detail
+        // ========== RENDER THÔNG TIN BÁC SĨ ==========
         function renderDoctorDetail(doctor) {
+            // Tính năm kinh nghiệm
+            const currentYear = new Date().getFullYear();
+            const experience = doctor.namLamViec ? currentYear - doctor.namLamViec : 0;
+            
             // Update page title
             document.title = `${doctor.tenBacSi} - Eden Health`;
             
             // Breadcrumb
             document.getElementById('breadcrumbName').textContent = doctor.tenBacSi;
             
-            // Hero Section
-            document.getElementById('doctorAvatar').src = doctor.anhDaiDien;
+            // Header Section
+            const imageSrc = doctor.gioiTinh === 'nu' 
+                ? '../../assets/images/doctor_female.png' 
+                : '../../assets/images/doctor_male.png';
+            
+            document.getElementById('doctorAvatar').src = imageSrc;
             document.getElementById('doctorAvatar').alt = doctor.tenBacSi;
+            document.getElementById('headerSpecialty').textContent = doctor.tenChuyenKhoa || 'Đa khoa';
             document.getElementById('doctorName').textContent = doctor.tenBacSi;
-            document.getElementById('doctorSpecialty').textContent = doctor.tenChuyenKhoa || 'Đa khoa';
-            document.getElementById('doctorDepartment').innerHTML = `<i class="fas fa-hospital me-2"></i>${doctor.tenKhoa || 'Chưa xác định'}`;
+            document.getElementById('doctorCode').textContent = doctor.maBacSi;
+            document.getElementById('departmentName').textContent = doctor.tenKhoa || 'Chưa xác định';
+            document.getElementById('experienceYears').textContent = experience > 0 ? `${experience} năm` : 'Mới';
+            document.getElementById('doctorGender').textContent = formatGender(doctor.gioiTinh);
             
-            // Hero Stats
-            document.getElementById('statExperience').textContent = doctor.namKinhNghiem > 0 ? doctor.namKinhNghiem + '+' : 'N/A';
-            document.getElementById('statAppointments').textContent = formatNumber(doctor.totalAppointments);
-            document.getElementById('statPatients').textContent = formatNumber(doctor.totalPatients);
-            
-            // Update booking button links with doctor info
+            // Update booking button link
             const bookingUrl = `datlich.html?bacsi=${doctor.maBacSi}&chuyenkhoa=${doctor.maChuyenKhoa}`;
-            document.getElementById('btnBookNow').href = bookingUrl;
-            document.getElementById('btnSidebarBook').href = bookingUrl;
+            document.getElementById('btnBookMain').href = bookingUrl;
+            
+            // Statistics
+            document.getElementById('totalAppointments').textContent = doctor.totalAppointments.toLocaleString('vi-VN');
+            document.getElementById('completedAppointments').textContent = doctor.completedAppointments.toLocaleString('vi-VN');
+            document.getElementById('totalPatients').textContent = doctor.totalPatients.toLocaleString('vi-VN');
+            document.getElementById('experienceDisplay').textContent = experience > 0 ? experience : 'Mới';
             
             // Description
-            const description = doctor.moTa || 'Bác sĩ ' + doctor.tenBacSi + ' là một trong những bác sĩ giàu kinh nghiệm tại ' + (doctor.tenKhoa || 'bệnh viện') + '. Với chuyên môn cao trong lĩnh vực ' + (doctor.tenChuyenKhoa || 'y học') + ', bác sĩ luôn tận tâm chăm sóc và điều trị cho bệnh nhân với phương pháp hiệu quả nhất.';
+            const description = doctor.moTa || `Bác sĩ ${doctor.tenBacSi} là một trong những bác sĩ giàu kinh nghiệm tại ${doctor.tenKhoa || 'bệnh viện'}. Với chuyên môn cao trong lĩnh vực ${doctor.tenChuyenKhoa || 'y học'}, bác sĩ luôn tận tâm chăm sóc và điều trị cho bệnh nhân với phương pháp hiệu quả nhất.`;
             document.getElementById('doctorDescription').textContent = description;
             
             // Specialty
             document.getElementById('specialtyName').textContent = doctor.tenChuyenKhoa || 'Đa khoa';
             document.getElementById('specialtyDescription').textContent = doctor.moTaChuyenKhoa || 'Chuyên khoa cung cấp các dịch vụ khám và điều trị chuyên sâu, với đội ngũ bác sĩ giàu kinh nghiệm và trang thiết bị hiện đại.';
             
-            // Stats Detail
-            document.getElementById('totalAppointments').textContent = doctor.totalAppointments.toLocaleString('vi-VN');
-            document.getElementById('completedAppointments').textContent = doctor.completedAppointments.toLocaleString('vi-VN');
-            document.getElementById('totalPatients').textContent = doctor.totalPatients.toLocaleString('vi-VN');
-            document.getElementById('yearsWorking').textContent = doctor.namKinhNghiem > 0 ? doctor.namKinhNghiem : 'N/A';
-            
             // Sidebar Info
-            document.getElementById('doctorId').textContent = doctor.maBacSi;
-            document.getElementById('doctorGender').textContent = formatGender(doctor.gioiTinh);
-            document.getElementById('doctorKhoa').textContent = doctor.tenKhoa || 'Chưa xác định';
-            document.getElementById('doctorChuyenKhoa').textContent = doctor.tenChuyenKhoa || 'Đa khoa';
-            document.getElementById('doctorStartYear').textContent = doctor.namLamViec || 'Chưa cập nhật';
+            document.getElementById('sidebarDepartment').textContent = doctor.tenKhoa || 'Chưa xác định';
+            document.getElementById('sidebarSpecialty').textContent = doctor.tenChuyenKhoa || 'Đa khoa';
+            document.getElementById('sidebarStartYear').textContent = doctor.namLamViec || 'Chưa cập nhật';
+            document.getElementById('sidebarExperience').textContent = experience > 0 ? `${experience} năm` : 'Mới';
         }
 
-        // Format gender
+        // ========== FORMAT GIỚI TÍNH ==========
         function formatGender(gender) {
             switch(gender) {
                 case 'nam': return 'Nam';
@@ -1153,75 +1680,71 @@
             }
         }
 
-        // Format number with + suffix
-        function formatNumber(num) {
-            if (!num || num === 0) return '0';
-            if (num < 10) return num.toString();
-            if (num < 100) return Math.floor(num / 10) * 10 + '+';
-            if (num < 1000) return Math.floor(num / 100) * 100 + '+';
-            return Math.floor(num / 1000) + 'k+';
-        }
-
-        // Show main content
+        // ========== HIỂN THỊ NỘI DUNG ==========
         function showContent() {
             document.getElementById('loadingIndicator').style.display = 'none';
             document.getElementById('errorState').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
         }
 
-        // Show error state
+        // ========== HIỂN THỊ LỖI ==========
         function showError() {
             document.getElementById('loadingIndicator').style.display = 'none';
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('errorState').style.display = 'flex';
         }
 
-        // Setup scroll effects
+        // ========== SCROLL EFFECTS ==========
         function setupScrollEffects() {
-            // Lấy cả Navbar và Breadcrumb
-            const navbar = document.querySelector('.navbar-custom');
-            const breadcrumb = document.querySelector('.breadcrumb-section');
             const scrollBtn = document.getElementById('scrollTopBtn');
             
-            if (!navbar) return;
-
             window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    // Khi cuộn xuống
-                    navbar.classList.add('scrolled');
-                    if (breadcrumb) breadcrumb.classList.add('scrolled-mode'); // Thêm class này
-                } else {
-                    // Khi ở đầu trang
-                    navbar.classList.remove('scrolled');
-                    if (breadcrumb) breadcrumb.classList.remove('scrolled-mode'); // Xóa class này
-                }
-                
-                // Logic nút scroll to top (giữ nguyên)
                 if (scrollBtn) {
                     scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
                 }
             });
         }
 
-        // Logout function
-        function logout() {
-            // Clear localStorage
-            localStorage.removeItem('loggedIn');
-            localStorage.removeItem('username');
-            localStorage.removeItem('userRole');
-            localStorage.removeItem('maBenhNhan');
-            localStorage.removeItem('hoTen');
-            localStorage.removeItem('maBacSi');
-            localStorage.removeItem('maQuanTriVien');
-            
-            // Call logout API
-            fetch(`${API_BASE}/auth/logout.php`, {
-                method: 'POST',
-                credentials: 'include'
+        // ========== MOBILE MENU ==========
+        function setupMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileSidebar = document.getElementById('mobileSidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const closeSidebar = document.getElementById('closeSidebar');
+
+            // Open sidebar
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    mobileSidebar.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            // Close sidebar
+            function closeMobileSidebar() {
+                mobileSidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeMobileSidebar);
+            }
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMobileSidebar);
+            }
+
+            // Close sidebar when clicking menu items
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 992) {
+                        closeMobileSidebar();
+                    }
+                });
             });
-            
-            // Redirect to home
-            window.location.href = 'index.html';
         }
     </script>
 </body>

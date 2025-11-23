@@ -7,6 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        :root {
+            --primary-purple: #667eea;
+            --secondary-purple: #764ba2;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -19,34 +24,38 @@
             min-height: 100vh;
         }
 
-        /* Navbar Styles */
+        /* === NAVBAR === */
         .navbar-custom {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             padding: 10px 0;
+            min-height: 58px;
         }
 
         .navbar-brand-header {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #333;
+            color: var(--primary-purple) !important;
             text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .navbar-brand-header:hover {
+            transform: scale(1.02);
+            color: var(--secondary-purple) !important;
         }
 
         .navbar-brand-header i {
-            color: #667eea;
+            color: var(--secondary-purple);
         }
 
-        .navbar-brand-header .custom-primary-color {
-            color: #667eea;
-        }
-
-        /* Login Container */
+        /* === LOGIN WRAPPER === */
         .login-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: calc(100vh - 80px);
+            min-height: calc(100vh - 78px);
             padding: 40px 20px;
         }
 
@@ -63,19 +72,13 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-left {
             flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             color: white;
             padding: 60px 50px;
             display: flex;
@@ -100,7 +103,7 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-30px); }
         }
 
@@ -176,11 +179,11 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-purple);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .form-group i {
+        .form-group .input-icon {
             position: absolute;
             right: 15px;
             top: 45px;
@@ -189,8 +192,8 @@
             transition: color 0.3s;
         }
 
-        .form-group i:hover {
-            color: #667eea;
+        .form-group .input-icon:hover {
+            color: var(--primary-purple);
         }
 
         .form-options {
@@ -203,24 +206,26 @@
         .remember-me {
             display: flex;
             align-items: center;
+            gap: 8px;
         }
 
-        .remember-me input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
+        .remember-me input {
+            cursor: pointer;
         }
 
         .remember-me label {
-            margin-bottom: 0;
+            margin: 0;
             font-weight: 400;
             color: #666;
+            cursor: pointer;
         }
 
         .forgot-password a {
-            color: #667eea;
+            color: var(--primary-purple);
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .forgot-password a:hover {
@@ -230,7 +235,7 @@
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             border: none;
             border-radius: 10px;
             color: white;
@@ -258,7 +263,7 @@
         }
 
         .signup-link a {
-            color: #667eea;
+            color: var(--primary-purple);
             text-decoration: none;
             font-weight: 600;
         }
@@ -267,12 +272,113 @@
             text-decoration: underline;
         }
 
-        .alert {
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        /* === MODAL === */
+        .modal-overlay {
             display: none;
-            font-size: 0.9rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content-custom {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header-custom {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header-custom h3 {
+            color: #333;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-header-custom p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .otp-display {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 2rem;
+            letter-spacing: 8px;
+            font-weight: 700;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .otp-info {
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .otp-info i {
+            color: #ffc107;
+        }
+
+        .btn-primary-custom {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary-custom {
+            width: 100%;
+            padding: 14px;
+            background: #6c757d;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
         }
 
         .alert-success {
@@ -281,12 +387,7 @@
             color: #155724;
         }
 
-        .alert-error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-
+        /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .login-container {
                 flex-direction: column;
@@ -312,21 +413,33 @@
             .login-header h2 {
                 font-size: 1.5rem;
             }
+
+            .modal-content-custom {
+                padding: 30px 25px;
+            }
+
+            .modal-header-custom h3 {
+                font-size: 1.5rem;
+            }
+
+            .otp-display {
+                font-size: 1.5rem;
+                letter-spacing: 5px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid container-xl">
+        <div class="container">
             <a class="navbar-brand-header" href="../patient/index.html">
-                <i class="fas fa-clinic-medical me-2"></i>
-                <span class="custom-primary-color">Eden</span> Health
+                <i class="fas fa-clinic-medical me-2"></i><span>Eden</span> Health
             </a>
         </div>
     </nav>
 
-    <!-- Login Section -->
+    <!-- LOGIN SECTION -->
     <div class="login-wrapper">
         <div class="login-container">
             <!-- Left Side -->
@@ -345,19 +458,17 @@
                     <p>Nhập thông tin đăng nhập của bạn</p>
                 </div>
 
-                <div id="loginAlert" class="alert"></div>
-
                 <form id="loginForm">
                     <div class="form-group">
                         <label for="username">Tên đăng nhập hoặc Số điện thoại</label>
                         <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập hoặc số điện thoại" required>
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-user input-icon"></i>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Mật khẩu</label>
                         <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required>
-                        <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                        <i class="fas fa-eye input-icon" onclick="togglePassword()"></i>
                     </div>
 
                     <div class="form-options">
@@ -366,7 +477,7 @@
                             <label for="remember">Ghi nhớ đăng nhập</label>
                         </div>
                         <div class="forgot-password">
-                            <a href="#">Quên mật khẩu?</a>
+                            <a onclick="openForgotPasswordModal()">Quên mật khẩu?</a>
                         </div>
                     </div>
 
@@ -382,10 +493,77 @@
         </div>
     </div>
 
+    <!-- FORGOT PASSWORD MODAL -->
+    <div class="modal-overlay" id="forgotPasswordModal">
+        <div class="modal-content-custom">
+            <!-- Step 1: Enter Username/Phone -->             
+            <div id="step1" class="modal-step">
+                <div class="modal-header-custom">
+                    <h3><i class="fas fa-key text-primary"></i> Quên Mật Khẩu</h3>
+                    <p>Nhập tên đăng nhập hoặc số điện thoại để nhận mã OTP</p>
+                </div>
+
+                <form id="requestOtpForm" onsubmit="requestOTP(event)">
+                    <div class="form-group">
+                        <label for="resetUsername">Tên đăng nhập hoặc Số điện thoại</label>
+                        <input type="text" class="form-control" id="resetUsername" placeholder="Nhập tên đăng nhập hoặc số điện thoại" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary-custom" id="btnRequestOtp">
+                        <i class="fas fa-paper-plane me-2"></i>Nhận mã OTP
+                    </button>
+                    <button type="button" class="btn-secondary-custom" onclick="closeForgotPasswordModal()">
+                        <i class="fas fa-times me-2"></i>Hủy
+                    </button>
+                </form>
+            </div>
+
+            <!-- Step 2: Enter OTP and New Password -->
+            <div id="step2" class="modal-step" style="display: none;">
+                <div class="modal-header-custom">
+                    <h3><i class="fas fa-shield-alt text-success"></i> Xác Thực OTP</h3>
+                    <p>Mã OTP của bạn là:</p>
+                </div>
+
+                <div class="otp-display" id="otpDisplay">000000</div>
+                <div class="otp-info">
+                    <i class="fas fa-clock"></i> Mã có hiệu lực trong 5 phút
+                </div>
+
+                <form id="verifyOtpForm" onsubmit="verifyOTP(event)">
+                    <div class="form-group">
+                        <label for="otpInput">Nhập mã OTP</label>
+                        <input type="text" class="form-control" id="otpInput" placeholder="Nhập 6 chữ số" maxlength="6" pattern="[0-9]{6}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="newPassword">Mật khẩu mới</label>
+                        <input type="password" class="form-control" id="newPassword" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" minlength="6" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" id="confirmNewPassword" placeholder="Nhập lại mật khẩu mới" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary-custom" id="btnVerifyOtp">
+                        <i class="fas fa-check me-2"></i>Xác nhận và đổi mật khẩu
+                    </button>
+                    <button type="button" class="btn-secondary-custom" onclick="backToStep1()">
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
+        let currentOTP = '';
+        let resetUsername = '';
 
+        // Toggle password visibility
         function togglePassword() {
             const input = document.getElementById('password');
             const icon = input.nextElementSibling;
@@ -401,6 +579,7 @@
             }
         }
 
+        // Login form submit
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -409,7 +588,7 @@
             const btnLogin = document.getElementById('btnLogin');
             
             if (!username || !password) {
-                showAlert('Vui lòng nhập đầy đủ thông tin!', 'error');
+                showAlert('error', 'Vui lòng nhập đầy đủ thông tin!');
                 return;
             }
             
@@ -432,7 +611,7 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showAlert('Đăng nhập thành công!', 'success');
+                    showAlert('success', 'Đăng nhập thành công!');
                     
                     setTimeout(() => {
                         // Chuyển hướng dựa theo vai trò
@@ -451,27 +630,159 @@
                         }
                     }, 1000);
                 } else {
-                    showAlert(data.message || 'Đăng nhập thất bại!', 'error');
+                    showAlert('error', data.message || 'Đăng nhập thất bại!');
                     btnLogin.disabled = false;
                     btnLogin.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập';
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showAlert('Có lỗi xảy ra. Vui lòng thử lại!', 'error');
+                showAlert('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
                 btnLogin.disabled = false;
                 btnLogin.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Đăng Nhập';
             }
         });
 
-        function showAlert(message, type) {
-            const alert = document.getElementById('loginAlert');
-            alert.textContent = message;
-            alert.className = 'alert alert-' + type;
-            alert.style.display = 'block';
+        // Forgot Password Modal Functions
+        function openForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.add('active');
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+        }
+
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('active');
+            document.getElementById('requestOtpForm').reset();
+            document.getElementById('verifyOtpForm').reset();
+            resetUsername = '';
+            currentOTP = '';
+        }
+
+        function backToStep1() {
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('verifyOtpForm').reset();
+        }
+
+        // Request OTP
+        async function requestOTP(event) {
+            event.preventDefault();
             
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 5000);
+            const username = document.getElementById('resetUsername').value.trim();
+            const btnRequestOtp = document.getElementById('btnRequestOtp');
+            
+            if (!username) {
+                showAlert('error', 'Vui lòng nhập tên đăng nhập hoặc số điện thoại!');
+                return;
+            }
+
+            btnRequestOtp.disabled = true;
+            btnRequestOtp.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/forgot-password.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ username: username })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    resetUsername = username;
+                    currentOTP = data.otp;
+                    
+                    // Show OTP in modal
+                    document.getElementById('otpDisplay').textContent = data.otp;
+                    
+                    // Switch to step 2
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('step2').style.display = 'block';
+                    
+                    showAlert('success', 'Mã OTP đã được tạo! Vui lòng kiểm tra và nhập mã.');
+                } else {
+                    showAlert('error', data.message || 'Không thể tạo mã OTP!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
+            } finally {
+                btnRequestOtp.disabled = false;
+                btnRequestOtp.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Nhận mã OTP';
+            }
+        }
+
+        // Verify OTP and Reset Password
+        async function verifyOTP(event) {
+            event.preventDefault();
+            
+            const otp = document.getElementById('otpInput').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            const btnVerifyOtp = document.getElementById('btnVerifyOtp');
+            
+            // Validate
+            if (newPassword !== confirmPassword) {
+                showAlert('error', 'Mật khẩu xác nhận không khớp!');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showAlert('error', 'Mật khẩu phải có ít nhất 6 ký tự!');
+                return;
+            }
+
+            btnVerifyOtp.disabled = true;
+            btnVerifyOtp.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang xử lý...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/reset-password.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        username: resetUsername,
+                        otp: otp,
+                        newPassword: newPassword
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert('success', 'Đổi mật khẩu thành công! Đang chuyển đến trang đăng nhập...');
+                    
+                    setTimeout(() => {
+                        closeForgotPasswordModal();
+                        // Optionally pre-fill username
+                        document.getElementById('username').value = resetUsername;
+                    }, 2000);
+                } else {
+                    showAlert('error', data.message || 'Xác thực thất bại!');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('error', 'Có lỗi xảy ra. Vui lòng thử lại!');
+            } finally {
+                btnVerifyOtp.disabled = false;
+                btnVerifyOtp.innerHTML = '<i class="fas fa-check me-2"></i>Xác nhận và đổi mật khẩu';
+            }
+        }
+
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
         }
     </script>
 </body>
