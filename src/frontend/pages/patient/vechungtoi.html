@@ -1425,7 +1425,7 @@
                     <li class="nav-item"><a class="nav-link-header" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
                     <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="hosocanhan.html">Hồ sơ</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="hosobenhan.html">Hồ sơ</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
                 </ul>
             </div>
@@ -1437,7 +1437,7 @@
                 </div>
 
                 <div class="logout-header" id="logoutHeader">
-                    <div class="user-info-group" onclick="window.location.href='hosocanhan.html'">
+                    <div class="user-info-group" onclick="window.location.href='taikhoan.html'">
                         <div class="user-avatar" id="userAvatar">K</div>
                         <div class="header-user-name" id="headerUserName">Khách</div>
                     </div>
@@ -1465,7 +1465,7 @@
             <li><a href="danhsachkhoa.html"><i class="fas fa-hospital"></i><span>Chuyên khoa</span></a></li>
             <li><a href="danhsachbacsi.html"><i class="fas fa-user-md"></i><span>Bác sĩ</span></a></li>
             <li class="mobile-menu-loggedin"><a href="lichkham.html"><i class="fas fa-calendar-check"></i><span>Lịch khám</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="hosocanhan.html"><i class="fas fa-user-circle"></i><span>Hồ sơ cá nhân</span></a></li>
+            <li class="mobile-menu-loggedin"><a href="hosobenhan.html"><i class="fas fa-user-circle"></i><span>Hồ sơ cá nhân</span></a></li>
             <li><a href="lienhe.html"><i class="fas fa-envelope"></i><span>Liên hệ</span></a></li>
         </ul>
 
@@ -1480,7 +1480,7 @@
             </div>
 
             <div class="mobile-user-info" id="mobileUserInfo">
-                <div class="mobile-user-details">
+                <div class="mobile-user-details" onclick="window.location.href='taikhoan.html'">
                     <div class="user-avatar" id="mobileUserAvatar">A</div>
                     <div class="user-text">
                         <div class="user-name" id="mobileUserName">Khách</div>
@@ -2184,11 +2184,32 @@
             }
         }
 
-        setupValueCounters();
+        function updateProfileLink(role) {
+            const profileLinks = document.querySelectorAll('a[href="taikhoan.html"]');
+            if (role === 'bacsi') {
+                profileLinks.forEach(link => link.href = '../doctor/dashboard.html');
+            } else if (role === 'quantri') {
+                profileLinks.forEach(link => link.href = '../admin/dashboard.html');
+            }
+        }
+        // ========== ĐĂNG XUẤT ==========
+        async function logout() {
+            try {
+                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
 
-        // === LOG PAGE LOAD ===
-        console.log('About Us page loaded successfully');
-        console.log('All animations initialized');
+                const data = await response.json();
+                if (data.success) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Lỗi đăng xuất:', error);
+                alert('Có lỗi xảy ra khi đăng xuất');
+            }
+        }
     </script>
 </body>
 </html>
