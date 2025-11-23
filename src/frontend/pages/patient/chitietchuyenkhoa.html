@@ -7,17 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* === VARIABLES === */
         :root {
             --primary-purple: #667eea;
             --secondary-purple: #764ba2;
             --text-dark: #1e293b;
             --text-muted: #64748b;
-            --light-bg: #f8f9fa;
             --border-color: #e5e7eb;
         }
 
-        /* === RESET === */
         * {
             margin: 0;
             padding: 0;
@@ -27,16 +24,29 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
-            color: var(--text-dark);
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
 
-        /* === NAVBAR (Copy từ danhsachchuyenkhoa.html) === */
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* === NAVBAR === */
+        .header-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease; /* cho header hiện mượt */
+        }
+
         .navbar-custom {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             padding: 10px 0;
             min-height: 58px;
+            transition: all 0.3s ease;
         }
 
         .navbar-brand-header {
@@ -50,10 +60,6 @@
         .navbar-brand-header:hover {
             transform: scale(1.02);
             color: var(--secondary-purple) !important;
-        }
-
-        .navbar-brand-header i {
-            color: var(--secondary-purple);
         }
 
         .nav-link-header {
@@ -78,13 +84,11 @@
             transform: translateX(-50%);
         }
 
-        .nav-link-header:hover,
-        .nav-link-header.active {
+        .nav-link-header:hover, .nav-link-header.active {
             color: var(--primary-purple) !important;
         }
 
-        .nav-link-header:hover::after,
-        .nav-link-header.active::after {
+        .nav-link-header:hover::after, .nav-link-header.active::after {
             width: 80%;
         }
 
@@ -217,7 +221,6 @@
             padding: 5px;
         }
 
-        /* === MOBILE SIDEBAR === */
         .mobile-overlay {
             display: none;
             position: fixed;
@@ -291,10 +294,6 @@
             margin: 0;
         }
 
-        .mobile-menu li {
-            margin: 0;
-        }
-
         .mobile-menu a {
             display: flex;
             align-items: center;
@@ -305,8 +304,7 @@
             border-left: 4px solid transparent;
         }
 
-        .mobile-menu a:hover,
-        .mobile-menu a.active {
+        .mobile-menu a:hover, .mobile-menu a.active {
             background: #f8f9fa;
             border-left-color: var(--primary-purple);
             color: var(--primary-purple);
@@ -334,8 +332,7 @@
             gap: 10px;
         }
 
-        .btn-mobile-login,
-        .btn-mobile-register {
+        .btn-mobile-login, .btn-mobile-register {
             padding: 10px 20px;
             border-radius: 8px;
             font-weight: 600;
@@ -352,21 +349,10 @@
             color: white;
         }
 
-        .btn-mobile-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-            color: white;
-        }
-
         .btn-mobile-register {
             background: white;
             color: var(--primary-purple);
             border: 2px solid var(--primary-purple);
-        }
-
-        .btn-mobile-register:hover {
-            background: var(--primary-purple);
-            color: white;
         }
 
         .mobile-user-info {
@@ -390,10 +376,6 @@
             font-size: 1.1rem;
         }
 
-        .mobile-user-details .user-text {
-            flex: 1;
-        }
-
         .mobile-user-details .user-name {
             font-weight: 600;
             color: #333;
@@ -415,12 +397,6 @@
             justify-content: center;
         }
 
-        .btn-mobile-logout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        /* === BREADCRUMB === */
         .breadcrumb-section {
             background: white;
             padding: 4px 0;
@@ -458,6 +434,9 @@
         .breadcrumb-item.active {
             color: var(--primary-purple);
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .breadcrumb-item + .breadcrumb-item::before {
@@ -465,60 +444,574 @@
             color: #94a3b8;
             padding: 0 8px;
         }
+
+        .loading-container, .error-container {
+            text-align: center;
+            padding: 100px 20px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-container .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: var(--primary-purple);
+        }
+
+        .error-container i {
+            font-size: 4rem;
+            color: #f59e0b;
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .specialty-header {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 24px;
+            padding: 50px 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .specialty-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .department-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(102, 126, 234, 0.15);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+        }
+
+        .specialty-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .specialty-code {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .specialty-description {
+            color: var(--text-muted);
+            line-height: 1.9;
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+
+        .stats-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-top: 25px;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .stats-badge i {
+            font-size: 1.4rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.12);
+        }
+
+        .card-header-custom {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .card-header-custom i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-header-custom h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .department-title {
+            color: var(--primary-purple);
+            font-weight: 700;
+            margin-bottom: 18px;
+            font-size: 1.3rem;
+        }
+
+        .description-text {
+            color: var(--text-muted);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        .doctors-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .table-responsive {
+            margin-top: 25px;
+        }
+
+        .doctors-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .doctors-table thead {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .doctors-table th {
+            padding: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: left;
+            font-size: 0.95rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .doctors-table th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .doctors-table th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .doctors-table td {
+            padding: 18px;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .doctors-table tbody tr {
+            transition: all 0.3s;
+        }
+
+        .doctors-table tbody tr:hover {
+            background: #f8fafc;
+            transform: translateY(1.02);
+        }
+
+        .doctor-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .doctors-table tbody tr:hover .doctor-avatar {
+            border-color: var(--primary-purple);
+            transform: scale(1.1);
+        }
+
+        .doctor-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+        }
+
+        .gender-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .gender-male {
+            background: rgba(59, 130, 246, 0.12);
+            color: #3b82f6;
+        }
+
+        .gender-female {
+            background: rgba(236, 72, 153, 0.12);
+            color: #ec4899;
+        }
+
+        .experience-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .btn-view-doctor {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-view-doctor:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+            color: white;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .pagination {
+            margin: 0;
+            gap: 6px;
+        }
+
+        .page-link {
+            color: var(--primary-purple);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .page-link:hover {
+            background: var(--primary-purple);
+            color: white;
+            border-color: var(--primary-purple);
+            transform: translateY(-2px);
+        }
+
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border-color: var(--primary-purple);
+        }
+
+        .page-item.disabled .page-link {
+            background: #f8f9fa;
+            border-color: var(--border-color);
+            cursor: not-allowed;
+        }
+
+        .record-info {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .empty-doctors {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-doctors i {
+            font-size: 5rem;
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        .empty-doctors h4 {
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-size: 1.5rem;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 25px 0 10px;
+            margin-top: 0px;
+        }
+
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand i {
+            color: var(--primary-purple);
+        }
+
+        .footer-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer h5 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer h5::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            border-radius: 2px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            color: #94a3b8;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-contact i {
+            color: var(--primary-purple);
+            width: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 25px;
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            border: none;
+            font-size: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        #scrollTopBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        @media (max-width: 992px) {
+            .navbar-center {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.6rem;
+                padding: 5px 0 5px 10px;
+            }
+            
+            .mobile-sidebar {
+                display: block;
+            }
+
+            .specialty-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-right .auth-buttons, .navbar-right .logout-header {
+                display: none !important;
+            }
+            
+            .mobile-sidebar {
+                width: 50%;
+                max-width: 320px;
+            }
+            
+            .navbar-custom {
+                padding: 8px 0;
+            }
+            
+            .navbar-brand-header {
+                font-size: 1.2rem;
+            }
+
+            .specialty-header, .info-card, .doctors-section {
+                padding: 25px 20px;
+            }
+
+            .specialty-title {
+                font-size: 1.8rem;
+            }
+
+            .doctors-table td {
+                text-align: left;
+                padding: 8px 0;
+                border: none;
+            }
+
+            .doctors-table td:before {
+                content: attr(data-label);
+                font-weight: 700;
+                display: inline-block;
+                width: 120px;
+                color: var(--text-dark);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Mobile Overlay -->
+    <div id="pageLoader" style="
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: white;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    ">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+    </div>
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
-    <!-- Navbar (Copy từ danhsachchuyenkhoa.html) -->
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-        <div class="container">
-            <div class="navbar-left">
-                <a class="navbar-brand-header" href="index.html">
-                    <i class="fas fa-clinic-medical me-2"></i><span>Eden</span> Health
-                </a>
-            </div>
-
-            <div class="navbar-center" id="navbarNav">
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link-header active" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="hosobenhan.html">Hồ sơ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
-                </ul>
-            </div>
-
-            <div class="navbar-right ms-auto d-flex align-items-center gap-3">
-                <div class="auth-buttons" id="authButtons">
-                    <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
-                        <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
-                    </a>
-                    <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
-                        <i class="fas fa-user-plus me-1"></i> Đăng ký
-                    </a>
-                </div>
-
-                <div class="logout-header" id="logoutHeader">
-                    <div class="user-info-group" onclick="window.location.href='taikhoan.html'">
-                        <div class="user-avatar" id="userAvatar">K</div>
-                        <div class="header-user-name" id="headerUserName">Khách</div>
-                    </div>
-                    <button class="btn-logout-custom" id="btnDesktopLogout">
-                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                    </button>
-                </div>
-
-                <button class="menu-toggle ms-2" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Sidebar (Copy từ danhsachchuyenkhoa.html) -->
     <div class="mobile-sidebar" id="mobileSidebar">
         <div class="mobile-sidebar-header">
             <h4><i class="fas fa-clinic-medical me-2"></i>Eden Health</h4>
@@ -560,7 +1053,52 @@
         </div>
     </div>
 
-    <!-- Breadcrumb (Copy từ danhsachchuyenkhoa.html) -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top header-hidden">
+        <div class="container">
+            <div class="navbar-left">
+                <a class="navbar-brand-header" href="index.html">
+                    <i class="fas fa-clinic-medical me-2"></i><span>Eden</span> Health
+                </a>
+            </div>
+
+            <div class="navbar-center" id="navbarNav">
+                <ul class="navbar-nav d-flex flex-row">
+                    <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link-header active" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="hosobenhan.html">Hồ sơ</a></li>
+                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="navbar-right ms-auto d-flex align-items-center gap-3">
+                <div class="auth-buttons" id="authButtons">
+                    <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
+                        <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                    </a>
+                    <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
+                        <i class="fas fa-user-plus me-1"></i> Đăng ký
+                    </a>
+                </div>
+
+                <div class="logout-header" id="logoutHeader">
+                    <div class="user-info-group" onclick="window.location.href='taikhoan.html'">
+                        <div class="user-avatar" id="userAvatar">K</div>
+                        <div class="header-user-name" id="headerUserName">Khách</div>
+                    </div>
+                    <button class="btn-logout-custom" id="btnDesktopLogout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+
+                <button class="menu-toggle ms-2" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <div class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -579,172 +1117,88 @@
         </div>
     </div>
 
-    <!-- Loading State -->
     <div id="loadingIndicator" class="loading-container">
-        <div class="spinner-border text-primary"></div>
-        <p class="mt-3">Đang tải thông tin...</p>
+        <div class="spinner-border"></div>
+        <p class="mt-3">Đang tải thông tin chuyên khoa...</p>
     </div>
 
-    <!-- Error State -->
     <div id="errorState" class="error-container" style="display: none;">
         <i class="fas fa-exclamation-triangle"></i>
         <h4>Không tìm thấy chuyên khoa</h4>
-        <p>Chuyên khoa bạn tìm kiếm không tồn tại hoặc đã bị xóa.</p>
+        <p>Chuyên khoa bạn tìm kiếm không tồn tại hoặc đã bị xóa khỏi hệ thống.</p>
         <a href="danhsachchuyenkhoa.html" class="btn-back">
-            <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+            <i class="fas fa-arrow-left"></i> Quay lại danh sách
         </a>
     </div>
 
-    <!-- Main Content -->
-    <main id="mainContent" style="display: none;">
-        <!-- Specialty Header -->
-        <section class="specialty-header">
-            <div class="container">
-                <div class="header-card">
-                    <div class="row align-items-center">
-                        <div class="col-lg-8">
-                            <div class="specialty-badge" id="departmentBadge">
-                                <i class="fas fa-hospital me-2"></i>
-                                <span id="departmentName">Khoa</span>
-                            </div>
-                            <h1 class="specialty-title" id="specialtyTitle">Tên chuyên khoa</h1>
-                            <p class="specialty-code">Mã: <span id="specialtyCode">---</span></p>
-                        </div>
-                        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-                            <div class="quick-stats">
-                                <div class="stat-item">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-user-md"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <h3 id="doctorCount">0</h3>
-                                        <p>Bác sĩ</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <main id="mainContent" class="container" style="display: none; padding-bottom: 50px;">
+        <div class="specialty-header">
+            <div class="department-badge" id="departmentBadge">
+                <i class="fas fa-hospital me-2"></i>
+                <span id="departmentName">Khoa</span>
+            </div>
+            <h1 class="specialty-title" id="specialtyTitle">Tên chuyên khoa</h1>
+            <p class="specialty-code">Mã: <strong id="specialtyCode">---</strong></p>
+            <p class="specialty-description" id="specialtyDescription">Mô tả chuyên khoa...</p>
+            <div class="stats-badge">
+                <i class="fas fa-user-md"></i>
+                <span><strong id="doctorCount">0</strong> bác sĩ</span>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="card-header-custom">
+                <i class="fas fa-hospital-alt"></i>
+                <h3>Thông tin khoa</h3>
+            </div>
+            <h4 class="department-title" id="departmentNameFull">Tên khoa</h4>
+            <p class="description-text" id="departmentDescription">Mô tả khoa...</p>
+        </div>
+
+        <div class="doctors-section">
+            <div class="card-header-custom">
+                <i class="fas fa-user-md"></i>
+                <h3>Đội ngũ bác sĩ</h3>
+            </div>
+
+            <div id="doctorsLoading" class="text-center py-4">
+                <div class="spinner-border spinner-border-sm text-primary"></div>
+                <p class="mt-2 text-muted">Đang tải danh sách bác sĩ...</p>
+            </div>
+
+            <div id="doctorsEmpty" class="empty-doctors" style="display: none;">
+                <i class="fas fa-user-md"></i>
+                <h4>Chưa có bác sĩ</h4>
+                <p>Chưa có bác sĩ nào trong chuyên khoa này</p>
+            </div>
+
+            <div id="doctorsTableContainer" style="display: none;">
+                <div class="table-responsive">
+                    <table class="doctors-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 8%;">STT</th>
+                                <th style="width: 10%;">Ảnh</th>
+                                <th style="width: 25%;">Tên bác sĩ</th>
+                                <th style="width: 15%;">Giới tính</th>
+                                <th style="width: 22%;">Kinh nghiệm</th>
+                                <th style="width: 20%;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container">
+                    <div class="record-info" id="recordInfo">Hiển thị 0 - 0 của 0 bác sĩ</div>
+                    <nav>
+                        <ul class="pagination" id="paginationList"></ul>
+                    </nav>
                 </div>
             </div>
-        </section>
-
-        <!-- Specialty Info -->
-        <section class="specialty-info-section">
-            <div class="container">
-                <div class="row g-4">
-                    <!-- Main Info -->
-                    <div class="col-lg-8">
-                        <!-- Department Info -->
-                        <div class="info-card">
-                            <div class="card-header-custom">
-                                <i class="fas fa-hospital-alt"></i>
-                                <h3>Thông tin khoa</h3>
-                            </div>
-                            <div class="card-body-custom">
-                                <h4 id="departmentNameFull" class="department-title">Tên khoa</h4>
-                                <p id="departmentDescription" class="description-text">
-                                    Mô tả khoa...
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Specialty Description -->
-                        <div class="info-card">
-                            <div class="card-header-custom">
-                                <i class="fas fa-stethoscope"></i>
-                                <h3>Giới thiệu chuyên khoa</h3>
-                            </div>
-                            <div class="card-body-custom">
-                                <p id="specialtyDescription" class="description-text">
-                                    Mô tả chuyên khoa...
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- Doctors List -->
-                        <div class="info-card">
-                            <div class="card-header-custom">
-                                <i class="fas fa-user-md"></i>
-                                <h3>Đội ngũ bác sĩ</h3>
-                            </div>
-                            <div class="card-body-custom">
-                                <!-- Loading -->
-                                <div id="doctorsLoading" class="text-center py-4">
-                                    <div class="spinner-border spinner-border-sm text-primary"></div>
-                                    <p class="mt-2 text-muted">Đang tải danh sách bác sĩ...</p>
-                                </div>
-
-                                <!-- Empty State -->
-                                <div id="doctorsEmpty" class="empty-state-small" style="display: none;">
-                                    <i class="fas fa-user-md"></i>
-                                    <p>Chưa có bác sĩ nào trong chuyên khoa này</p>
-                                </div>
-
-                                <!-- Doctors Grid -->
-                                <div id="doctorsGrid" class="doctors-grid" style="display: none;"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sidebar -->
-                    <div class="col-lg-4">
-                        <div class="sidebar-sticky">
-                            <!-- Quick Info Card -->
-                            <div class="info-card sidebar-card">
-                                <div class="card-header-custom">
-                                    <i class="fas fa-info-circle"></i>
-                                    <h3>Thông tin</h3>
-                                </div>
-                                <div class="card-body-custom">
-                                    <div class="info-list">
-                                        <div class="info-item">
-                                            <div class="info-icon">
-                                                <i class="fas fa-hospital"></i>
-                                            </div>
-                                            <div class="info-text">
-                                                <span class="label">Khoa</span>
-                                                <span class="value" id="sidebarDepartment">---</span>
-                                            </div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-icon">
-                                                <i class="fas fa-stethoscope"></i>
-                                            </div>
-                                            <div class="info-text">
-                                                <span class="label">Chuyên khoa</span>
-                                                <span class="value" id="sidebarSpecialty">---</span>
-                                            </div>
-                                        </div>
-                                        <div class="info-item">
-                                            <div class="info-icon">
-                                                <i class="fas fa-user-md"></i>
-                                            </div>
-                                            <div class="info-text">
-                                                <span class="label">Số bác sĩ</span>
-                                                <span class="value" id="sidebarDoctorCount">0</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Action Buttons -->
-                            <div class="action-buttons">
-                                <a href="danhsachbacsi.html" class="btn-secondary-action">
-                                    <i class="fas fa-user-md me-2"></i>Xem tất cả bác sĩ
-                                </a>
-                                <a href="danhsachchuyenkhoa.html" class="btn-secondary-action">
-                                    <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
-    <!-- Footer (Copy từ danhsachchuyenkhoa.html) -->
     <footer class="footer">
         <div class="container">
             <div class="row g-4">
@@ -754,7 +1208,7 @@
                     </div>
                     <p class="footer-desc">
                         Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam. 
-                        Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất cho bạn và gia đình.
+                        Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất.
                     </p>
                     <div class="social-icons">
                         <a href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
@@ -796,14 +1250,359 @@
         </div>
     </footer>
 
-    <!-- Scroll to Top Button -->
     <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
         <i class="fas fa-chevron-up"></i>
     </button>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // JavaScript sẽ được thêm ở phần 3
+        const API_BASE_PATIENT = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+        const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
+
+        let allDoctors = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSpecialtyDetail();
+            checkLoginStatus();
+            setupScrollEffects();
+            setupMobileMenu();
+        });
+
+        function getSpecialtyIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        async function loadSpecialtyDetail() {
+            const maChuyenKhoa = getSpecialtyIdFromUrl();
+            
+            if (!maChuyenKhoa) {
+                showError();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_PATIENT}/get-specialty-detail.php?maChuyenKhoa=${encodeURIComponent(maChuyenKhoa)}`);
+                const data = await response.json();
+
+                if (data.success && data.data) {
+                    renderSpecialtyDetail(data.data);
+                    loadDoctorsBySpecialty(maChuyenKhoa);
+                    showContent();
+                } else {
+                    showError();
+                }
+            } catch (error) {
+                console.error('Error loading specialty detail:', error);
+                showError();
+            }
+        }
+
+        function renderSpecialtyDetail(specialty) {
+            document.title = `${specialty.tenChuyenKhoa} - Eden Health`;
+            
+            document.getElementById('breadcrumbName').textContent = specialty.tenChuyenKhoa;
+            
+            document.getElementById('departmentName').textContent = specialty.tenKhoa;
+            document.getElementById('specialtyTitle').textContent = specialty.tenChuyenKhoa;
+            document.getElementById('specialtyCode').textContent = specialty.maChuyenKhoa;
+            document.getElementById('specialtyDescription').textContent = specialty.moTaChuyenKhoa || 'Chuyên khoa cung cấp dịch vụ y tế chuyên sâu với đội ngũ bác sĩ giàu kinh nghiệm.';
+            document.getElementById('doctorCount').textContent = specialty.soBacSi;
+            
+            document.getElementById('departmentNameFull').textContent = specialty.tenKhoa;
+            document.getElementById('departmentDescription').textContent = specialty.moTaKhoa || 'Khoa chuyên điều trị các bệnh lý chuyên sâu với trang thiết bị hiện đại.';
+        }
+
+        async function loadDoctorsBySpecialty(maChuyenKhoa) {
+            const loadingIndicator = document.getElementById('doctorsLoading');
+            const emptyState = document.getElementById('doctorsEmpty');
+            const tableContainer = document.getElementById('doctorsTableContainer');
+            
+            loadingIndicator.style.display = 'block';
+            emptyState.style.display = 'none';
+            tableContainer.style.display = 'none';
+            
+            try {
+                const response = await fetch(`${API_BASE_PATIENT}/get_doctors.php?maChuyenKhoa=${encodeURIComponent(maChuyenKhoa)}`);
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    allDoctors = data.data;
+                    currentPage = 1;
+                    displayDoctors();
+                    tableContainer.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+                emptyState.style.display = 'block';
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        function displayDoctors() {
+            const totalPages = Math.ceil(allDoctors.length / itemsPerPage);
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageData = allDoctors.slice(start, end);
+            
+            const tbody = document.getElementById('doctorsTableBody');
+            tbody.innerHTML = pageData.map((doctor, index) => createDoctorRow(doctor, start + index + 1)).join('');
+            
+            updatePagination(totalPages);
+            updateRecordInfo(start + 1, Math.min(end, allDoctors.length), allDoctors.length);
+        }
+
+        function createDoctorRow(doctor, stt) {
+            const genderIcon = doctor.gioiTinh === 'nu' ? 'fa-venus' : 'fa-mars';
+            const genderClass = doctor.gioiTinh === 'nu' ? 'gender-female' : 'gender-male';
+            const genderText = doctor.gioiTinh === 'nu' ? 'Nữ' : 'Nam';
+            
+            const experience = doctor.namKinhNghiem || 0;
+            const experienceText = experience > 0 ? `${experience} năm kinh nghiệm` : 'Mới tham gia';
+            
+            return `
+                <tr>
+                    <td data-label="STT">${stt}</td>
+                    <td data-label="Ảnh">
+                        <img src="${doctor.anhDaiDien}" alt="${doctor.tenBacSi}" class="doctor-avatar"
+                            onerror="this.src='http://localhost/DO_AN_1/code_doan1/src/frontend/assets/images/doctor_male.png'">
+                    </td>
+                    <td data-label="Tên bác sĩ">
+                        <div class="doctor-name">${doctor.tenBacSi}</div>
+                    </td>
+                    <td data-label="Giới tính">
+                        <span class="gender-badge ${genderClass}">
+                            <i class="fas ${genderIcon}"></i> ${genderText}
+                        </span>
+                    </td>
+                    <td data-label="Kinh nghiệm">
+                        <span class="experience-text">
+                            <i class="fas fa-award me-1" style="color: var(--primary-purple);"></i>
+                            ${experienceText}
+                        </span>
+                    </td>
+                    <td data-label="Thao tác">
+                        <a href="chitietbacsi.html?id=${doctor.maBacSi}" class="btn-view-doctor">
+                            <i class="fas fa-eye"></i> Chi tiết
+                        </a>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function updatePagination(totalPages) {
+            const paginationList = document.getElementById('paginationList');
+            
+            if (totalPages <= 1) {
+                paginationList.innerHTML = '';
+                return;
+            }
+            
+            let html = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    html += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            paginationList.innerHTML = html;
+        }
+
+        function updateRecordInfo(start, end, total) {
+            const recordInfo = document.getElementById('recordInfo');
+            recordInfo.textContent = `Hiển thị ${start} - ${end} của ${total} bác sĩ`;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(allDoctors.length / itemsPerPage);
+            if (page >= 1 && page <= totalPages) {
+                currentPage = page;
+                displayDoctors();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showContent() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+
+        function showError() {
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('errorState').style.display = 'flex';
+        }
+
+        async function checkLoginStatus() {
+            try {
+                const response = await fetch(`${API_BASE_AUTH}/get-current-user.php`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await response.json();
+
+                const authButtons = document.getElementById('authButtons');
+                const logoutHeader = document.getElementById('logoutHeader');
+                const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin');
+                const userAvatar = document.getElementById('userAvatar');
+                const headerUserName = document.getElementById('headerUserName');
+
+                const mobileAuthButtons = document.getElementById('mobileAuthButtons');
+                const mobileUserInfo = document.getElementById('mobileUserInfo');
+                const mobileMenuLoggedIn = document.querySelectorAll('.mobile-menu-loggedin');
+                const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+                const mobileUserName = document.getElementById('mobileUserName');
+
+                if (data.success) {
+                    const fullName = data.data.fullName;
+                    const firstLetter = fullName.charAt(0).toUpperCase();
+
+                    if (authButtons) authButtons.style.display = 'none';
+                    if (logoutHeader) logoutHeader.classList.add('active');
+                    navLoggedInItems.forEach(item => item.style.display = 'block');
+                    
+                    if (userAvatar) userAvatar.textContent = firstLetter;
+                    if (headerUserName) headerUserName.textContent = fullName;
+
+                    if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
+                    if (mobileUserInfo) mobileUserInfo.classList.add('active');
+                    mobileMenuLoggedIn.forEach(item => item.style.display = 'block');
+                    
+                    if (mobileUserAvatar) mobileUserAvatar.textContent = firstLetter;
+                    if (mobileUserName) mobileUserName.textContent = fullName;
+
+                    updateProfileLink(data.data.role);
+                } else {
+                    if (authButtons) authButtons.style.display = 'flex';
+                    if (logoutHeader) logoutHeader.classList.remove('active');
+                    navLoggedInItems.forEach(item => item.style.display = 'none');
+
+                    if (mobileAuthButtons) mobileAuthButtons.style.display = 'flex';
+                    if (mobileUserInfo) mobileUserInfo.classList.remove('active');
+                    mobileMenuLoggedIn.forEach(item => item.style.display = 'none');
+                }
+            } catch (error) {
+                console.error('Lỗi kiểm tra đăng nhập:', error);
+                
+                if (document.getElementById('authButtons')) 
+                    document.getElementById('authButtons').style.display = 'flex';
+                if (document.getElementById('logoutHeader')) 
+                    document.getElementById('logoutHeader').classList.remove('active');
+                if (document.getElementById('mobileAuthButtons'))
+                    document.getElementById('mobileAuthButtons').style.display = 'flex';
+                if (document.getElementById('mobileUserInfo'))
+                    document.getElementById('mobileUserInfo').classList.remove('active');
+            }
+            document.querySelector('.navbar').classList.remove('header-hidden');
+            setTimeout(() => {
+                document.getElementById("pageLoader").style.display = "none";
+                document.body.classList.add("loaded");
+            }, 10); // 400ms cho mượt (có thể chỉnh)
+        }
+
+        function updateProfileLink(role) {
+            const profileLinks = document.querySelectorAll('a[href="taikhoan.html"]');
+            if (role === 'bacsi') {
+                profileLinks.forEach(link => link.href = '../doctor/dashboard.html');
+            } else if (role === 'quantri') {
+                profileLinks.forEach(link => link.href = '../admin/dashboard.html');
+            }
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    localStorage.clear();
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Lỗi đăng xuất:', error);
+                alert('Có lỗi xảy ra khi đăng xuất');
+            }
+        }
+
+        function setupScrollEffects() {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            
+            window.addEventListener('scroll', function() {
+                if (scrollBtn) {
+                    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+                }
+            });
+        }
+
+        function setupMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileSidebar = document.getElementById('mobileSidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const closeSidebar = document.getElementById('closeSidebar');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    mobileSidebar.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            function closeMobileSidebar() {
+                mobileSidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeMobileSidebar);
+            }
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMobileSidebar);
+            }
+
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 992) {
+                        closeMobileSidebar();
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>

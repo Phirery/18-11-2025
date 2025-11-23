@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Khám Của Tôi - Eden Health</title>
+    <title>Hồ Sơ Bệnh Án - Eden Health</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -12,6 +12,10 @@
             --primary-purple: #667eea;
             --secondary-purple: #764ba2;
             --light-bg: #f8f9fa;
+            --success-green: #2ecc71;
+            --danger-red: #e74c3c;
+            --warning-yellow: #f39c12;
+            --info-blue: #3498db;
         }
 
         /* === RESET === */
@@ -47,11 +51,6 @@
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             padding: 10px 0;
             min-height: 58px;
-        }
-
-        .navbar-custom.scrolled {
-            padding: 8px 0;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
         }
 
         .navbar-brand-header {
@@ -141,7 +140,6 @@
             transform: translateY(-2px);
         }
 
-        /* User Info */
         .logout-header {
             display: none;
             align-items: center;
@@ -209,7 +207,6 @@
             display: none;
         }
 
-        /* Mobile Menu */
         .menu-toggle {
             display: none;
             background: none;
@@ -406,6 +403,7 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 15px;
+            cursor: pointer;
         }
 
         .mobile-user-details .user-avatar {
@@ -449,7 +447,7 @@
             background: white;
             padding: 4px 0;
             border-bottom: 1px solid #e5e7eb;
-            position: sticky; 
+            position: sticky;
             top: 58px;
             z-index: 100;
         }
@@ -482,9 +480,6 @@
         .breadcrumb-item.active {
             color: var(--primary-purple);
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
         .breadcrumb-item + .breadcrumb-item::before {
@@ -550,87 +545,163 @@
         }
 
         /* === MAIN CONTAINER === */
-        .appointments-container {
+        .records-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px 40px;
         }
 
-        /* === STATS CARDS === */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        /* === SECTION HEADER === */
+        .section-header {
+            margin-bottom: 25px;
         }
 
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-        }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            border-radius: 0 0 0 100%;
-            opacity: 0.1;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
-        }
-
-        .stat-card.upcoming::before {background: #3498db;}
-        .stat-card.completed::before {background: #2ecc71;}
-        .stat-card.cancelled::before {background: #e74c3c;}
-
-        .stat-card.upcoming::after {background: #3498db;}
-        .stat-card.completed::after {background: #2ecc71;}
-        .stat-card.cancelled::after {background: #e74c3c;}
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 0 15px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(0, 174, 239, 0.1));
-            color: var(--primary-purple);
-        }
-
-        .stat-number {
-            font-size: 2rem;
+        .section-header h3 {
+            font-size: 1.5rem;
             font-weight: 700;
             color: #333;
             margin-bottom: 5px;
         }
 
-        .stat-label {
-            color: #666;
+        .section-header p {
             font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* === LATEST RECORD CARD === */
+        .latest-record-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .latest-record-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .record-title {
+            flex: 1;
+        }
+
+        .record-title h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .record-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .record-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .record-meta i {
+            color: var(--primary-purple);
+        }
+
+        .record-badge {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .record-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .info-section h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-section h5 i {
+            color: var(--primary-purple);
+            font-size: 1.1rem;
+        }
+
+        .info-section p {
+            color: #555;
+            line-height: 1.8;
+            margin: 0;
+            white-space: pre-line;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-label i {
+            color: var(--primary-purple);
+            width: 20px;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
         }
 
         /* === SECTION CARD === */
@@ -641,49 +712,11 @@
             overflow: hidden;
         }
 
-        /* === CUSTOM TABS === */
-        .custom-tabs {
-            border-bottom: 2px solid #e8eef5;
-            padding: 0 25px;
-            margin-bottom: 0;
-        }
-
-        .custom-tabs .nav-link {
-            border: none;
-            color: #666;
-            font-weight: 600;
-            padding: 15px 20px;
-            position: relative;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-        .custom-tabs .nav-link:hover {
-            color: var(--primary-purple);
-        }
-
-        .custom-tabs .nav-link.active {
-            color: var(--primary-purple);
-            background: transparent;
-            border-bottom-color: var(--primary-purple);
-        }
-
-        .custom-tabs .badge {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-        }
-
-        /* === TAB CONTENT === */
-        .tab-content {
-            padding: 25px;
-        }
-
         /* === FILTER BAR === */
         .filter-bar {
+            padding: 25px;
             background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-bottom: 2px solid #e8eef5;
         }
 
         .search-box {
@@ -710,13 +743,15 @@
             color: #8898aa;
         }
 
-        .form-select {
+        .form-select,
+        .form-control {
             border-radius: 8px;
             border: 1px solid #e9ecef;
             height: 42px;
         }
 
-        .form-select:focus {
+        .form-select:focus,
+        .form-control:focus {
             border-color: #667eea;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
@@ -746,26 +781,31 @@
             color: #ddd;
         }
 
+        .empty-state h3,
         .empty-state h4 {
             color: #64748b;
             margin-bottom: 8px;
         }
 
-        /* === TABLE === */
-        .table-responsive {
-            margin-top: 20px;
+        .empty-state p {
+            color: #94a3b8;
         }
 
-        .appointment-table {
+        /* === TABLE === */
+        .table-responsive {
+            padding: 25px;
+        }
+
+        .record-table {
             margin-bottom: 0;
         }
 
-        .appointment-table thead {
+        .record-table thead {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
         }
 
-        .appointment-table thead th {
+        .record-table thead th {
             border: none;
             padding: 15px 12px;
             font-weight: 600;
@@ -773,65 +813,34 @@
             white-space: nowrap;
         }
 
-        .appointment-table tbody td {
+        .record-table tbody td {
             padding: 15px 12px;
             vertical-align: middle;
             border-bottom: 1px solid #e8eef5;
         }
 
-        .appointment-table tbody tr:hover {
+        .record-table tbody tr:hover {
             background: #f8f9fa;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .status-badge.confirmed {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-badge.completed {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-
-        .status-badge.cancelled {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .btn-action {
+        .btn-view {
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
+            color: white;
+            border: none;
             padding: 6px 14px;
             border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 600;
             transition: all 0.3s;
-            border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            white-space: nowrap;
         }
 
-        .btn-cancel {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .btn-cancel:hover {
-            background: #c0392b;
+        .btn-view:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
         /* === PAGINATION === */
@@ -839,8 +848,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 25px;
-            padding-top: 20px;
+            padding: 20px 25px;
             border-top: 2px solid #e8eef5;
         }
 
@@ -875,7 +883,7 @@
             border-color: #e8eef5;
         }
 
-        /* === CANCEL MODAL === */
+        /* === MODAL === */
         .modal-content {
             border-radius: 15px;
             border: none;
@@ -894,25 +902,68 @@
 
         .modal-body {
             padding: 25px;
+            max-height: 70vh;
         }
 
-        .appointment-info {
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .modal-info-item {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 10px;
             border-left: 4px solid var(--primary-purple);
         }
 
-        .appointment-info p {
-            margin-bottom: 8px;
+        .modal-info-item label {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 600;
         }
 
-        .appointment-info p:last-child {
+        .modal-info-item .value {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .modal-section {
+            margin-bottom: 25px;
+        }
+
+        .modal-section:last-child {
             margin-bottom: 0;
         }
 
-        .appointment-info strong {
+        .modal-section h6 {
+            font-size: 1.1rem;
+            font-weight: 700;
             color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eef5;
+        }
+
+        .modal-section h6 i {
+            color: var(--primary-purple);
+        }
+
+        .modal-section .content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            color: #555;
+            line-height: 1.8;
+            white-space: pre-line;
         }
 
         /* === FOOTER === */
@@ -1086,91 +1137,59 @@
                 max-width: 320px;
             }
             
-            .navbar-custom {
-                padding: 8px 0;
-            }
-            
-            .navbar-brand-header {
-                font-size: 1.2rem;
-            }
-
             .section-title {
                 font-size: 1.6rem;
             }
-
+            
             .header-section {
                 padding: 30px 0 50px;
             }
-
-            .stats-row {
+            
+            .latest-record-card {
+                padding: 20px;
+            }
+            
+            .record-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .record-body {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
-
-            .tab-content {
+            
+            .info-section {
                 padding: 15px;
             }
-
+            
+            .modal-info-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
             .filter-bar {
                 padding: 15px;
             }
-
-            .custom-tabs {
-                padding: 0 15px;
+            
+            .table-responsive {
+                padding: 15px;
             }
-
-            .custom-tabs .nav-link {
-                padding: 12px 10px;
-                font-size: 0.9rem;
-            }
-
-            .appointment-table {
+            
+            .record-table {
                 font-size: 0.85rem;
             }
-
-            .appointment-table thead th,
-            .appointment-table tbody td {
+            
+            .record-table thead th,
+            .record-table tbody td {
                 padding: 10px 8px;
             }
-         }
-        /* === STATS CARDS - Bổ sung === */
-        .stat-card .stat-icon i {
-            font-size: 1.8rem;
-        }
-
-        /* === FILTER & SEARCH - Bổ sung === */
-        .search-box {
-            position: relative;
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8898aa;
-            pointer-events: none;
-        }
-
-        .search-box input {
-            padding-left: 40px !important;
-        }
-
-        /* === TABLE - Bổ sung === */
-        .appointment-table tbody tr {
-            transition: all 0.2s;
-        }
-
-        /* === MODAL - Bổ sung === */
-        .modal-backdrop.show {
-            opacity: 0.5;
-        }
-
-        /* === BREADCRUMB - Fix hiển thị === */
-        .breadcrumb-item + .breadcrumb-item::before {
-            display: inline-block;
-            padding-right: 0.5rem;
-            padding-left: 0.5rem;
+            
+            .pagination-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -1191,7 +1210,7 @@
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top header-hidden">
         <div class="container">
             <div class="navbar-left">
                 <a class="navbar-brand-header" href="index.html">
@@ -1204,8 +1223,8 @@
                     <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header active" href="lichkham.html">Lịch khám</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="hosobenhan.html">Hồ sơ</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
+                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header active" href="hosobenhan.html">Hồ sơ</a></li>
                     <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
                 </ul>
             </div>
@@ -1250,8 +1269,8 @@
             <li><a href="index.html"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
             <li><a href="danhsachchuyenkhoa.html"><i class="fas fa-hospital"></i><span>Chuyên khoa</span></a></li>
             <li><a href="danhsachbacsi.html"><i class="fas fa-user-md"></i><span>Bác sĩ</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="lichkham.html" class="active"><i class="fas fa-calendar-check"></i><span>Lịch khám</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="hosobenhan.html"><i class="fas fa-user-circle"></i><span>Hồ sơ cá nhân</span></a></li>
+            <li class="mobile-menu-loggedin"><a href="lichkham.html"><i class="fas fa-calendar-check"></i><span>Lịch khám</span></a></li>
+            <li class="mobile-menu-loggedin"><a href="hosobenhan.html" class="active"><i class="fas fa-file-medical"></i><span>Hồ sơ bệnh án</span></a></li>
             <li><a href="lienhe.html"><i class="fas fa-envelope"></i><span>Liên hệ</span></a></li>
         </ul>
 
@@ -1288,7 +1307,7 @@
                         <a href="index.html"><i class="fas fa-home"></i> Trang chủ</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        Lịch khám của tôi
+                        Hồ sơ bệnh án
                     </li>
                 </ol>
             </nav>
@@ -1299,204 +1318,134 @@
     <div class="header-section text-center">
         <div class="container position-relative">
             <span class="header-badge">
-                <i class="fas fa-calendar-check me-2"></i>Quản lý lịch khám
+                <i class="fas fa-file-medical me-2"></i>Hồ sơ y tế
             </span>
-            <h2 class="section-title">Lịch Khám Của Tôi</h2>
+            <h2 class="section-title">Hồ Sơ Bệnh Án</h2>
             <p class="section-subtitle">
-                Theo dõi và quản lý các lịch hẹn khám bệnh của bạn một cách dễ dàng
+                Theo dõi lịch sử khám bệnh và kết quả điều trị của bạn
             </p>
         </div>
     </div>
 
     <!-- Main Content -->
-    <div class="appointments-container">
-        <!-- Stats Cards -->
-        <div class="stats-row">
-            <div class="stat-card upcoming">
-                <div class="stat-icon"><i class="fas fa-clock"></i></div>
-                <div class="stat-number" id="upcomingCount">0</div>
-                <div class="stat-label">Lịch sắp tới</div>
+    <div class="records-container">
+        <!-- Latest Record Card -->
+        <div id="latestRecordSection" style="display: none;">
+            <div class="section-header">
+                <h3><i class="fas fa-star text-warning me-2"></i>Hồ Sơ Gần Nhất</h3>
+                <p class="text-muted mb-0">Kết quả khám bệnh mới nhất của bạn</p>
             </div>
-            <div class="stat-card completed">
-                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                <div class="stat-number" id="completedCount">0</div>
-                <div class="stat-label">Đã hoàn thành</div>
-            </div>
-            <div class="stat-card cancelled">
-                <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
-                <div class="stat-number" id="cancelledCount">0</div>
-                <div class="stat-label">Đã hủy</div>
+            
+            <div class="latest-record-card" id="latestRecordCard">
+                <!-- Filled by JS -->
             </div>
         </div>
 
-        <!-- Tabs -->
-        <div class="section-card">
-            <ul class="nav nav-tabs custom-tabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button" role="tab">
-                        <i class="fas fa-calendar-alt me-2"></i>Lịch khám sắp tới
-                        <span class="badge bg-primary ms-2" id="upcomingBadge">0</span>
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">
-                        <i class="fas fa-history me-2"></i>Lịch sử khám
-                        <span class="badge bg-secondary ms-2" id="historyBadge">0</span>
-                    </button>
-                </li>
-            </ul>
+        <!-- No Records State -->
+        <div id="noRecordsState" class="empty-state" style="display: none;">
+            <i class="fas fa-folder-open"></i>
+            <h3>Chưa có hồ sơ bệnh án</h3>
+            <p>Bạn chưa có hồ sơ khám bệnh nào. Hãy đặt lịch khám để được chăm sóc sức khỏe!</p>
+            <a href="danhsachbacsi.html" class="btn btn-primary mt-3">Đặt lịch khám</a>
+        </div>
 
-            <div class="tab-content">
-                <!-- Tab Lịch sắp tới -->
-                <div class="tab-pane fade show active" id="upcoming" role="tabpanel">
-                    <div class="filter-bar">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="search-box">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" class="form-control" id="upcomingSearch" placeholder="Tìm kiếm theo bác sĩ, chuyên khoa..." oninput="filterUpcoming()">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select" id="upcomingSort" onchange="filterUpcoming()">
-                                    <option value="date-asc">Ngày gần nhất</option>
-                                    <option value="date-desc">Ngày xa nhất</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-secondary w-100" onclick="resetUpcomingFilters()">
-                                    <i class="fas fa-redo me-1"></i>Đặt lại
-                                </button>
+        <!-- History Section -->
+        <div id="historySection" style="display: none;">
+            <div class="section-header mt-5">
+                <h3><i class="fas fa-history me-2"></i>Lịch Sử Khám Bệnh</h3>
+                <p class="text-muted mb-0">Danh sách các lần khám trước đây</p>
+            </div>
+
+            <div class="section-card">
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" class="form-control" id="searchInput" 
+                                       placeholder="Tìm kiếm theo chẩn đoán, bác sĩ..." 
+                                       oninput="applyFilters()">
                             </div>
                         </div>
-                    </div>
-
-                    <div id="upcomingLoading" class="loading">
-                        <div class="spinner-border text-primary"></div>
-                        <p class="mt-3">Đang tải dữ liệu...</p>
-                    </div>
-
-                    <div id="upcomingEmpty" class="empty-state" style="display: none;">
-                        <i class="fas fa-calendar-times"></i>
-                        <h4>Chưa có lịch khám</h4>
-                        <p>Bạn chưa có lịch hẹn khám nào sắp tới</p>
-                        <a href="danhsachbacsi.html" class="btn btn-primary mt-3">Đặt lịch khám</a>
-                    </div>
-
-                    <div class="table-responsive" id="upcomingTable" style="display: none;">
-                        <table class="table appointment-table">
-                            <thead>
-                                <tr>
-                                    <th>Ngày khám</th>
-                                    <th>Giờ khám</th>
-                                    <th>Bác sĩ</th>
-                                    <th>Chuyên khoa</th>
-                                    <th>Gói khám</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="upcomingTableBody"></tbody>
-                        </table>
+                        <div class="col-md-3">
+                            <select class="form-select" id="doctorFilter" onchange="applyFilters()">
+                                <option value="">Tất cả bác sĩ</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="dateFilter" onchange="applyFilters()">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-secondary w-100" onclick="resetFilters()">
+                                <i class="fas fa-redo me-1"></i>Đặt lại
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Tab Lịch sử -->
-                <div class="tab-pane fade" id="history" role="tabpanel">
-                    <div class="filter-bar">
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="search-box">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" class="form-control" id="historySearch" placeholder="Tìm kiếm..." oninput="filterHistory()">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select" id="historyStatus" onchange="filterHistory()">
-                                    <option value="">Tất cả trạng thái</option>
-                                    <option value="Hoàn thành">Hoàn thành</option>
-                                    <option value="Hủy">Đã hủy</option>
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <select class="form-select" id="historySort" onchange="filterHistory()">
-                                    <option value="date-desc">Mới nhất</option>
-                                    <option value="date-asc">Cũ nhất</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-secondary w-100" onclick="resetHistoryFilters()">
-                                    <i class="fas fa-redo me-1"></i>Đặt lại
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Loading State -->
+                <div id="historyLoading" class="loading">
+                    <div class="spinner-border text-primary"></div>
+                    <p class="mt-3">Đang tải dữ liệu...</p>
+                </div>
 
-                    <div id="historyLoading" class="loading">
-                        <div class="spinner-border text-primary"></div>
-                        <p class="mt-3">Đang tải dữ liệu...</p>
-                    </div>
+                <!-- Empty State -->
+                <div id="historyEmpty" class="empty-state" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h4>Không tìm thấy kết quả</h4>
+                    <p>Không có hồ sơ nào phù hợp với bộ lọc của bạn</p>
+                </div>
 
-                    <div id="historyEmpty" class="empty-state" style="display: none;">
-                        <i class="fas fa-history"></i>
-                        <h4>Chưa có lịch sử</h4>
-                        <p>Bạn chưa có lịch sử khám bệnh nào</p>
-                    </div>
+                <!-- Table -->
+                <div class="table-responsive" id="historyTable" style="display: none;">
+                    <table class="table record-table">
+                        <thead>
+                            <tr>
+                                <th>Ngày khám</th>
+                                <th>Giờ khám</th>
+                                <th>Bác sĩ</th>
+                                <th>Chuyên khoa</th>
+                                <th>Chẩn đoán</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
 
-                    <div class="table-responsive" id="historyTable" style="display: none;">
-                        <table class="table appointment-table">
-                            <thead>
-                                <tr>
-                                    <th>Ngày khám</th>
-                                    <th>Giờ khám</th>
-                                    <th>Bác sĩ</th>
-                                    <th>Chuyên khoa</th>
-                                    <th>Gói khám</th>
-                                    <th>Trạng thái</th>
-                                    <th>Ghi chú</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyTableBody"></tbody>
-                        </table>
-                    </div>
-
-                    <div class="pagination-container" id="historyPagination" style="display: none;">
-                        <div class="text-muted" id="historyRecordInfo">Hiển thị 0 - 0 của 0 lịch khám</div>
-                        <nav><ul class="pagination" id="historyPaginationList"></ul></nav>
-                    </div>
+                <!-- Pagination -->
+                <div class="pagination-container" id="paginationContainer" style="display: none;">
+                    <div class="text-muted" id="recordInfo">Hiển thị 0 - 0 của 0 hồ sơ</div>
+                    <nav>
+                        <ul class="pagination" id="paginationList">
+                            <!-- Filled by JS -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Cancel Modal -->
-    <div class="modal fade" id="cancelModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
-                        Xác nhận hủy lịch khám
+                        <i class="fas fa-file-medical-alt me-2"></i>
+                        Chi Tiết Hồ Sơ Bệnh Án
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>Lưu ý:</strong> Nếu hủy trước 12 giờ so với giờ khám, suất khám sẽ được mở lại cho người khác đặt.
-                    </div>
-                    <div class="appointment-info mb-3" id="cancelAppointmentInfo"></div>
-                    <div class="mb-3">
-                        <label class="form-label">Lý do hủy <span class="text-danger">*</span></label>
-                        <textarea class="form-control" id="cancelReason" rows="3" placeholder="Vui lòng cho chúng tôi biết lý do hủy lịch..."></textarea>
-                    </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Filled by JS -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>Đóng
-                    </button>
-                    <button type="button" class="btn btn-danger" onclick="confirmCancel()">
-                        <i class="fas fa-ban me-1"></i>Xác nhận hủy
                     </button>
                 </div>
             </div>
@@ -1562,22 +1511,26 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // API Configuration
         const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
         const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
-        
-        let currentAppointmentId = null;
-        let appointments = {
-            upcoming: [],
-            history: []
-        };
+
+        // Global State
+        let allRecords = [];
+        let filteredRecords = [];
+        let currentPage = 1;
+        const recordsPerPage = 10;
+        let uniqueDoctors = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             checkAuth();
-            loadAppointments();
+            loadMedicalRecords();
+            initMobileMenu();
+            initScrollToTop();
         });
 
-        // Check authentication
+        // ===== AUTHENTICATION =====
         async function checkAuth() {
             try {
                 const response = await fetch(`${API_BASE}/check-auth.php`, {
@@ -1591,35 +1544,9 @@
                     return;
                 }
                 
-                const displayName = data.fullName || data.username;
-                const firstLetter = displayName.charAt(0).toUpperCase();
-
-                // Cập nhật Header Desktop (Sử dụng đúng ID: headerUserName)
-                const headerNameEl = document.getElementById('headerUserName'); 
-                const headerAvatarEl = document.getElementById('userAvatar');
-                
-                if (headerNameEl) headerNameEl.textContent = displayName;
-                if (headerAvatarEl) headerAvatarEl.textContent = firstLetter;
-
-                // Cập nhật Sidebar Mobile (Nếu có)
-                const mobileNameEl = document.getElementById('mobileUserName');
-                const mobileAvatarEl = document.getElementById('mobileUserAvatar');
-
-                if (mobileNameEl) mobileNameEl.textContent = displayName;
-                if (mobileAvatarEl) mobileAvatarEl.textContent = firstLetter;
-                
-                // Hiển thị Header trạng thái đăng nhập
-                const authButtons = document.getElementById('authButtons');
-                const logoutHeader = document.getElementById('logoutHeader');
-                const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin');
-
-                if (authButtons) authButtons.style.display = 'none';
-                if (logoutHeader) logoutHeader.classList.add('active');
-                navLoggedInItems.forEach(item => item.style.display = 'block');
-
+                updateUserUI(data);
             } catch (error) {
                 console.error('Auth error:', error);
-                // Chỉ chuyển hướng nếu thực sự lỗi mạng hoặc API, không phải lỗi JS
                 if (error.name !== 'TypeError') {
                     alert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!');
                     window.location.href = '../auth/login.html';
@@ -1629,445 +1556,40 @@
             setTimeout(() => {
                 document.getElementById("pageLoader").style.display = "none";
                 document.body.classList.add("loaded");
-            }, 10); // 400ms cho mượt (có thể chỉnh)
+            }, 10); // 400ms cho mượt (có thể chỉnh)  
         }
 
-        // Load appointments
-        async function loadAppointments() {
-            try {
-                const response = await fetch(`${API_BASE}/get-appointments.php`, {
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    appointments.upcoming = data.upcoming || [];
-                    appointments.history = data.history || [];
-                    
-                    // Update counts
-                    document.getElementById('upcomingCount').textContent = appointments.upcoming.length;
-                    document.getElementById('historyCount').textContent = appointments.history.length;
-                    
-                    // Render current tab
-                    renderUpcoming();
-                    renderHistory();
-                } else {
-                    showError('upcoming', data.message);
-                    showError('history', data.message);
-                }
-            } catch (error) {
-                console.error('Load error:', error);
-                showError('upcoming', 'Lỗi tải dữ liệu. Vui lòng thử lại!');
-                showError('history', 'Lỗi tải dữ liệu. Vui lòng thử lại!');
-            }
-        }
+        function updateUserUI(data) {
+            const displayName = data.fullName || data.username;
+            const firstLetter = displayName.charAt(0).toUpperCase();
 
-        // Render upcoming appointments
-        function renderUpcoming() {
-            const container = document.getElementById('upcomingContent');
-            
-            if (appointments.upcoming.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar-times"></i>
-                        <h3>Chưa có lịch khám sắp tới</h3>
-                        <p>Bạn chưa đặt lịch khám nào. Hãy đặt lịch để được chăm sóc sức khỏe tốt nhất!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = `
-                <table class="appointments-table">
-                    <thead>
-                        <tr>
-                            <th>Ngày khám</th>
-                            <th>Giờ khám</th>
-                            <th>Bác sĩ</th>
-                            <th>Chuyên khoa</th>
-                            <th>Gói khám</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${appointments.upcoming.map(apt => `
-                            <tr>
-                                <td><strong>${apt.ngayKham}</strong></td>
-                                <td>${apt.gioKham}</td>
-                                <td>${apt.bacSi}</td>
-                                <td>${apt.chuyenKhoa}</td>
-                                <td>${apt.goiKham}</td>
-                                <td><span class="status-badge status-scheduled">${apt.trangThai}</span></td>
-                                <td>
-                                    <button class="btn-cancel" onclick="openCancelModal(${apt.maLichKham})">
-                                        <i class="fas fa-times-circle"></i>
-                                        Hủy lịch
-                                    </button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        }
+            // Desktop
+            const headerNameEl = document.getElementById('headerUserName');
+            const headerAvatarEl = document.getElementById('userAvatar');
+            if (headerNameEl) headerNameEl.textContent = displayName;
+            if (headerAvatarEl) headerAvatarEl.textContent = firstLetter;
 
-        // Render history
-        function renderHistory() {
-            const container = document.getElementById('historyContent');
-            
-            if (appointments.history.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-clipboard-list"></i>
-                        <h3>Chưa có lịch sử khám</h3>
-                        <p>Bạn chưa có lịch sử khám bệnh nào.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = `
-                <table class="appointments-table">
-                    <thead>
-                        <tr>
-                            <th>Ngày khám</th>
-                            <th>Giờ khám</th>
-                            <th>Bác sĩ</th>
-                            <th>Chuyên khoa</th>
-                            <th>Gói khám</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${appointments.history.map(apt => {
-                            const statusClass = apt.trangThai === 'Hoàn thành' ? 'status-completed' : 'status-cancelled';
-                            return `
-                                <tr>
-                                    <td><strong>${apt.ngayKham}</strong></td>
-                                    <td>${apt.gioKham}</td>
-                                    <td>${apt.bacSi}</td>
-                                    <td>${apt.chuyenKhoa}</td>
-                                    <td>${apt.goiKham}</td>
-                                    <td><span class="status-badge ${statusClass}">${apt.trangThai}</span></td>
-                                </tr>
-                            `;
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
-        }
+            // Mobile
+            const mobileNameEl = document.getElementById('mobileUserName');
+            const mobileAvatarEl = document.getElementById('mobileUserAvatar');
+            if (mobileNameEl) mobileNameEl.textContent = displayName;
+            if (mobileAvatarEl) mobileAvatarEl.textContent = firstLetter;
 
-        // Switch tabs
-        function switchTab(tab) {
-            // Update tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
-            
-            // Show/hide content
-            if (tab === 'upcoming') {
-                document.getElementById('upcomingTab').style.display = 'block';
-                document.getElementById('historyTab').style.display = 'none';
-            } else {
-                document.getElementById('upcomingTab').style.display = 'none';
-                document.getElementById('historyTab').style.display = 'block';
-            }
-        }
+            // Show logged-in state
+            const authButtons = document.getElementById('authButtons');
+            const logoutHeader = document.getElementById('logoutHeader');
+            const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin');
+            const mobileLoggedInItems = document.querySelectorAll('.mobile-menu-loggedin');
+            const mobileAuthButtons = document.getElementById('mobileAuthButtons');
+            const mobileUserInfo = document.getElementById('mobileUserInfo');
 
-        // Open cancel modal
-        function openCancelModal(maLichKham) {
-            currentAppointmentId = maLichKham;
-            document.getElementById('cancelReason').value = '';
+            if (authButtons) authButtons.style.display = 'none';
+            if (logoutHeader) logoutHeader.classList.add('active');
+            if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
+            if (mobileUserInfo) mobileUserInfo.classList.add('active');
             
-            const modal = new bootstrap.Modal(document.getElementById('cancelModal'));
-            modal.show();
-        }
-
-        // Confirm cancel
-        async function confirmCancel() {
-            const reason = document.getElementById('cancelReason').value.trim();
-            
-            if (!reason) {
-                alert('Vui lòng nhập lý do hủy lịch!');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE}/cancel-appointment.php`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'include',
-                    body: JSON.stringify({
-                        maLichKham: currentAppointmentId,
-                        lyDo: reason
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert(data.message);
-                    
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('cancelModal'));
-                    modal.hide();
-                    
-                    // Reload appointments
-                    loadAppointments();
-                } else {
-                    alert('Lỗi: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Cancel error:', error);
-                alert('Có lỗi xảy ra. Vui lòng thử lại!');
-            }
-        }
-
-        // Show error
-        function showError(tab, message) {
-            const container = document.getElementById(tab + 'Content');
-            container.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-circle text-danger"></i>
-                    <h3>Có lỗi xảy ra</h3>
-                    <p>${message}</p>
-                </div>
-            `;
-        }
-        // Filter upcoming appointments
-        function filterUpcoming() {
-            const searchTerm = document.getElementById('upcomingSearch').value.toLowerCase();
-            const sortBy = document.getElementById('upcomingSort').value;
-            
-            let filtered = [...appointments.upcoming];
-            
-            // Search filter
-            if (searchTerm) {
-                filtered = filtered.filter(apt => 
-                    apt.bacSi.toLowerCase().includes(searchTerm) ||
-                    apt.chuyenKhoa.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // Sort
-            filtered.sort((a, b) => {
-                const dateA = parseDate(a.ngayKham);
-                const dateB = parseDate(b.ngayKham);
-                return sortBy === 'date-asc' ? dateA - dateB : dateB - dateA;
-            });
-            
-            renderUpcomingFiltered(filtered);
-        }
-
-        // Parse date DD/MM/YYYY
-        function parseDate(dateStr) {
-            const [day, month, year] = dateStr.split('/');
-            return new Date(year, month - 1, day);
-        }
-
-        // Render filtered upcoming
-        function renderUpcomingFiltered(filtered) {
-            const tbody = document.getElementById('upcomingTableBody');
-            const table = document.getElementById('upcomingTable');
-            const empty = document.getElementById('upcomingEmpty');
-            const badge = document.getElementById('upcomingBadge');
-            
-            badge.textContent = filtered.length;
-            
-            if (filtered.length === 0) {
-                table.style.display = 'none';
-                empty.style.display = 'block';
-                return;
-            }
-            
-            tbody.innerHTML = filtered.map(apt => `
-                <tr>
-                    <td><strong>${apt.ngayKham}</strong></td>
-                    <td>${apt.gioKham}</td>
-                    <td>${apt.bacSi}</td>
-                    <td>${apt.chuyenKhoa}</td>
-                    <td>${apt.goiKham}</td>
-                    <td><span class="status-badge confirmed">${apt.trangThai}</span></td>
-                    <td>
-                        <button class="btn-action btn-cancel" onclick="openCancelModal(${apt.maLichKham}, '${apt.ngayKham}', '${apt.gioKham}', '${apt.bacSi}')">
-                            <i class="fas fa-times-circle"></i> Hủy
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-            
-            table.style.display = 'block';
-            empty.style.display = 'none';
-        }
-
-        // Reset upcoming filters
-        function resetUpcomingFilters() {
-            document.getElementById('upcomingSearch').value = '';
-            document.getElementById('upcomingSort').value = 'date-asc';
-            renderUpcomingFiltered(appointments.upcoming);
-        }
-        // Filter history
-        function filterHistory() {
-            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
-            const status = document.getElementById('historyStatus').value;
-            const sortBy = document.getElementById('historySort').value;
-            
-            let filtered = [...appointments.history];
-            
-            // Search
-            if (searchTerm) {
-                filtered = filtered.filter(apt =>
-                    apt.bacSi.toLowerCase().includes(searchTerm) ||
-                    apt.chuyenKhoa.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // Status filter
-            if (status) {
-                filtered = filtered.filter(apt => apt.trangThai === status);
-            }
-            
-            // Sort
-            filtered.sort((a, b) => {
-                const dateA = parseDate(a.ngayKham);
-                const dateB = parseDate(b.ngayKham);
-                return sortBy === 'date-desc' ? dateB - dateA : dateA - dateB;
-            });
-            
-            renderHistoryFiltered(filtered);
-        }
-
-        // Render filtered history
-        function renderHistoryFiltered(filtered) {
-            const tbody = document.getElementById('historyTableBody');
-            const table = document.getElementById('historyTable');
-            const empty = document.getElementById('historyEmpty');
-            const badge = document.getElementById('historyBadge');
-            const pagination = document.getElementById('historyPagination');
-            
-            badge.textContent = filtered.length;
-            
-            if (filtered.length === 0) {
-                table.style.display = 'none';
-                pagination.style.display = 'none';
-                empty.style.display = 'block';
-                return;
-            }
-            
-            tbody.innerHTML = filtered.map(apt => {
-                const statusClass = apt.trangThai === 'Hoàn thành' ? 'completed' : 'cancelled';
-                return `
-                    <tr>
-                        <td><strong>${apt.ngayKham}</strong></td>
-                        <td>${apt.gioKham}</td>
-                        <td>${apt.bacSi}</td>
-                        <td>${apt.chuyenKhoa}</td>
-                        <td>${apt.goiKham}</td>
-                        <td><span class="status-badge ${statusClass}">${apt.trangThai}</span></td>
-                        <td>${apt.ghiChu || '-'}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            table.style.display = 'block';
-            empty.style.display = 'none';
-            pagination.style.display = 'flex';
-            
-            // Update record info
-            document.getElementById('historyRecordInfo').textContent = 
-                `Hiển thị ${filtered.length} lịch khám`;
-        }
-
-        // Reset history filters
-        function resetHistoryFilters() {
-            document.getElementById('historySearch').value = '';
-            document.getElementById('historyStatus').value = '';
-            document.getElementById('historySort').value = 'date-desc';
-            renderHistoryFiltered(appointments.history);
-        }
-        // Open cancel modal - Updated
-        function openCancelModal(maLichKham, ngayKham, gioKham, bacSi) {
-            currentAppointmentId = maLichKham;
-            
-            const infoHtml = `
-                <p><i class="fas fa-calendar text-primary me-2"></i><strong>Ngày khám:</strong> ${ngayKham}</p>
-                <p><i class="fas fa-clock text-info me-2"></i><strong>Giờ khám:</strong> ${gioKham}</p>
-                <p><i class="fas fa-user-md text-success me-2"></i><strong>Bác sĩ:</strong> ${bacSi}</p>
-            `;
-            
-            document.getElementById('cancelAppointmentInfo').innerHTML = infoHtml;
-            document.getElementById('cancelReason').value = '';
-            
-            const modal = new bootstrap.Modal(document.getElementById('cancelModal'));
-            modal.show();
-        }
-        // Render upcoming - Updated
-        function renderUpcoming() {
-            const loading = document.getElementById('upcomingLoading');
-            const empty = document.getElementById('upcomingEmpty');
-            const table = document.getElementById('upcomingTable');
-            const badge = document.getElementById('upcomingBadge');
-            
-            loading.style.display = 'none';
-            badge.textContent = appointments.upcoming.length;
-            
-            if (appointments.upcoming.length === 0) {
-                empty.style.display = 'block';
-                table.style.display = 'none';
-                return;
-            }
-            
-            renderUpcomingFiltered(appointments.upcoming);
-        }
-
-        // Render history - Updated
-        function renderHistory() {
-            const loading = document.getElementById('historyLoading');
-            const empty = document.getElementById('historyEmpty');
-            const table = document.getElementById('historyTable');
-            const badge = document.getElementById('historyBadge');
-            
-            loading.style.display = 'none';
-            badge.textContent = appointments.history.length;
-            
-            if (appointments.history.length === 0) {
-                empty.style.display = 'block';
-                table.style.display = 'none';
-                return;
-            }
-            
-            renderHistoryFiltered(appointments.history);
-        }
-        // Update stats cards
-        function updateStatsCards() {
-            const upcoming = appointments.upcoming.length;
-            const completed = appointments.history.filter(a => a.trangThai === 'Hoàn thành').length;
-            const cancelled = appointments.history.filter(a => a.trangThai === 'Hủy').length;
-            
-            document.getElementById('upcomingCount').textContent = upcoming;
-            document.getElementById('completedCount').textContent = completed;
-            document.getElementById('cancelledCount').textContent = cancelled;
-        }
-
-        // Gọi trong loadAppointments sau khi có dữ liệu:
-        async function loadAppointments() {
-            try {
-                const response = await fetch(`${API_BASE}/get-appointments.php`, {
-                    credentials: 'include'
-                });
-                const data = await response.json();
-                
-                if (data.success) {
-                    appointments.upcoming = data.upcoming || [];
-                    appointments.history = data.history || [];
-                    
-                    updateStatsCards(); // Thêm dòng này
-                    renderUpcoming();
-                    renderHistory();
-                }
-            } catch (error) {
-                console.error('Load error:', error);
-            }
+            navLoggedInItems.forEach(item => item.style.display = 'block');
+            mobileLoggedInItems.forEach(item => item.style.display = 'block');
         }
 
         async function logout() {
@@ -2080,12 +1602,363 @@
                 const data = await response.json();
                 if (data.success) {
                     localStorage.clear();
-                    window.location.href = 'index.html';    
+                    window.location.href = 'index.html';
                 }
             } catch (error) {
-                console.error('Lỗi đăng xuất:', error);
+                console.error('Logout error:', error);
                 alert('Có lỗi xảy ra khi đăng xuất');
             }
+        }
+
+        // ===== LOAD DATA =====
+        async function loadMedicalRecords() {
+            try {
+                const response = await fetch(`${API_BASE}/get-medical-records.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    allRecords = data.records || [];
+                    
+                    if (allRecords.length === 0) {
+                        showNoRecordsState();
+                        return;
+                    }
+                    
+                    // Extract unique doctors for filter
+                    uniqueDoctors = [...new Set(allRecords.map(r => r.tenBacSi))].sort();
+                    populateDoctorFilter();
+                    
+                    // Show latest record
+                    renderLatestRecord(data.latest);
+                    
+                    // Show history
+                    filteredRecords = [...allRecords];
+                    renderHistory();
+                } else {
+                    showError(data.message);
+                }
+            } catch (error) {
+                console.error('Load error:', error);
+                showError('Lỗi tải dữ liệu. Vui lòng thử lại!');
+            }
+        }
+
+        function showNoRecordsState() {
+            document.getElementById('noRecordsState').style.display = 'block';
+            document.getElementById('latestRecordSection').style.display = 'none';
+            document.getElementById('historySection').style.display = 'none';
+        }
+
+        function showError(message) {
+            const container = document.querySelector('.records-container');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-circle text-danger"></i>
+                    <h3>Có lỗi xảy ra</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        // ===== RENDER LATEST RECORD =====
+        function renderLatestRecord(record) {
+            if (!record) return;
+            
+            const section = document.getElementById('latestRecordSection');
+            const card = document.getElementById('latestRecordCard');
+            
+            const html = `
+                <div class="record-header">
+                    <div class="record-title">
+                        <h4><i class="fas fa-file-medical-alt me-2"></i>Hồ Sơ #${record.maHoSo}</h4>
+                        <div class="record-meta">
+                            <span><i class="fas fa-calendar"></i>${record.ngayKham}</span>
+                            <span><i class="fas fa-clock"></i>${record.gioKham}</span>
+                            <span><i class="fas fa-user-md"></i>BS. ${record.tenBacSi}</span>
+                            <span><i class="fas fa-hospital"></i>${record.tenChuyenKhoa}</span>
+                        </div>
+                    </div>
+                    <div class="record-badge">
+                        <i class="fas fa-check-circle"></i>
+                        Đã hoàn thành
+                    </div>
+                </div>
+                <div class="record-body">
+                    <div class="info-section">
+                        <h5><i class="fas fa-stethoscope"></i>Chẩn đoán</h5>
+                        <p>${record.chanDoan || 'Chưa có thông tin'}</p>
+                    </div>
+                    <div class="info-section">
+                        <h5><i class="fas fa-pills"></i>Điều trị & Kê đơn</h5>
+                        <p>${record.dieuTri || 'Chưa có thông tin'}</p>
+                    </div>
+                    ${record.ghiChu ? `
+                    <div class="info-section">
+                        <h5><i class="fas fa-sticky-note"></i>Ghi chú</h5>
+                        <p>${record.ghiChu}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            card.innerHTML = html;
+            section.style.display = 'block';
+        }
+
+        // ===== POPULATE DOCTOR FILTER =====
+        function populateDoctorFilter() {
+            const select = document.getElementById('doctorFilter');
+            uniqueDoctors.forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = doctor;
+                option.textContent = 'BS. ' + doctor;
+                select.appendChild(option);
+            });
+        }
+
+        // ===== FILTERS =====
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const doctorFilter = document.getElementById('doctorFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            filteredRecords = allRecords.filter(record => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    record.chanDoan.toLowerCase().includes(searchTerm) ||
+                    record.tenBacSi.toLowerCase().includes(searchTerm) ||
+                    record.tenChuyenKhoa.toLowerCase().includes(searchTerm);
+                
+                // Doctor filter
+                const matchesDoctor = !doctorFilter || record.tenBacSi === doctorFilter;
+                
+                // Date filter (compare with raw date YYYY-MM-DD)
+                const matchesDate = !dateFilter || record.ngayKhamRaw === dateFilter;
+                
+                return matchesSearch && matchesDoctor && matchesDate;
+            });
+            
+            currentPage = 1;
+            renderHistory();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('doctorFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            filteredRecords = [...allRecords];
+            currentPage = 1;
+            renderHistory();
+        }
+
+        // ===== RENDER HISTORY =====
+        function renderHistory() {
+            const loading = document.getElementById('historyLoading');
+            const empty = document.getElementById('historyEmpty');
+            const table = document.getElementById('historyTable');
+            const pagination = document.getElementById('paginationContainer');
+            const historySection = document.getElementById('historySection');
+            
+            loading.style.display = 'none';
+            historySection.style.display = 'block';
+            
+            if (filteredRecords.length === 0) {
+                empty.style.display = 'block';
+                table.style.display = 'none';
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            empty.style.display = 'none';
+            table.style.display = 'block';
+            
+            // Pagination
+            const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = Math.min(startIndex + recordsPerPage, filteredRecords.length);
+            const pageRecords = filteredRecords.slice(startIndex, endIndex);
+            
+            // Render table
+            const tbody = document.getElementById('historyTableBody');
+            tbody.innerHTML = pageRecords.map(record => `
+                <tr>
+                    <td><strong>${record.ngayKham}</strong></td>
+                    <td>${record.gioKham}</td>
+                    <td>BS. ${record.tenBacSi}</td>
+                    <td>${record.tenChuyenKhoa}</td>
+                    <td>${truncateText(record.chanDoan, 50)}</td>
+                    <td>
+                        <button class="btn-view" onclick="showRecordDetail('${record.maHoSo}')">
+                            <i class="fas fa-eye"></i> Xem
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Update pagination
+            renderPagination(totalPages, startIndex, endIndex);
+            
+            // Update record info
+            document.getElementById('recordInfo').textContent = 
+                `Hiển thị ${startIndex + 1} - ${endIndex} của ${filteredRecords.length} hồ sơ`;
+            
+            pagination.style.display = 'flex';
+        }
+
+        function truncateText(text, maxLength) {
+            if (!text) return '-';
+            return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+        }
+
+        // ===== PAGINATION =====
+        function renderPagination(totalPages, startIndex, endIndex) {
+            const list = document.getElementById('paginationList');
+            
+            let html = '';
+            
+            // Previous button
+            html += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (
+                    i === 1 || 
+                    i === totalPages || 
+                    (i >= currentPage - 1 && i <= currentPage + 1)
+                ) {
+                    html += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i}); return false;">
+                                ${i}
+                            </a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            // Next button
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            list.innerHTML = html;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderHistory();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== SHOW DETAIL MODAL =====
+        function showRecordDetail(maHoSo) {
+            const record = allRecords.find(r => r.maHoSo === maHoSo);
+            if (!record) return;
+            
+            const modalBody = document.getElementById('modalBody');
+            
+            const html = `
+                <div class="modal-info-grid">
+                    <div class="modal-info-item">
+                        <label><i class="fas fa-hashtag"></i> Mã hồ sơ</label>
+                        <div class="value">${record.maHoSo}</div>
+                    </div>
+                    <div class="modal-info-item">
+                        <label><i class="fas fa-calendar"></i> Ngày khám</label>
+                        <div class="value">${record.ngayKham}</div>
+                    </div>
+                    <div class="modal-info-item">
+                        <label><i class="fas fa-clock"></i> Giờ khám</label>
+                        <div class="value">${record.gioKham}</div>
+                    </div>
+                    <div class="modal-info-item">
+                        <label><i class="fas fa-user-md"></i> Bác sĩ khám</label>
+                        <div class="value">BS. ${record.tenBacSi}</div>
+                    </div>
+                    <div class="modal-info-item">
+                        <label><i class="fas fa-hospital"></i> Chuyên khoa</label>
+                        <div class="value">${record.tenChuyenKhoa}</div>
+                    </div>
+                    <div class="modal-info-item">
+                        <label><i class="fas fa-check-circle"></i> Trạng thái</label>
+                        <div class="value">Đã hoàn thành</div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h6><i class="fas fa-stethoscope"></i> Chẩn đoán</h6>
+                    <div class="content">${record.chanDoan || 'Chưa có thông tin'}</div>
+                </div>
+                
+                <div class="modal-section">
+                    <h6><i class="fas fa-pills"></i> Điều trị & Kê đơn</h6>
+                    <div class="content">${record.dieuTri || 'Chưa có thông tin'}</div>
+                </div>
+                
+                ${record.ghiChu ? `
+                <div class="modal-section">
+                    <h6><i class="fas fa-sticky-note"></i> Ghi chú của bác sĩ</h6>
+                    <div class="content">${record.ghiChu}</div>
+                </div>
+                ` : ''}
+            `;
+            
+            modalBody.innerHTML = html;
+            
+            const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+            modal.show();
+        }
+
+        // ===== MOBILE MENU =====
+        function initMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileSidebar = document.getElementById('mobileSidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const closeSidebar = document.getElementById('closeSidebar');
+            
+            menuToggle.addEventListener('click', () => {
+                mobileSidebar.classList.add('active');
+                mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            function closeMenu() {
+                mobileSidebar.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            closeSidebar.addEventListener('click', closeMenu);
+            mobileOverlay.addEventListener('click', closeMenu);
+        }
+
+        // ===== SCROLL TO TOP =====
+        function initScrollToTop() {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollBtn.style.display = 'flex';
+                } else {
+                    scrollBtn.style.display = 'none';
+                }
+            });
         }
     </script>
 </body>

@@ -23,7 +23,21 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #fff;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* === NAVBAR === */
+        .header-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease; /* cho header hiện mượt */
         }
 
         /* === NAVBAR (Copy từ index.html) === */
@@ -945,6 +959,18 @@
     </style>
 </head>
 <body>
+    <div id="pageLoader" style="
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: white;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    ">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+    </div>
     <div class="mobile-overlay" id="mobileOverlay"></div>
     
     <!-- NAVBAR -->
@@ -1194,18 +1220,6 @@
                                 <i class="fas fa-paper-plane me-2"></i>Gửi Liên Hệ
                             </button>
                         </form>
-
-                        <!-- Success Message -->
-                        <div class="alert alert-success mt-3" id="successMessage" style="display: none;">
-                            <i class="fas fa-check-circle me-2"></i>
-                            <strong>Gửi thành công!</strong> Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất!
-                        </div>
-
-                        <!-- Error Message -->
-                        <div class="alert alert-danger mt-3" id="errorMessage" style="display: none;">
-                            <i class="fas fa-exclamation-circle me-2"></i>
-                            <strong>Lỗi!</strong> <span id="errorText"></span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1375,6 +1389,11 @@
                 if (document.getElementById('mobileUserInfo'))
                     document.getElementById('mobileUserInfo').classList.remove('active');
             }
+            document.querySelector('.navbar').classList.remove('header-hidden');
+            setTimeout(() => {
+                document.getElementById("pageLoader").style.display = "none";
+                document.body.classList.add("loaded");
+            }, 10); // 400ms cho mượt (có thể chỉnh)
         }
 
         function updateProfileLink(role) {
@@ -1462,14 +1481,10 @@
         function setupContactForm() {
             const form = document.getElementById('contactForm');
             const submitBtn = document.getElementById('submitBtn');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
 
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                // Get form data
                 const formData = {
                     hoTen: document.getElementById('hoTen').value.trim(),
                     email: document.getElementById('email').value.trim(),
@@ -1478,82 +1493,51 @@
                     noiDung: document.getElementById('noiDung').value.trim()
                 };
 
-                // Basic validation
-                if (!formData.hoTen || !formData.email || !formData.soDienThoai || 
+                // Validate
+                if (!formData.hoTen || !formData.email || !formData.soDienThoai ||
                     !formData.chuDe || !formData.noiDung) {
-                    showError('Vui lòng điền đầy đủ thông tin!');
+                    showAlert("danger", "Vui lòng điền đầy đủ thông tin!");
                     return;
                 }
 
-                // Email validation
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(formData.email)) {
-                    showError('Email không hợp lệ!');
+                    showAlert("danger", "Email không hợp lệ!");
                     return;
                 }
 
-                // Phone validation (10-11 digits)
                 const phoneRegex = /^[0-9]{10,11}$/;
                 if (!phoneRegex.test(formData.soDienThoai)) {
-                    showError('Số điện thoại không hợp lệ! Vui lòng nhập 10-11 chữ số.');
+                    showAlert("danger", "Số điện thoại không hợp lệ! Vui lòng nhập 10-11 chữ số.");
                     return;
                 }
 
-                // Disable button and show loading
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang gửi...';
-                
-                // Hide previous messages
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
 
                 try {
                     const response = await fetch(`${API_BASE_PATIENT}/create-contact.php`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(formData)
                     });
 
                     const data = await response.json();
 
                     if (data.success) {
-                        // Show success message
-                        successMessage.style.display = 'block';
-                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        
-                        // Reset form
+                        showAlert("success", "Gửi liên hệ thành công! Chúng tôi sẽ phản hồi sớm nhất.");
                         form.reset();
-                        
-                        // Hide success message after 5 seconds
-                        setTimeout(() => {
-                            successMessage.style.display = 'none';
-                        }, 5000);
                     } else {
-                        showError(data.message || 'Có lỗi xảy ra khi gửi liên hệ!');
+                        showAlert("danger", data.message || "Có lỗi xảy ra khi gửi liên hệ!");
                     }
 
                 } catch (error) {
-                    console.error('Error:', error);
-                    showError('Không thể kết nối đến server. Vui lòng thử lại sau!');
-                } finally {
-                    // Re-enable button
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Gửi Liên Hệ';
+                    showAlert("danger", "Không thể kết nối đến server. Vui lòng thử lại sau!");
                 }
-            });
 
-            function showError(message) {
-                errorText.textContent = message;
-                errorMessage.style.display = 'block';
-                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Hide error after 5 seconds
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
-            }
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Gửi Liên Hệ';
+            });
 
             // Real-time validation for phone number
             const phoneInput = document.getElementById('soDienThoai');
@@ -1604,6 +1588,14 @@
             el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
             observer.observe(el);
         });
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 99999; min-width: 300px;';
+            alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
     </script>
 </body>
 </html>
