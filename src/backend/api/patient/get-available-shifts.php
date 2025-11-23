@@ -1,5 +1,4 @@
 <?php
-// src/backend/api/patient/get-available-shifts.php
 require_once '../../config/cors.php';
 require_once '../../core/dp.php';
 

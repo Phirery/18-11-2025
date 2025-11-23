@@ -1,5 +1,4 @@
 <?php
-// src/backend/api/patient/create-appointment.php
 require_once '../../config/cors.php';
 require_once '../../core/dp.php';
 require_once '../../core/session.php';

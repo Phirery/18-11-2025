@@ -51,9 +51,4 @@ function require_role($roles) {
         ]);
         exit;
     }
-    
-    // Nếu đến được đây, người dùng hợp lệ -> không làm gì cả,
-    // để script gốc (API) tiếp tục chạy
 }
-
-?>

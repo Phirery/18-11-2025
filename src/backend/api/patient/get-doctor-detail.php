@@ -1,5 +1,4 @@
 <?php
-// src/backend/api/patient/get-doctor-detail.php
 require_once '../../config/cors.php';
 require_once '../../core/dp.php';
 
