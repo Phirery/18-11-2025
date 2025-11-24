@@ -72,7 +72,9 @@ INSERT INTO `benhnhan` (`nguoiDungId`, `maBenhNhan`, `tenBenhNhan`, `ngaySinh`, 
 (1, 'bn1', 'Nguyễn Văn Anh', '2000-01-01', 'nam', ''),
 (8, 'BN202511082304701', 'ABCs', '2005-10-09', 'nam', ''),
 (11, 'BN202511101515250', 'AAAAAAAA', '2025-11-09', 'khac', 'BH189318214111'),
-(15, 'BN2025111712142915', 'Trần Văn H', '2000-12-31', 'nam', NULL);
+(15, 'BN2025111712142915', 'Trần Văn H', '2000-12-31', 'nam', NULL),
+(58, 'BN2025112200000058', 'Test', '2025-11-21', 'nam', NULL),
+(59, 'BN2025112200000059', 'Test', '2025-11-21', 'nam', NULL);
 DELIMITER $$
 CREATE TRIGGER `validate_birthdate_before_insert` BEFORE INSERT ON `benhnhan` FOR EACH ROW BEGIN
     IF NEW.ngaySinh > CURDATE() THEN
@@ -241,7 +243,9 @@ INSERT INTO `hosobenhan` (`maHoSo`, `maBenhNhan`, `maBacSi`, `maLichKham`, `chan
 ('HS20251119083129501', 'BN2025111712142915', 'bs1', 30, '1', '1', 'Đã hoàn thành', '2025-11-19 08:31:29', '2025-11-19 08:31:52', '1', '2025-11-19 00:00:00'),
 ('HS20251119083135625', 'bn1', 'bs1', 29, '2', '2', 'Đã hoàn thành', '2025-11-19 08:31:35', '2025-11-19 08:31:55', '2', '2025-11-19 00:00:00'),
 ('HS20251119083141153', 'BN202511082304701', 'bs1', 28, '3', '3', 'Đã hoàn thành', '2025-11-19 08:31:41', '2025-11-19 08:31:57', '3', '2025-11-19 00:00:00'),
-('HS20251119083148530', 'BN202511101515250', 'bs1', 27, '4', '4', 'Đã hoàn thành', '2025-11-19 08:31:48', '2025-11-19 08:31:59', '4', '2025-11-19 00:00:00');
+('HS20251119083148530', 'BN202511101515250', 'bs1', 27, '4', '4', 'Đã hoàn thành', '2025-11-19 08:31:48', '2025-11-19 08:31:59', '4', '2025-11-19 00:00:00'),
+('HS20251123220207601', 'BN2025112200000058', 'bs1', 46, '1', '1', 'Đã hoàn thành', '2025-11-23 22:02:07', '2025-11-23 22:02:18', '1', '2025-11-23 00:00:00'),
+('HS20251123220214894', 'BN2025112200000058', 'bs1', 45, '2', '2', 'Đã hoàn thành', '2025-11-23 22:02:14', '2025-11-23 22:02:21', '2', '2025-11-23 00:00:00');
 
 CREATE TABLE `khoa` (
   `maKhoa` varchar(10) NOT NULL,
@@ -290,7 +294,16 @@ INSERT INTO `lichkham` (`maLichKham`, `maBacSi`, `maBenhNhan`, `ngayKham`, `maCa
 (34, 'BS20251121022', 'bn1', '0000-00-00', 1, 1, 1, 'Đã đặt', '1'),
 (35, 'BS20251121022', 'bn1', '2025-11-22', 1, 1, 1, 'Đã đặt', '1'),
 (36, 'BS20251121022', 'bn1', '2025-11-22', 1, 2, 1, 'Đã đặt', '1'),
-(37, 'BS202511102320635', 'bn1', '2025-11-21', 2, 8, 2, 'Đã đặt', '');
+(37, 'BS202511102320635', 'bn1', '2025-11-21', 2, 8, 2, 'Đã đặt', ''),
+(38, 'BS20251121027', 'bn1', '2025-11-24', 1, 1, 1, 'Đã đặt', 'Không'),
+(39, 'BS20251121027', 'BN2025112200000058', '2025-11-24', 1, 2, 2, 'Hủy', '1\n[Lý do hủy]: Thử'),
+(40, 'BS20251121028', 'BN2025112200000058', '2025-11-29', 1, 1, 2, 'Hủy', '\n[Lý do hủy]: Hủy'),
+(41, 'BS20251121027', 'BN2025112200000058', '2025-11-24', 1, 2, 2, 'Hủy', '1\n[Lý do hủy]: 1'),
+(42, 'BS20251121027', 'BN2025112200000058', '2025-11-24', 1, 2, 2, 'Hủy', '2\n[Lý do hủy]: 2'),
+(43, 'BS20251121027', 'BN2025112200000058', '2025-11-23', 1, 4, 2, 'Hủy', '\n[Lý do hủy]: a'),
+(44, 'BS20251121028', 'BN2025112200000058', '2025-11-23', 2, 12, 2, 'Hủy', '\n[Lý do hủy]: a'),
+(45, 'bs1', 'BN2025112200000058', '2025-11-23', 1, 6, 2, 'Hoàn thành', ''),
+(46, 'bs1', 'BN2025112200000058', '2025-11-23', 2, 12, 2, 'Hoàn thành', '');
 DELIMITER $$
 CREATE TRIGGER `after_lichkham_insert` AFTER INSERT ON `lichkham` FOR EACH ROW BEGIN
     DECLARE patientName VARCHAR(100);
@@ -325,28 +338,57 @@ CREATE TRIGGER `after_lichkham_update` AFTER UPDATE ON `lichkham` FOR EACH ROW B
     DECLARE patientName VARCHAR(100);
     DECLARE appointmentDate VARCHAR(20);
     DECLARE shiftName VARCHAR(50);
-    
+    DECLARE slotTime VARCHAR(50);
     IF NEW.trangThai = 'Hủy' AND OLD.trangThai != 'Hủy' THEN
         SELECT tenBenhNhan INTO patientName 
         FROM benhnhan 
         WHERE maBenhNhan = NEW.maBenhNhan;
-        
         SELECT tenCa INTO shiftName 
         FROM calamviec 
         WHERE maCa = NEW.maCa;
-        
+        SELECT CONCAT(
+            SUBSTRING(gioBatDau, 1, 5), 
+            ' - ', 
+            SUBSTRING(gioKetThuc, 1, 5)
+        ) INTO slotTime
+        FROM suatkham
+        WHERE maSuat = NEW.maSuat;
         SET appointmentDate = DATE_FORMAT(NEW.ngayKham, '%d/%m/%Y');
+        IF NOT EXISTS (
+            SELECT 1 FROM thongbaolichkham 
+            WHERE maLichKham = NEW.maLichKham 
+            AND loai = 'Hủy lịch'
+            AND thoiGian >= DATE_SUB(NOW(), INTERVAL 5 SECOND)
+        ) THEN
+            INSERT INTO thongbaolichkham (
+                maBacSi, 
+                maLichKham, 
+                loai, 
+                tieuDe, 
+                noiDung, 
+                thoiGian, 
+                daXem
+            )
+            VALUES (
+                NEW.maBacSi,
+                NEW.maLichKham,
+                'Hủy lịch',
+                'Lịch khám đã hủy',
+                CONCAT(
+                    'Bệnh nhân ', 
+                    patientName, 
+                    ' đã hủy lịch khám vào ngày ', 
+                    appointmentDate, 
+                    ' - ', 
+                    shiftName,
+                    ' - ',
+                    slotTime
+                ),
+                NOW(),
+                0
+            );
+        END IF;
         
-        INSERT INTO thongbaolichkham (maBacSi, maLichKham, loai, tieuDe, noiDung, thoiGian, daXem)
-        VALUES (
-            NEW.maBacSi,
-            NEW.maLichKham,
-            'Hủy lịch',
-            'Lịch khám đã hủy',
-            CONCAT('Bệnh nhân ', patientName, ' đã hủy lịch khám ngày ', appointmentDate, ' - ', shiftName),
-            NOW(),
-            0
-        );
     END IF;
 END
 $$
@@ -365,6 +407,10 @@ CREATE TABLE `lienhe` (
   `thoiGianXuLy` datetime DEFAULT NULL,
   `ghiChu` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `lienhe` (`maLienHe`, `hoTen`, `email`, `soDienThoai`, `chuDe`, `noiDung`, `trangThai`, `thoiGianGui`, `nguoiXuLy`, `thoiGianXuLy`, `ghiChu`) VALUES
+(1, 'Test', 'test@gmail.com', '0123456789', 'Khác', 'test', 'Chưa xử lý', '2025-11-23 19:21:51', NULL, NULL, NULL),
+(2, 'testtwo', 'two@gmail.vn', '0987654321', 'Khác', 'a', 'Chưa xử lý', '2025-11-23 19:42:29', NULL, NULL, NULL);
 
 CREATE TABLE `ngaynghi` (
   `maNghi` int(11) NOT NULL,
@@ -538,7 +584,9 @@ INSERT INTO `nguoidung` (`id`, `tenDangNhap`, `matKhau`, `soDienThoai`, `vaiTro`
 (54, 'nguyenbaduy', 'nguyenbaduy2019', '0933003001', 'bacsi', 'Hoạt Động', NULL, NULL),
 (55, 'hotien', 'hotien1991', '0933003002', 'bacsi', 'Hoạt Động', NULL, NULL),
 (56, 'trinhquocthai', 'trinhquocthai2024', '0933004001', 'bacsi', 'Hoạt Động', NULL, NULL),
-(57, 'buithixuan', 'buithixuan2004', '0933004002', 'bacsi', 'Hoạt Động', NULL, NULL);
+(57, 'buithixuan', 'buithixuan2004', '0933004002', 'bacsi', 'Hoạt Động', NULL, NULL),
+(58, 'test1', '$2y$10$BggHGVbOVxyYXW0ewXl6NeWGS0a6wlywSfBVltAl.87OmOGKAI3A.', '0111111111', 'benhnhan', 'Hoạt Động', '2025-11-22 23:31:28', '2025-11-23 16:28:43'),
+(59, 'test2', '$2y$10$6Cn2VIZkjaF7kfvcZk.6POVas2oojtrKoVXkUQHH3H3/0psYmJL/q', '0222222222', 'benhnhan', 'Hoạt Động', '2025-11-22 23:33:27', NULL);
 
 CREATE TABLE `quantrivien` (
   `nguoiDungId` int(11) NOT NULL,
@@ -628,7 +676,28 @@ INSERT INTO `thongbaolichkham` (`maThongBao`, `maBacSi`, `maLichKham`, `loai`, `
 (11, 'BS20251121022', 34, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 00/00/0000 - Ca sáng', '2025-11-21 13:56:45', 0),
 (12, 'BS20251121022', 35, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 22/11/2025 - Ca sáng', '2025-11-21 14:12:55', 0),
 (13, 'BS20251121022', 36, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 22/11/2025 - Ca sáng', '2025-11-21 14:13:35', 0),
-(14, 'BS202511102320635', 37, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 21/11/2025 - Ca chiều', '2025-11-21 14:30:28', 0);
+(14, 'BS202511102320635', 37, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn A đã đặt lịch khám vào ngày 21/11/2025 - Ca chiều', '2025-11-21 14:30:28', 0),
+(15, 'BS20251121027', 38, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Nguyễn Văn Anh đã đặt lịch khám vào ngày 24/11/2025 - Ca sáng', '2025-11-23 15:07:43', 0),
+(16, 'BS20251121027', 39, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 24/11/2025 - Ca sáng', '2025-11-23 15:14:29', 0),
+(17, 'BS20251121028', 40, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 29/11/2025 - Ca sáng', '2025-11-23 15:32:44', 0),
+(18, 'BS20251121027', 39, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 24/11/2025 - Ca sáng - 07:40 - 08:20', '2025-11-23 16:09:29', 0),
+(19, 'BS20251121027', 39, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 24/11/2025 - Ca sáng - 07:40 - 08:20. Lý do: Thử', '2025-11-23 16:09:29', 0),
+(20, 'BS20251121028', 40, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 29/11/2025 - Ca sáng - 07:00 - 07:40', '2025-11-23 16:09:38', 0),
+(21, 'BS20251121028', 40, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 29/11/2025 - Ca sáng - 07:00 - 07:40. Lý do: Hủy', '2025-11-23 16:09:38', 0),
+(22, 'BS20251121027', 41, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 24/11/2025 - Ca sáng', '2025-11-23 16:11:19', 0),
+(23, 'BS20251121027', 41, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 24/11/2025 - Ca sáng - 07:40 - 08:20', '2025-11-23 16:11:38', 0),
+(24, 'BS20251121027', 41, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 24/11/2025 - Ca sáng - 07:40 - 08:20. Lý do: 1', '2025-11-23 16:11:38', 0),
+(25, 'BS20251121027', 42, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 24/11/2025 - Ca sáng', '2025-11-23 16:11:59', 0),
+(26, 'BS20251121027', 42, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 24/11/2025 - Ca sáng - 07:40 - 08:20', '2025-11-23 16:26:45', 0),
+(27, 'BS20251121027', 42, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 24/11/2025 - Ca sáng - 07:40 - 08:20. Lý do: 2', '2025-11-23 16:26:45', 0),
+(28, 'BS20251121027', 43, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 23/11/2025 - Ca sáng', '2025-11-23 21:54:48', 0),
+(29, 'BS20251121028', 44, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 23/11/2025 - Ca chiều', '2025-11-23 21:55:14', 0),
+(30, 'bs1', 45, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 23/11/2025 - Ca sáng', '2025-11-23 22:00:28', 1),
+(31, 'BS20251121027', 43, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 23/11/2025 - Ca sáng - 09:00 - 09:40', '2025-11-23 22:00:53', 0),
+(32, 'BS20251121027', 43, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 23/11/2025 - Ca sáng - 09:00 - 09:40. Lý do: a', '2025-11-23 22:00:53', 0),
+(33, 'BS20251121028', 44, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 23/11/2025 - Ca chiều - 16:20 - 17:00', '2025-11-23 22:00:59', 0),
+(34, 'BS20251121028', 44, 'Hủy lịch', 'Lịch khám đã hủy', 'Bệnh nhân Test đã hủy lịch khám vào ngày 23/11/2025 - Ca chiều - 16:20 - 17:00. Lý do: a', '2025-11-23 22:00:59', 0),
+(35, 'bs1', 46, 'Đặt lịch', 'Lịch khám mới', 'Bệnh nhân Test đã đặt lịch khám vào ngày 23/11/2025 - Ca chiều', '2025-11-23 22:01:29', 1);
 
 
 ALTER TABLE `bacsi`
@@ -728,16 +797,16 @@ ALTER TABLE `goikham`
   MODIFY `maGoi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `lichkham`
-  MODIFY `maLichKham` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `maLichKham` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 ALTER TABLE `lienhe`
-  MODIFY `maLienHe` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `maLienHe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 ALTER TABLE `ngaynghi`
   MODIFY `maNghi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 ALTER TABLE `nguoidung`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 ALTER TABLE `suatkham`
   MODIFY `maSuat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
@@ -749,7 +818,7 @@ ALTER TABLE `thongbaobenhnhan`
   MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `thongbaolichkham`
-  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `maThongBao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 
 ALTER TABLE `bacsi`
