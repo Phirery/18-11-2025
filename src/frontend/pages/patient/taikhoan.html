@@ -26,6 +26,10 @@
         }
 
         .back-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
             margin-bottom: 20px;
         }
 
@@ -34,12 +38,16 @@
             align-items: center;
             gap: 8px;
             padding: 10px 20px;
-            background: white;
-            color: var(--primary-purple);
+            color: whitesmoke;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: all 0.3s;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue))
+        }
+
+        #dashboardBtn {
+            display: none;
         }
 
         .back-button a:hover {
@@ -48,7 +56,7 @@
         }
 
         .profile-header {
-            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             border-radius: 15px;
             padding: 30px;
             color: white;
@@ -342,10 +350,14 @@
 </head>
 <body>
     <div class="account-container">
-        <div class="back-button" onclick="history.back()">
-            <a href="#" id="backBtn">
+        <div class="back-button">
+            <a href="#" id="backBtn"  onclick="history.back()">
                 <i class="fas fa-arrow-left"></i>
                 <span>Quay lại</span>
+            </a>
+            <a href="#" id="dashboardBtn">
+                <span>Dashboard</span>
+                <i class="fas fa-arrow-right"></i>
             </a>
         </div>
 
@@ -432,7 +444,7 @@
                 <!-- TAB BẢO MẬT -->
                 <div class="tab-pane-custom" id="security">
                     <h5 class="mb-4"><i class="fas fa-lock"></i> Quên mật khẩu?</h5>
-                    <p class="text-muted mb-4">Chọn một trong hai phương thức để khôi phục mật khẩu:</p>
+                    <p class="text-muted mb-4">Chọn phương thức để khôi phục mật khẩu:</p>
 
                     <div class="forgot-password-options">
                         <div class="option-card" onclick="requestOTP()">
@@ -567,6 +579,7 @@
                     displayUserProfile();
                     checkUpdateCooldown();
                     checkPasswordCooldown();
+                    setupDashboardButton(userData.vaiTro);
                     
                     // Hide admin request option for admin
                     if (userData.vaiTro === 'quantri') {
@@ -594,13 +607,17 @@
             let html = '<div class="row">';
 
             // Common fields
-            html += `
-                <div class="col-md-6">
-                    <div class="info-group">
-                        <div class="info-label"><i class="fas fa-user"></i> Họ và tên</div>
-                        <div class="info-value">${userData.hoTen}</div>
+            if (userData.vaiTro !== 'quantri') {
+                html += `
+                    <div class="col-md-6">
+                        <div class="info-group">
+                            <div class="info-label"><i class="fas fa-user"></i> Họ và tên</div>
+                            <div class="info-value">${userData.hoTen}</div>
+                        </div>
                     </div>
-                </div>
+                `;
+            }
+            html += `
                 <div class="col-md-6">
                     <div class="info-group">
                         <div class="info-label"><i class="fas fa-id-card"></i> Tên đăng nhập</div>
@@ -670,13 +687,17 @@
         function buildEditForm() {
             let html = '<div class="row">';
 
-            html += `
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-label">Họ và tên *</label>
-                        <input type="text" class="form-control" name="hoTen" value="${userData.hoTen}" required>
+            if (userData.vaiTro !== 'quantri') {
+                html += `
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Họ và tên *</label>
+                            <input type="text" class="form-control" name="hoTen" value="${userData.hoTen}" required>
+                        </div>
                     </div>
-                </div>
+                `;
+            }
+            html += `
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Số điện thoại</label>
@@ -992,6 +1013,20 @@
             if (!dateStr) return 'Chưa cập nhật';
             const date = new Date(dateStr);
             return date.toLocaleDateString('vi-VN');
+        }
+
+        function setupDashboardButton(role) {
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            if (role === 'benhnhan') {
+                return; 
+            }
+
+            dashboardBtn.style.display = 'inline-flex';
+            if (role === 'bacsi') {
+                dashboardBtn.href = '../doctor/dashboard.html';
+            } else if (role === 'quantri') {
+                dashboardBtn.href = '../admin/dashboard.html';
+            }
         }
 
         function showAlert(type, message) {

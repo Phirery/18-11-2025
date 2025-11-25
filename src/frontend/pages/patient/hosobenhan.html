@@ -6,489 +6,32 @@
     <title>Hồ Sơ Bệnh Án - Eden Health</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="../../assets/css/common.css">
+
     <style>
         /* === VARIABLES === */
         :root {
             --primary-purple: #667eea;
             --secondary-purple: #764ba2;
             --light-bg: #f8f9fa;
-            --success-green: #2ecc71;
-            --danger-red: #e74c3c;
-            --warning-yellow: #f39c12;
-            --info-blue: #3498db;
         }
 
-        /* === RESET === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
-            min-height: 100vh;
+        /* === HIỆU ỨNG FADE UP === */
+        .reveal {
             opacity: 0;
-            transition: opacity 0.25s ease;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
         }
 
-        body.loaded {
+        .reveal.visible {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        /* === NAVBAR === */
-        .header-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease; /* cho header hiện mượt */
-        }
-
-        /* === NAVBAR === */
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-            min-height: 58px;
-        }
-
-        .navbar-brand-header {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-purple) !important;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .navbar-brand-header:hover {
-            transform: scale(1.02);
-            color: var(--secondary-purple) !important;
-        }
-
-        .navbar-brand-header i {
-            color: var(--secondary-purple);
-        }
-
-        .nav-link-header {
-            color: #333 !important;
-            font-weight: 500;
-            margin: 0 8px;
-            padding: 8px 12px !important;
-            position: relative;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .nav-link-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            transition: all 0.3s;
-            transform: translateX(-50%);
-        }
-
-        .nav-link-header:hover,
-        .nav-link-header.active {
-            color: var(--primary-purple) !important;
-        }
-
-        .nav-link-header:hover::after,
-        .nav-link-header.active::after {
-            width: 80%;
-        }
-
-        .btn-auth {
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            height: 35px;
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white !important;
-            border: none;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-            color: white !important;
-        }
-
-        .btn-register {
-            background: transparent;
-            color: var(--primary-purple) !important;
-            border: 2px solid var(--primary-purple);
-            margin-left: 10px;
-        }
-
-        .btn-register:hover {
-            background: var(--primary-purple);
-            color: white !important;
-            transform: translateY(-2px);
-        }
-
-        .logout-header {
-            display: none;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logout-header.active {
-            display: flex;
-        }
-
-        .user-info-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .header-user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #333;
-            max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .btn-logout-custom {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            justify-content: center;
-            height: 35px;
-        }
-
-        .btn-logout-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-            color: white;
-        }
-
-        .nav-item-loggedin {
-            display: none;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--primary-purple);
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .navbar-center {
-            display: flex;
-            margin: 0 auto;
-        }
-
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        /* Mobile Overlay & Sidebar */
-        .mobile-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1021;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .mobile-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .mobile-sidebar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 280px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-            z-index: 1022;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .mobile-sidebar.active {
-            transform: translateX(0);
-        }
-
-        .mobile-sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #e5e7eb;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .mobile-sidebar-header h4 {
-            margin: 0;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .close-sidebar {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
-        }
-
-        .close-sidebar:hover {
-            transform: scale(1.1);
-        }
-
-        .mobile-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .mobile-menu li {
-            margin: 0;
-        }
-
-        .mobile-menu a {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 4px solid transparent;
-        }
-
-        .mobile-menu a:hover,
-        .mobile-menu a.active {
-            background: #f8f9fa;
-            border-left-color: var(--primary-purple);
-            color: var(--primary-purple);
-        }
-
-        .mobile-menu a i {
-            width: 25px;
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-
-        .mobile-menu-loggedin {
-            display: none;
-        }
-
-        .mobile-sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid #e5e7eb;
-            margin-top: auto;
-            background: #f8f9fa;
-        }
-
-        .mobile-auth-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-mobile-login,
-        .btn-mobile-register {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-mobile-login {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-        }
-
-        .btn-mobile-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-            color: white;
-        }
-
-        .btn-mobile-register {
-            background: white;
-            color: var(--primary-purple);
-            border: 2px solid var(--primary-purple);
-        }
-
-        .btn-mobile-register:hover {
-            background: var(--primary-purple);
-            color: white;
-        }
-
-        .mobile-user-info {
-            display: none;
-        }
-
-        .mobile-user-info.active {
-            display: block;
-        }
-
-        .mobile-user-details {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            cursor: pointer;
-        }
-
-        .mobile-user-details .user-avatar {
-            width: 35px;
-            height: 35px;
-            font-size: 1.1rem;
-        }
-
-        .mobile-user-details .user-text {
-            flex: 1;
-        }
-
-        .mobile-user-details .user-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 0.95rem;
-        }
-
-        .btn-mobile-logout {
-            width: 100%;
-            padding: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-mobile-logout:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        /* === BREADCRUMB === */
-        .breadcrumb-section {
-            background: white;
-            padding: 4px 0;
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky;
-            top: 58px;
-            z-index: 100;
-        }
-
-        .breadcrumb {
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            font-size: 0.70rem;
-        }
-
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .breadcrumb-item a {
-            color: #64748b;
-            text-decoration: none;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .breadcrumb-item a:hover {
-            color: var(--primary-purple);
-        }
-
-        .breadcrumb-item.active {
-            color: var(--primary-purple);
-            font-weight: 600;
-        }
-
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: "›";
-            color: #94a3b8;
-            padding: 0 8px;
-        }
-
-        /* === HEADER SECTION === */
+        /* === CSS RIÊNG CỦA TRANG HỒ SƠ === */
+        
+        /* Header Section */
         .header-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 40px 0 60px;
@@ -544,31 +87,19 @@
             line-height: 1.6;
         }
 
-        /* === MAIN CONTAINER === */
+        /* Container */
         .records-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px 40px;
         }
 
-        /* === SECTION HEADER === */
-        .section-header {
-            margin-bottom: 25px;
-        }
+        /* Section Header */
+        .section-header { margin-bottom: 25px; }
+        .section-header h3 { font-size: 1.5rem; font-weight: 700; color: #333; margin-bottom: 5px; }
+        .section-header p { font-size: 0.95rem; color: #666; }
 
-        .section-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .section-header p {
-            font-size: 0.95rem;
-            color: #666;
-        }
-
-        /* === LATEST RECORD CARD === */
+        /* Latest Record Card */
         .latest-record-card {
             background: white;
             border-radius: 15px;
@@ -598,34 +129,12 @@
             border-bottom: 2px solid #f0f0f0;
         }
 
-        .record-title {
-            flex: 1;
-        }
+        .record-title {flex: 1;}
+        .record-title h4 { font-size: 1.3rem; font-weight: 700; color: #333; margin-bottom: 8px; }
 
-        .record-title h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .record-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .record-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .record-meta i {
-            color: var(--primary-purple);
-        }
+        .record-meta { display: flex; flex-wrap: wrap; gap: 15px; color: #666; font-size: 0.9rem; }
+        .record-meta span { display: flex; align-items: center; gap: 5px; }
+        .record-meta i { color: var(--primary-purple); }
 
         .record-badge {
             background: linear-gradient(135deg, #d4edda, #c3e6cb);
@@ -662,166 +171,28 @@
             gap: 8px;
         }
 
-        .info-section h5 i {
-            color: var(--primary-purple);
-            font-size: 1.1rem;
-        }
+        .info-section h5 i { color: var(--primary-purple); font-size: 1.1rem; }
+        .info-section p { color: #555; line-height: 1.8; margin: 0; white-space: pre-line; }
 
-        .info-section p {
-            color: #555;
-            line-height: 1.8;
-            margin: 0;
-            white-space: pre-line;
-        }
+        /* Section Card & Filter */
+        .section-card { background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); overflow: hidden; }
+        .filter-bar { padding: 25px; background: #f8f9fa; border-bottom: 2px solid #e8eef5; }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
+        .search-box { position: relative; }
+        .search-box input { padding-left: 40px; border-radius: 8px; border: 1px solid #e9ecef; height: 42px; }
+        .search-box input:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #8898aa; pointer-events: none; }
 
-        .info-row:last-child {
-            border-bottom: none;
-        }
+        .form-select, .form-control { border-radius: 8px; border: 1px solid #e9ecef; height: 42px; }
+        .form-select:focus, .form-control:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); }
 
-        .info-label {
-            font-weight: 600;
-            color: #555;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-label i {
-            color: var(--primary-purple);
-            width: 20px;
-        }
-
-        .info-value {
-            color: #333;
-            font-weight: 500;
-        }
-
-        /* === SECTION CARD === */
-        .section-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-
-        /* === FILTER BAR === */
-        .filter-bar {
-            padding: 25px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e8eef5;
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        .search-box input {
-            padding-left: 40px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-            height: 42px;
-        }
-
-        .search-box input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8898aa;
-        }
-
-        .form-select,
-        .form-control {
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-            height: 42px;
-        }
-
-        .form-select:focus,
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-        }
-
-        /* === LOADING & EMPTY STATE === */
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .spinner-border {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-width: 0.3rem;
-            color: var(--primary-purple);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-
-        .empty-state i {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            color: #ddd;
-        }
-
-        .empty-state h3,
-        .empty-state h4 {
-            color: #64748b;
-            margin-bottom: 8px;
-        }
-
-        .empty-state p {
-            color: #94a3b8;
-        }
-
-        /* === TABLE === */
-        .table-responsive {
-            padding: 25px;
-        }
-
-        .record-table {
-            margin-bottom: 0;
-        }
-
-        .record-table thead {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .record-table thead th {
-            border: none;
-            padding: 15px 12px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .record-table tbody td {
-            padding: 15px 12px;
-            vertical-align: middle;
-            border-bottom: 1px solid #e8eef5;
-        }
-
-        .record-table tbody tr:hover {
-            background: #f8f9fa;
-        }
+        /* Table */
+        .table-responsive { padding: 25px; }
+        .record-table { margin-bottom: 0; }
+        .record-table thead { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .record-table thead th { border: none; padding: 15px 12px; font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
+        .record-table tbody td { padding: 15px 12px; vertical-align: middle; border-bottom: 1px solid #e8eef5; }
+        .record-table tbody tr:hover { background: #f8f9fa; }
 
         .btn-view {
             background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
@@ -837,359 +208,54 @@
             align-items: center;
             gap: 5px;
         }
+        .btn-view:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); color: white; }
 
-        .btn-view:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
+        /* Pagination */
+        .pagination-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 25px; border-top: 2px solid #e8eef5; }
+        .pagination { margin: 0; gap: 5px; }
+        .page-link { color: var(--primary-purple); border: 2px solid #e8eef5; border-radius: 8px; padding: 6px 14px; font-weight: 600; transition: all 0.3s; font-size: 0.9rem; }
+        .page-link:hover { background: var(--primary-purple); color: white; border-color: var(--primary-purple); }
+        .page-item.active .page-link { background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple)); border-color: var(--primary-purple); }
+        .page-item.disabled .page-link { background: #f8f9fa; border-color: #e8eef5; }
 
-        /* === PAGINATION === */
-        .pagination-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            border-top: 2px solid #e8eef5;
-        }
+        /* Modal Styles */
+        .modal-content { border-radius: 15px; border: none; }
+        .modal-header { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px 15px 0 0; padding: 20px 25px; }
+        .modal-header .btn-close { filter: brightness(0) invert(1); }
+        .modal-body { padding: 25px; max-height: 70vh; }
+        
+        .modal-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .modal-info-item { background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary-purple); }
+        .modal-info-item label { display: block; font-size: 0.85rem; color: #666; margin-bottom: 5px; font-weight: 600; }
+        .modal-info-item .value { font-size: 1rem; color: #333; font-weight: 500; }
+        
+        .modal-section { margin-bottom: 25px; }
+        .modal-section:last-child { margin-bottom: 0; }
+        .modal-section h6 { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; padding-bottom: 10px; border-bottom: 2px solid #e8eef5; }
+        .modal-section h6 i { color: var(--primary-purple); }
+        .modal-section .content { background: #f8f9fa; padding: 15px; border-radius: 10px; color: #555; line-height: 1.8; white-space: pre-line; }
 
-        .pagination {
-            margin: 0;
-            gap: 5px;
-        }
+        /* Loading & Empty */
+        .loading { text-align: center; padding: 60px 20px; }
+        .spinner-border { width: 2.5rem; height: 2.5rem; border-width: 0.3rem; color: var(--primary-purple); }
+        .empty-state { text-align: center; padding: 60px 20px; color: #999; }
+        .empty-state i { font-size: 3.5rem; margin-bottom: 15px; color: #ddd; }
+        .empty-state h3, .empty-state h4 { color: #64748b; margin-bottom: 8px; }
 
-        .page-link {
-            color: var(--primary-purple);
-            border: 2px solid #e8eef5;
-            border-radius: 8px;
-            padding: 6px 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .page-link:hover {
-            background: var(--primary-purple);
-            color: white;
-            border-color: var(--primary-purple);
-        }
-
-        .page-item.active .page-link {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            border-color: var(--primary-purple);
-        }
-
-        .page-item.disabled .page-link {
-            background: #f8f9fa;
-            border-color: #e8eef5;
-        }
-
-        /* === MODAL === */
-        .modal-content {
-            border-radius: 15px;
-            border: none;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 15px 15px 0 0;
-            padding: 20px 25px;
-        }
-
-        .modal-header .btn-close {
-            filter: brightness(0) invert(1);
-        }
-
-        .modal-body {
-            padding: 25px;
-            max-height: 70vh;
-        }
-
-        .modal-info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .modal-info-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid var(--primary-purple);
-        }
-
-        .modal-info-item label {
-            display: block;
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .modal-info-item .value {
-            font-size: 1rem;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .modal-section {
-            margin-bottom: 25px;
-        }
-
-        .modal-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .modal-section h6 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e8eef5;
-        }
-
-        .modal-section h6 i {
-            color: var(--primary-purple);
-        }
-
-        .modal-section .content {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            color: #555;
-            line-height: 1.8;
-            white-space: pre-line;
-        }
-
-        /* === FOOTER === */
-        .footer {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: white;
-            padding: 25px 0 10px;
-            margin-top: 40px;
-        }
-
-        .footer-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .footer-brand i {
-            color: var(--primary-purple);
-        }
-
-        .footer-desc {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .footer h5 {
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: white;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer h5::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            border-radius: 2px;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .footer-contact p {
-            color: #94a3b8;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-contact i {
-            color: var(--primary-purple);
-            width: 20px;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .social-icons a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-icons a:hover {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 25px;
-            margin-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        /* === SCROLL TO TOP === */
-        #scrollTopBtn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-            border: none;
-            font-size: 20px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        #scrollTopBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-        }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 992px) {
-            .navbar-center {
-                display: none;
-            }
-            
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.6rem;
-                padding: 5px 0 5px 10px;
-            }
-            
-            .mobile-sidebar {
-                display: block;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .navbar-right .auth-buttons {
-                display: none !important;
-            }
-            
-            .navbar-right .logout-header {
-                display: none !important;
-            }
-            
-            .mobile-sidebar {
-                width: 50%;
-                max-width: 320px;
-            }
-            
-            .section-title {
-                font-size: 1.6rem;
-            }
-            
-            .header-section {
-                padding: 30px 0 50px;
-            }
-            
-            .latest-record-card {
-                padding: 20px;
-            }
-            
-            .record-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .record-body {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .info-section {
-                padding: 15px;
-            }
-            
-            .modal-info-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .filter-bar {
-                padding: 15px;
-            }
-            
-            .table-responsive {
-                padding: 15px;
-            }
-            
-            .record-table {
-                font-size: 0.85rem;
-            }
-            
-            .record-table thead th,
-            .record-table tbody td {
-                padding: 10px 8px;
-            }
-            
-            .pagination-container {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
+            .section-title { font-size: 1.6rem; }
+            .header-section { padding: 30px 0 50px; }
+            .latest-record-card { padding: 20px; }
+            .record-header { flex-direction: column; gap: 15px; }
+            .record-body { grid-template-columns: 1fr; gap: 15px; }
+            .info-section { padding: 15px; }
+            .modal-info-grid { grid-template-columns: 1fr; gap: 15px; }
+            .filter-bar { padding: 15px; }
+            .table-responsive { padding: 15px; }
+            .record-table { font-size: 0.85rem; }
+            .record-table thead th, .record-table tbody td { padding: 10px 8px; }
+            .pagination-container { flex-direction: column; gap: 15px; text-align: center; }
         }
     </style>
 </head>
@@ -1206,99 +272,9 @@
     ">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
     </div>
-    <!-- Mobile Overlay -->
-    <div class="mobile-overlay" id="mobileOverlay"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top header-hidden">
-        <div class="container">
-            <div class="navbar-left">
-                <a class="navbar-brand-header" href="index.html">
-                    <i class="fas fa-clinic-medical me-2"></i><span>Eden</span> Health
-                </a>
-            </div>
+    <div id="header-placeholder" class="sticky-top" style="z-index: 1020;"></div>
 
-            <div class="navbar-center" id="navbarNav">
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header active" href="hosobenhan.html">Hồ sơ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
-                </ul>
-            </div>
-
-            <div class="navbar-right ms-auto d-flex align-items-center gap-3">
-                <div class="auth-buttons" id="authButtons">
-                    <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login">
-                        <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
-                    </a>
-                    <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register">
-                        <i class="fas fa-user-plus me-1"></i> Đăng ký
-                    </a>
-                </div>
-
-                <div class="logout-header" id="logoutHeader">
-                    <div class="user-info-group" onclick="window.location.href='taikhoan.html'">
-                        <div class="user-avatar" id="userAvatar">K</div>
-                        <div class="header-user-name" id="headerUserName">Khách</div>
-                    </div>
-                    <button class="btn-logout-custom" id="btnDesktopLogout" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                    </button>
-                </div>
-
-                <button class="menu-toggle ms-2" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Sidebar -->
-    <div class="mobile-sidebar" id="mobileSidebar">
-        <div class="mobile-sidebar-header">
-            <h4><i class="fas fa-clinic-medical me-2"></i>Eden Health</h4>
-            <button class="close-sidebar" id="closeSidebar">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <ul class="mobile-menu">
-            <li><a href="index.html"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
-            <li><a href="danhsachchuyenkhoa.html"><i class="fas fa-hospital"></i><span>Chuyên khoa</span></a></li>
-            <li><a href="danhsachbacsi.html"><i class="fas fa-user-md"></i><span>Bác sĩ</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="lichkham.html"><i class="fas fa-calendar-check"></i><span>Lịch khám</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="hosobenhan.html" class="active"><i class="fas fa-file-medical"></i><span>Hồ sơ bệnh án</span></a></li>
-            <li><a href="lienhe.html"><i class="fas fa-envelope"></i><span>Liên hệ</span></a></li>
-        </ul>
-
-        <div class="mobile-sidebar-footer">
-            <div class="mobile-auth-buttons" id="mobileAuthButtons">
-                <a href="/frontend/pages/auth/login.html" class="btn-mobile-login">
-                    <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
-                </a>
-                <a href="/frontend/pages/auth/register.html" class="btn-mobile-register">
-                    <i class="fas fa-user-plus me-2"></i>Đăng ký
-                </a>
-            </div>
-
-            <div class="mobile-user-info" id="mobileUserInfo">
-                <div class="mobile-user-details" onclick="window.location.href='taikhoan.html'">
-                    <div class="user-avatar" id="mobileUserAvatar">A</div>
-                    <div class="user-text">
-                        <div class="user-name" id="mobileUserName">Khách</div>
-                    </div>
-                </div>
-                <button class="btn-mobile-logout" onclick="logout()">
-                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Breadcrumb -->
     <div class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -1314,8 +290,7 @@
         </div>
     </div>
 
-    <!-- Header Section -->
-    <div class="header-section text-center">
+    <div class="header-section text-center reveal">
         <div class="container position-relative">
             <span class="header-badge">
                 <i class="fas fa-file-medical me-2"></i>Hồ sơ y tế
@@ -1327,37 +302,30 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="records-container">
-        <!-- Latest Record Card -->
-        <div id="latestRecordSection" style="display: none;">
-            <div class="section-header">
-                <h3><i class="fas fa-star text-warning me-2"></i>Hồ Sơ Gần Nhất</h3>
-                <p class="text-muted mb-0">Kết quả khám bệnh mới nhất của bạn</p>
+        <div id="latestRecordSection" class="reveal" style="display: none;">
+            <div class="section-header mt-5">
+                <h3><i class="fas fa-star text-warning me-2"></i>Kết quả khám bệnh mới nhất của bạn</p></h3>
             </div>
             
             <div class="latest-record-card" id="latestRecordCard">
-                <!-- Filled by JS -->
-            </div>
+                </div>
         </div>
 
-        <!-- No Records State -->
-        <div id="noRecordsState" class="empty-state" style="display: none;">
+        <div id="noRecordsState" class="empty-state reveal" style="display: none;">
             <i class="fas fa-folder-open"></i>
             <h3>Chưa có hồ sơ bệnh án</h3>
             <p>Bạn chưa có hồ sơ khám bệnh nào. Hãy đặt lịch khám để được chăm sóc sức khỏe!</p>
             <a href="danhsachbacsi.html" class="btn btn-primary mt-3">Đặt lịch khám</a>
         </div>
 
-        <!-- History Section -->
-        <div id="historySection" style="display: none;">
+        <div id="historySection" class="reveal" style="display: none;">
             <div class="section-header mt-5">
                 <h3><i class="fas fa-history me-2"></i>Lịch Sử Khám Bệnh</h3>
                 <p class="text-muted mb-0">Danh sách các lần khám trước đây</p>
             </div>
 
             <div class="section-card">
-                <!-- Filter Bar -->
                 <div class="filter-bar">
                     <div class="row g-3">
                         <div class="col-md-4">
@@ -1384,20 +352,17 @@
                     </div>
                 </div>
 
-                <!-- Loading State -->
                 <div id="historyLoading" class="loading">
                     <div class="spinner-border text-primary"></div>
                     <p class="mt-3">Đang tải dữ liệu...</p>
                 </div>
 
-                <!-- Empty State -->
                 <div id="historyEmpty" class="empty-state" style="display: none;">
                     <i class="fas fa-inbox"></i>
                     <h4>Không tìm thấy kết quả</h4>
                     <p>Không có hồ sơ nào phù hợp với bộ lọc của bạn</p>
                 </div>
 
-                <!-- Table -->
                 <div class="table-responsive" id="historyTable" style="display: none;">
                     <table class="table record-table">
                         <thead>
@@ -1411,25 +376,21 @@
                             </tr>
                         </thead>
                         <tbody id="historyTableBody">
-                            <!-- Filled by JS -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
 
-                <!-- Pagination -->
                 <div class="pagination-container" id="paginationContainer" style="display: none;">
                     <div class="text-muted" id="recordInfo">Hiển thị 0 - 0 của 0 hồ sơ</div>
                     <nav>
                         <ul class="pagination" id="paginationList">
-                            <!-- Filled by JS -->
-                        </ul>
+                            </ul>
                     </nav>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Detail Modal -->
     <div class="modal fade" id="detailModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content">
@@ -1441,8 +402,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="modalBody">
-                    <!-- Filled by JS -->
-                </div>
+                    </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fas fa-times me-1"></i>Đóng
@@ -1452,69 +412,16 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-brand">
-                        <i class="fas fa-clinic-medical me-2"></i>Eden Health
-                    </div>
-                    <p class="footer-desc">
-                        Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam. 
-                        Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất cho bạn và gia đình.
-                    </p>
-                    <div class="social-icons">
-                        <a href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h5>Liên kết</h5>
-                    <ul class="footer-links">
-                        <li><a href="vechungtoi.html"><i class="fas fa-chevron-right"></i> Về chúng tôi</a></li>
-                        <li><a href="danhsachchuyenkhoa.html"><i class="fas fa-chevron-right"></i> Chuyên khoa</a></li>
-                        <li><a href="danhsachbacsi.html"><i class="fas fa-chevron-right"></i> Bác sĩ</a></li>
-                        <li><a href="lienhe.html"><i class="fas fa-chevron-right"></i> Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Chính sách</h5>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách hoạt động</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách bảo mật</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Điều khoản sử dụng</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Liên hệ</h5>
-                    <div class="footer-contact">
-                        <p><i class="fas fa-phone-alt"></i> Hotline: <strong>1900 0091</strong></p>
-                        <p><i class="fas fa-envelope"></i> edenhealth@gmail.com</p>
-                        <p><i class="fas fa-clock"></i> 07:00 - 17:00 (T2 - CN)</p>
-                        <p><i class="fas fa-map-marker-alt"></i> TP. Cần Thơ, Việt Nam</p>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 Eden Health. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <i class="fas fa-chevron-up"></i>
-    </button>
+    <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // API Configuration
-        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
-        const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
+    
+    <script src="../../assets/js/common.js"></script>
 
+    <script>
+        // Sử dụng API_BASE local để map
+        const API_BASE = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/patient';
+        
         // Global State
         let allRecords = [];
         let filteredRecords = [];
@@ -1524,14 +431,11 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
-            loadMedicalRecords();
-            initMobileMenu();
-            initScrollToTop();
+            checkStrictAuth();
         });
 
         // ===== AUTHENTICATION =====
-        async function checkAuth() {
+        async function checkStrictAuth() {
             try {
                 const response = await fetch(`${API_BASE}/check-auth.php`, {
                     credentials: 'include'
@@ -1544,70 +448,30 @@
                     return;
                 }
                 
-                updateUserUI(data);
+                // Đã login -> Load dữ liệu
+                loadMedicalRecords();
+                setupScrollAnimations();
+
             } catch (error) {
                 console.error('Auth error:', error);
-                if (error.name !== 'TypeError') {
-                    alert('Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại!');
-                    window.location.href = '../auth/login.html';
-                }
+                window.location.href = '../auth/login.html';
             }
-            document.querySelector('.navbar').classList.remove('header-hidden');
-            setTimeout(() => {
-                document.getElementById("pageLoader").style.display = "none";
-                document.body.classList.add("loaded");
-            }, 10); // 400ms cho mượt (có thể chỉnh)  
         }
 
-        function updateUserUI(data) {
-            const displayName = data.fullName || data.username;
-            const firstLetter = displayName.charAt(0).toUpperCase();
-
-            // Desktop
-            const headerNameEl = document.getElementById('headerUserName');
-            const headerAvatarEl = document.getElementById('userAvatar');
-            if (headerNameEl) headerNameEl.textContent = displayName;
-            if (headerAvatarEl) headerAvatarEl.textContent = firstLetter;
-
-            // Mobile
-            const mobileNameEl = document.getElementById('mobileUserName');
-            const mobileAvatarEl = document.getElementById('mobileUserAvatar');
-            if (mobileNameEl) mobileNameEl.textContent = displayName;
-            if (mobileAvatarEl) mobileAvatarEl.textContent = firstLetter;
-
-            // Show logged-in state
-            const authButtons = document.getElementById('authButtons');
-            const logoutHeader = document.getElementById('logoutHeader');
-            const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin');
-            const mobileLoggedInItems = document.querySelectorAll('.mobile-menu-loggedin');
-            const mobileAuthButtons = document.getElementById('mobileAuthButtons');
-            const mobileUserInfo = document.getElementById('mobileUserInfo');
-
-            if (authButtons) authButtons.style.display = 'none';
-            if (logoutHeader) logoutHeader.classList.add('active');
-            if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
-            if (mobileUserInfo) mobileUserInfo.classList.add('active');
-            
-            navLoggedInItems.forEach(item => item.style.display = 'block');
-            mobileLoggedInItems.forEach(item => item.style.display = 'block');
-        }
-
-        async function logout() {
-            try {
-                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
-                    method: 'POST',
-                    credentials: 'include'
+        // ===== SCROLL ANIMATION =====
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
                 });
+            }, { threshold: 0.1 });
 
-                const data = await response.json();
-                if (data.success) {
-                    localStorage.clear();
-                    window.location.href = 'index.html';
-                }
-            } catch (error) {
-                console.error('Logout error:', error);
-                alert('Có lỗi xảy ra khi đăng xuất');
-            }
+            document.querySelectorAll('.reveal').forEach(el => {
+                observer.observe(el);
+            });
         }
 
         // ===== LOAD DATA =====
@@ -1642,6 +506,10 @@
             } catch (error) {
                 console.error('Load error:', error);
                 showError('Lỗi tải dữ liệu. Vui lòng thử lại!');
+            } finally {
+                // Hide Page Loader
+                const pageLoader = document.getElementById('pageLoader');
+                if(pageLoader) pageLoader.style.display = 'none';
             }
         }
 
@@ -1818,7 +686,6 @@
             
             let html = '';
             
-            // Previous button
             html += `
                 <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
@@ -1827,18 +694,11 @@
                 </li>
             `;
             
-            // Page numbers
             for (let i = 1; i <= totalPages; i++) {
-                if (
-                    i === 1 || 
-                    i === totalPages || 
-                    (i >= currentPage - 1 && i <= currentPage + 1)
-                ) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
                     html += `
                         <li class="page-item ${i === currentPage ? 'active' : ''}">
-                            <a class="page-link" href="#" onclick="changePage(${i}); return false;">
-                                ${i}
-                            </a>
+                            <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
                         </li>
                     `;
                 } else if (i === currentPage - 2 || i === currentPage + 2) {
@@ -1846,7 +706,6 @@
                 }
             }
             
-            // Next button
             html += `
                 <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
@@ -1923,42 +782,6 @@
             
             const modal = new bootstrap.Modal(document.getElementById('detailModal'));
             modal.show();
-        }
-
-        // ===== MOBILE MENU =====
-        function initMobileMenu() {
-            const menuToggle = document.getElementById('menuToggle');
-            const mobileSidebar = document.getElementById('mobileSidebar');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            const closeSidebar = document.getElementById('closeSidebar');
-            
-            menuToggle.addEventListener('click', () => {
-                mobileSidebar.classList.add('active');
-                mobileOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-            
-            function closeMenu() {
-                mobileSidebar.classList.remove('active');
-                mobileOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            closeSidebar.addEventListener('click', closeMenu);
-            mobileOverlay.addEventListener('click', closeMenu);
-        }
-
-        // ===== SCROLL TO TOP =====
-        function initScrollToTop() {
-            const scrollBtn = document.getElementById('scrollTopBtn');
-            
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    scrollBtn.style.display = 'flex';
-                } else {
-                    scrollBtn.style.display = 'none';
-                }
-            });
         }
     </script>
 </body>

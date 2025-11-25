@@ -1,4 +1,5 @@
 <?php
+// request-leave.php
 require_once '../../config/cors.php';
 require_once '../../core/dp.php';
 require_once '../../core/session.php';
@@ -12,7 +13,7 @@ if (!isset($input['ngayNghi']) || !isset($input['lyDo'])) {
     exit;
 }
 
-// Get doctor ID from session
+// Lấy mã bác sĩ từ session ID
 $stmt = $conn->prepare("SELECT maBacSi FROM bacsi WHERE nguoiDungId = ?");
 $stmt->bind_param("i", $_SESSION['id']);
 $stmt->execute();
@@ -25,10 +26,9 @@ if (!$maBacSi) {
 }
 
 $ngayNghi = $input['ngayNghi'];
-$maCa = $input['maCa'];
+$maCa = $input['maCa']; // null nếu nghỉ cả ngày
 $lyDo = trim($input['lyDo']);
 
-// Validate date
 $tomorrow = date('Y-m-d', strtotime('+1 day'));
 if ($ngayNghi < $tomorrow) {
     echo json_encode(['success' => false, 'message' => 'Chỉ được xin nghỉ từ ngày mai trở đi']);
@@ -38,16 +38,17 @@ if ($ngayNghi < $tomorrow) {
 try {
     $conn->begin_transaction();
     
-    // Insert leave request(s)
+    // Insert vào bảng ngaynghi
+    // Trigger 'after_ngaynghi_insert' sẽ tự động tạo thông báo Admin
     if ($maCa === null) {
-        // Full day off - insert both shifts with same reason
+        // Nghỉ cả ngày (Ca 1 và Ca 2)
         $stmt = $conn->prepare("
             INSERT INTO ngaynghi (maBacSi, ngayNghi, maCa, lyDo) 
             VALUES (?, ?, 1, ?), (?, ?, 2, ?)
         ");
         $stmt->bind_param("ssisss", $maBacSi, $ngayNghi, $lyDo, $maBacSi, $ngayNghi, $lyDo);
     } else {
-        // Single shift off
+        // Nghỉ 1 ca
         $stmt = $conn->prepare("
             INSERT INTO ngaynghi (maBacSi, ngayNghi, maCa, lyDo) 
             VALUES (?, ?, ?, ?)
@@ -56,11 +57,11 @@ try {
     }
     
     if (!$stmt->execute()) {
-        throw new Exception('Không thể tạo đơn nghỉ phép');
+        throw new Exception('Không thể tạo đơn nghỉ phép: ' . $stmt->error);
     }
     $stmt->close();
     
-    // Check affected appointments
+    // Đếm số lịch khám bị ảnh hưởng để cảnh báo
     $checkStmt = $conn->prepare("
         SELECT COUNT(*) as count FROM lichkham 
         WHERE maBacSi = ? AND ngayKham = ? AND trangThai = 'Đã đặt'

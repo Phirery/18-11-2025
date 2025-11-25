@@ -112,7 +112,7 @@ try {
     $stmt = $conn->prepare("
         UPDATE thongbaoadmin
         SET trangThai = ?, thoiGianXuLy = NOW()
-        WHERE requestId = ?
+        WHERE maYeuCau = ?
     ");
     $stmt->bind_param("si", $newStatus, $requestId);
     $stmt->execute();

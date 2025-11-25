@@ -1,4 +1,5 @@
 <?php
+// request-password-reset.php
 require_once '../../config/cors.php';
 require_once '../../core/dp.php';
 require_once '../../core/session.php';
@@ -12,7 +13,7 @@ if ($vaiTro === 'quantri') {
 }
 
 try {
-    // Check if there's already a pending request
+    // Kiểm tra xem có yêu cầu đang chờ không
     $checkStmt = $conn->prepare("
         SELECT id FROM doimatkhau 
         WHERE nguoiDungId = ? AND trangThai = 'Chờ'
@@ -24,34 +25,20 @@ try {
     }
     $checkStmt->close();
     
-    // Insert new request
+    // Tạo yêu cầu mới
+    // Trigger 'after_doimatkhau_insert' sẽ tự động tạo thông báo cho Admin
     $stmt = $conn->prepare("
         INSERT INTO doimatkhau (nguoiDungId) VALUES (?)
     ");
     $stmt->bind_param("i", $nguoiDungId);
-    $stmt->execute();
+    
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Yêu cầu đã được gửi!']);
+    } else {
+        throw new Exception('Lỗi khi gửi yêu cầu');
+    }
     $stmt->close();
     
-    // Create notification for admin
-    $stmt = $conn->prepare("
-        INSERT INTO thongbaoadmin (maBacSi, loai, tieuDe, noiDung, thoiGian)
-        SELECT 
-            CASE 
-                WHEN ? = 'bacsi' THEN (SELECT maBacSi FROM bacsi WHERE nguoiDungId = ?)
-                ELSE 'SYSTEM'
-            END,
-            'Nghỉ phép',
-            'Yêu cầu cấp lại mật khẩu',
-            CONCAT('Người dùng ', nd.tenDangNhap, ' yêu cầu cấp lại mật khẩu'),
-            NOW()
-        FROM nguoidung nd
-        WHERE nd.id = ?
-    ");
-    $stmt->bind_param("sii", $vaiTro, $nguoiDungId, $nguoiDungId);
-    $stmt->execute();
-    $stmt->close();
-    
-    echo json_encode(['success' => true, 'message' => 'Yêu cầu đã được gửi!']);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }

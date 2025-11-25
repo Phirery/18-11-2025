@@ -1163,8 +1163,8 @@
                     </div>
                     <div class="password-request-info">
                         <div class="info-row">
-                            <i class="fas fa-user-md"></i>
-                            <strong>Người yêu cầu:</strong> ${notif.tenBacSi || 'N/A'}
+                            <i class="fas fa-user"></i>
+                            <strong>Người yêu cầu:</strong> ${notif.tenNguoiGui} <small class="text-muted">(${notif.vaiTro})</small>
                         </div>
                         <div class="info-row">
                             <i class="fas fa-phone"></i>
@@ -1186,10 +1186,10 @@
                     </div>
                     <div class="notification-actions" onclick="event.stopPropagation()">
                         ${isPending ? `
-                            <button class="btn-notif-action btn-approve" onclick="processPasswordReset(${notif.requestId}, 'approve', ${notif.maThongBao})">
+                            <button class="btn-notif-action btn-approve" onclick="processPasswordReset(${notif.maYeuCau}, 'approve', ${notif.maThongBao})">
                                 <i class="fas fa-check"></i> Chấp nhận
                             </button>
-                            <button class="btn-notif-action btn-reject" onclick="processPasswordReset(${notif.requestId}, 'reject', ${notif.maThongBao})">
+                            <button class="btn-notif-action btn-reject" onclick="processPasswordReset(${notif.maYeuCau}, 'reject', ${notif.maThongBao})">
                                 <i class="fas fa-times"></i> Từ chối
                             </button>
                         ` : ''}
@@ -1221,7 +1221,7 @@
                     <div class="notification-details">
                         <div class="notification-detail">
                             <i class="fas fa-user-md"></i>
-                            <span>${notif.tenBacSi}</span>
+                            <span>${notif.tenNguoiGui}</span>
                         </div>
                         <div class="notification-detail">
                             <i class="fas fa-calendar"></i>
@@ -1242,7 +1242,7 @@
             `;
         }
 
-        async function processPasswordReset(requestId, action, maThongBao) {
+        async function processPasswordReset(maYeuCau, action, maThongBao) {
             const actionText = action === 'approve' ? 'chấp nhận' : 'từ chối';
             if (!confirm(`Bạn có chắc muốn ${actionText} yêu cầu này?`)) return;
             
@@ -1251,7 +1251,7 @@
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     credentials: 'include',
-                    body: JSON.stringify({requestId, action})
+                    body: JSON.stringify({requestId: maYeuCau, action})
                 });
                 
                 const data = await response.json();

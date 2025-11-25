@@ -6,468 +6,58 @@
     <title>Về Chúng Tôi - Eden Health</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../../assets/css/common.css">
+
     <style>
-        :root {
-            --primary-purple: #667eea;
-            --secondary-purple: #764ba2;
-            --primary-blue: #00AEEF;
-            --light-bg: #f8f9fa;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 100%);
-            min-height: 100vh;
+        /* === ANIMATIONS SYSTEM === */
+        /* 1. Hiệu ứng trồi lên (Mặc định) */
+        .reveal {
             opacity: 0;
-            transition: opacity 0.25s ease;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
 
-        body.loaded {
+        /* 2. Hiệu ứng trượt từ trái sang (Cho Timeline trái) */
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+
+        /* 3. Hiệu ứng trượt từ phải sang (Cho Timeline phải) */
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        /* Trạng thái hiện (Chung cho tất cả) */
+        .reveal.visible, 
+        .reveal-left.visible, 
+        .reveal-right.visible {
             opacity: 1;
+            transform: translate(0, 0);
         }
 
-        /* === NAVBAR === */
-        .header-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease; /* cho header hiện mượt */
-        }
+        /* === CSS RIÊNG CỦA TRANG VỀ CHÚNG TÔI === */
 
-        /* === NAVBAR (Copy từ index.html) === */
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-            min-height: 58px;
-        }
-
-        .navbar-brand-header {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-purple) !important;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .navbar-brand-header:hover {
-            transform: scale(1.02);
-            color: var(--secondary-purple) !important;
-        }
-
-        .navbar-brand-header i {
-            color: var(--secondary-purple);
-        }
-
-        .nav-link-header {
-            color: #333 !important;
-            font-weight: 500;
-            margin: 0 8px;
-            padding: 8px 12px !important;
-            position: relative;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .nav-link-header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            transition: all 0.3s;
-            transform: translateX(-50%);
-        }
-
-        .nav-link-header:hover::after,
-        .nav-link-header.active::after {
-            width: 80%;
-        }
-
-        .nav-link-header.active {
-            color: var(--primary-purple) !important;
-        }
-
-        .btn-auth {
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s;
-            text-decoration: none;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            height: 35px;
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white !important;
-            border: none;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-register {
-            background: transparent;
-            color: var(--primary-purple) !important;
-            border: 2px solid var(--primary-purple);
-            margin-left: 10px;
-        }
-
-        .btn-register:hover {
-            background: var(--primary-purple);
-            color: white !important;
-            transform: translateY(-2px);
-        }
-
-        .logout-header {
-            display: none;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logout-header.active {
-            display: flex;
-        }
-
-        .user-info-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .header-user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: #333;
-            max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .btn-logout-custom {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            height: 35px;
-        }
-
-        .btn-logout-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-            color: white;
-        }
-
-        .nav-item-loggedin {
-            display: none;
-        }
-
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .navbar-center {
-            display: flex;
-            margin: 0 auto;
-        }
-
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--primary-purple);
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        /* Mobile Sidebar (giống index) */
-        .mobile-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1021;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .mobile-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .mobile-sidebar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 280px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-            z-index: 1021;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-            display: none;
-        }
-
-        .mobile-sidebar.active {
-            transform: translateX(0);
-        }
-
-        .mobile-sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            border-bottom: 1px solid #e5e7eb;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .mobile-sidebar-header h4 {
-            margin: 0;
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .close-sidebar {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 5px;
-            transition: transform 0.2s;
-        }
-
-        .close-sidebar:hover {
-            transform: scale(1.1);
-        }
-
-        .mobile-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .mobile-menu a {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 4px solid transparent;
-        }
-
-        .mobile-menu a:hover,
-        .mobile-menu a.active {
-            background: #f8f9fa;
-            border-left-color: var(--primary-purple);
-            color: var(--primary-purple);
-        }
-
-        .mobile-menu a i {
-            width: 25px;
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-
-        .mobile-menu-loggedin {
-            display: none;
-        }
-
-        .mobile-sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid #e5e7eb;
-            margin-top: auto;
-            background: #f8f9fa;
-        }
-
-        .mobile-auth-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-mobile-login,
-        .btn-mobile-register {
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-mobile-login {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-        }
-
-        .btn-mobile-register {
-            background: white;
-            color: var(--primary-purple);
-            border: 2px solid var(--primary-purple);
-        }
-
-        .mobile-user-info {
-            display: none;
-        }
-
-        .mobile-user-info.active {
-            display: block;
-        }
-
-        .mobile-user-details {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-
-        .mobile-user-details .user-name {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .btn-mobile-logout {
-            width: 100%;
-            padding: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        /* === BREADCRUMB === */
-        .breadcrumb-section {
-            background: white;
-            padding: 4px 0;
-            border-bottom: 1px solid #e5e7eb;
-            position: sticky;
-            top: 58px;
-            z-index: 100;
-        }
-
-        .breadcrumb {
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            font-size: 0.70rem;
-        }
-
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .breadcrumb-item a {
-            color: #64748b;
-            text-decoration: none;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .breadcrumb-item a:hover {
-            color: var(--primary-purple);
-        }
-
-        .breadcrumb-item.active {
-            color: var(--primary-purple);
-            font-weight: 600;
-        }
-
-        .breadcrumb-item + .breadcrumb-item::before {
-            content: "›";
-            color: #94a3b8;
-            padding: 0 8px;
-        }
-
-        /* === HERO SECTION === */
+        /* HERO SECTION */
         .hero-section {
             background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
             padding: 100px 0;
             position: relative;
             overflow: hidden;
+            margin-top: -1px;
         }
 
         .hero-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05), transparent 50%);
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            animation: fadeInLeft 1s ease-out;
-        }
-
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        .hero-content { position: relative; z-index: 2; }
 
         .hero-badge {
             display: inline-block;
@@ -509,9 +99,7 @@
             flex-wrap: wrap;
         }
 
-        .stat-item {
-            text-align: center;
-        }
+        .stat-item { text-align: center; }
 
         .stat-number {
             font-size: 2.5rem;
@@ -529,15 +117,7 @@
             margin-top: 5px;
         }
 
-        .hero-illustration {
-            position: relative;
-            animation: fadeInRight 1s ease-out;
-        }
-
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        .hero-illustration { position: relative; }
 
         .hero-illustration img {
             width: 100%;
@@ -576,15 +156,9 @@
             50% { transform: translateY(-20px); }
         }
 
-        /* === ABOUT SECTION === */
-        .about-section {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .about-image-wrapper {
-            position: relative;
-        }
+        /* ABOUT SECTION */
+        .about-section { padding: 100px 0; background: white; }
+        .about-image-wrapper { position: relative; }
 
         .main-image img {
             width: 100%;
@@ -604,16 +178,8 @@
             animation: floatBadge 3s ease-in-out infinite;
         }
 
-        .badge-1 {
-            top: 30px;
-            right: -20px;
-        }
-
-        .badge-2 {
-            bottom: 30px;
-            left: -20px;
-            animation-delay: 1.5s;
-        }
+        .badge-1 { top: 30px; right: -20px; }
+        .badge-2 { bottom: 30px; left: -20px; animation-delay: 1.5s; }
 
         @keyframes floatBadge {
             0%, 100% { transform: translateY(0); }
@@ -627,16 +193,8 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .image-badge strong {
-            font-size: 1.3rem;
-            color: #1e293b;
-            display: block;
-        }
-
-        .image-badge span {
-            font-size: 0.85rem;
-            color: #64748b;
-        }
+        .image-badge strong { font-size: 1.3rem; color: #1e293b; display: block; }
+        .image-badge span { font-size: 0.85rem; color: #64748b; }
 
         .section-badge {
             display: inline-block;
@@ -663,23 +221,11 @@
             font-weight: 500;
         }
 
-        .about-content p {
-            color: #64748b;
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
+        .about-content p { color: #64748b; line-height: 1.8; margin-bottom: 30px; }
 
-        .about-features {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .about-features { display: flex; flex-direction: column; gap: 20px; }
 
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-        }
+        .feature-item { display: flex; align-items: flex-start; gap: 15px; }
 
         .feature-icon {
             width: 50px;
@@ -692,32 +238,17 @@
             flex-shrink: 0;
         }
 
-        .feature-icon i {
-            font-size: 1.3rem;
-            color: var(--primary-purple);
-        }
+        .feature-icon i { font-size: 1.3rem; color: var(--primary-purple); }
+        .feature-text h5 { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
+        .feature-text p { color: #64748b; font-size: 0.95rem; margin: 0; }
 
-        .feature-text h5 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 5px;
-        }
-
-        .feature-text p {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        /* === MISSION VISION SECTION === */
+        /* MISSION VISION SECTION */
         .mission-vision-section {
             padding: 80px 0;
             background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
         }
 
-        .mission-card,
-        .vision-card {
+        .mission-card, .vision-card {
             background: white;
             padding: 40px;
             border-radius: 20px;
@@ -728,108 +259,44 @@
             overflow: hidden;
         }
 
-        .mission-card::before,
-        .vision-card::before {
+        .mission-card::before, .vision-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
+            top: 0; left: 0; width: 100%; height: 5px;
             background: linear-gradient(90deg, var(--primary-purple), var(--secondary-purple));
             transform: scaleX(0);
             transition: transform 0.4s;
         }
 
-        .mission-card:hover,
-        .vision-card:hover {
+        .mission-card:hover, .vision-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
         }
 
-        .mission-card:hover::before,
-        .vision-card:hover::before {
-            transform: scaleX(1);
-        }
+        .mission-card:hover::before, .vision-card:hover::before { transform: scaleX(1); }
 
         .card-icon {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             margin-bottom: 25px;
         }
 
-        .card-icon i {
-            font-size: 2.5rem;
-            color: white;
-        }
+        .card-icon i { font-size: 2.5rem; color: white; }
+        .mission-card h3, .vision-card h3 { font-size: 1.8rem; font-weight: 700; color: #1e293b; margin-bottom: 15px; }
+        .mission-card p, .vision-card p { color: #64748b; line-height: 1.8; margin-bottom: 25px; }
 
-        .mission-card h3,
-        .vision-card h3 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 15px;
-        }
+        .mission-list, .vision-list { list-style: none; padding: 0; }
+        .mission-list li, .vision-list li { padding: 10px 0; color: #475569; display: flex; align-items: center; gap: 12px; }
+        .mission-list i { color: #10b981; font-size: 1.1rem; }
+        .vision-list i { color: #f59e0b; font-size: 1.1rem; }
 
-        .mission-card p,
-        .vision-card p {
-            color: #64748b;
-            line-height: 1.8;
-            margin-bottom: 25px;
-        }
-
-        .mission-list,
-        .vision-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .mission-list li,
-        .vision-list li {
-            padding: 10px 0;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .mission-list i {
-            color: #10b981;
-            font-size: 1.1rem;
-        }
-
-        .vision-list i {
-            color: #f59e0b;
-            font-size: 1.1rem;
-        }
-
-        /* === VALUES SECTION === */
-        .values-section {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 15px;
-        }
-
-        .section-header p {
-            color: #64748b;
-            font-size: 1.05rem;
-        }
+        /* VALUES SECTION */
+        .values-section { padding: 80px 0; background: white; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; font-weight: 800; color: #1e293b; margin-bottom: 15px; }
+        .section-header p { color: #64748b; font-size: 1.05rem; }
 
         .value-card {
             background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
@@ -849,575 +316,107 @@
         }
 
         .value-icon {
-            width: 80px;
-            height: 80px;
+            width: 80px; height: 80px;
             background: white;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             margin: 0 auto 20px;
             box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
             transition: all 0.3s;
         }
 
-        .value-card:hover .value-icon {
-            transform: scale(1.1) rotate(10deg);
-        }
+        .value-card:hover .value-icon { transform: scale(1.1) rotate(10deg); }
+        .value-icon i { font-size: 2.2rem; background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .value-card h4 { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 12px; }
+        .value-card p { color: #64748b; font-size: 0.95rem; line-height: 1.6; }
 
-        .value-icon i {
-            font-size: 2.2rem;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        /* TIMELINE SECTION */
+        .timeline-section { padding: 80px 0; background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%); }
+        .timeline { position: relative; max-width: 1000px; margin: 0 auto; padding: 40px 0; }
+        .timeline::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 4px; height: 100%; background: linear-gradient(180deg, var(--primary-purple), var(--secondary-purple)); border-radius: 2px; }
 
-        .value-card h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 12px;
-        }
-
-        .value-card p {
-            color: #64748b;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* === TIMELINE SECTION === */
-        .timeline-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--primary-purple), var(--secondary-purple));
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            position: relative;
-            width: 50%;
-            padding: 0 40px;
-            margin-bottom: 50px;
-        }
-
-        .timeline-item.left {
-            left: 0;
-            text-align: right;
-        }
-
-        .timeline-item.right {
-            left: 50%;
-            text-align: left;
-        }
+        .timeline-item { position: relative; width: 50%; padding: 0 40px; margin-bottom: 50px; }
+        .timeline-item.left { left: 0; text-align: right; }
+        .timeline-item.right { left: 50%; text-align: left; }
 
         .timeline-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
+            background: white; padding: 30px; border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            position: relative;
-            transition: all 0.4s;
+            position: relative; transition: all 0.4s;
         }
 
         .timeline-item.left .timeline-content::before {
-            content: '';
-            position: absolute;
-            right: -15px;
-            top: 30px;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 10px 0 10px 15px;
-            border-color: transparent transparent transparent white;
+            content: ''; position: absolute; right: -15px; top: 30px; width: 0; height: 0;
+            border-style: solid; border-width: 10px 0 10px 15px; border-color: transparent transparent transparent white;
         }
 
         .timeline-item.right .timeline-content::before {
-            content: '';
-            position: absolute;
-            left: -15px;
-            top: 30px;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 10px 15px 10px 0;
-            border-color: transparent white transparent transparent;
+            content: ''; position: absolute; left: -15px; top: 30px; width: 0; height: 0;
+            border-style: solid; border-width: 10px 15px 10px 0; border-color: transparent white transparent transparent;
         }
 
-        .timeline-content:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
-        }
+        .timeline-content:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2); }
+        .timeline-year { display: inline-block; padding: 8px 20px; background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple)); color: white; border-radius: 50px; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; }
+        .timeline-content h4 { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 10px; }
+        .timeline-content p { color: #64748b; line-height: 1.7; margin: 0; }
 
-        .timeline-year {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
+        /* TEAM SECTION */
+        .team-section { padding: 80px 0; background: white; }
+        .team-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); transition: all 0.4s; }
+        .team-card:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2); }
 
-        .timeline-content h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 10px;
-        }
-
-        .timeline-content p {
-            color: #64748b;
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        /* === TEAM SECTION === */
-        .team-section {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .team-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s;
-        }
-
-        .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
-        }
-
-        .team-image {
-            position: relative;
-            overflow: hidden;
-            height: 300px;
-            background: linear-gradient(135deg, #f8faff, #f0f4ff);
-        }
-
-        .team-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.5s;
-        }
-
-        .team-card:hover .team-image img {
-            transform: scale(1.05);
-        }
+        .team-image { position: relative; overflow: hidden; height: 300px; background: linear-gradient(135deg, #f8faff, #f0f4ff); }
+        .team-image img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.5s; }
+        .team-card:hover .team-image img { transform: scale(1.05); }
 
         .team-social {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            opacity: 0;
-            transition: opacity 0.3s;
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 10px; opacity: 0; transition: opacity 0.3s;
         }
+        .team-card:hover .team-social { opacity: 1; }
+        .team-social a { width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-purple); transition: all 0.3s; }
+        .team-social a:hover { background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple)); color: white; }
 
-        .team-card:hover .team-social {
-            opacity: 1;
-        }
+        .team-info { padding: 25px; text-align: center; }
+        .team-info h4 { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
+        .team-role { color: var(--primary-purple); font-weight: 600; font-size: 0.95rem; margin-bottom: 10px; }
+        .team-desc { color: #64748b; font-size: 0.9rem; line-height: 1.6; }
 
-        .team-social a {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-purple);
-            transition: all 0.3s;
-        }
+        /* CTA SECTION */
+        .cta-section { padding: 80px 0; background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple)); position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: -50%; right: -10%; width: 500px; height: 500px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; }
+        .cta-content { position: relative; z-index: 2; }
+        .cta-content h2 { font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 15px; }
+        .cta-content p { font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin: 0; }
 
-        .team-social a:hover {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-        }
+        .btn-cta { display: inline-flex; align-items: center; padding: 14px 35px; background: white; color: var(--primary-purple); border-radius: 30px; font-weight: 600; font-size: 1rem; text-decoration: none; transition: all 0.3s; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); color: var(--primary-purple); }
 
-        .team-info {
-            padding: 25px;
-            text-align: center;
-        }
-
-        .team-info h4 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 5px;
-        }
-
-        .team-role {
-            color: var(--primary-purple);
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-        }
-
-        .team-desc {
-            color: #64748b;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* === CTA SECTION === */
-        .cta-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .cta-content h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 15px;
-        }
-
-        .cta-content p {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 0;
-        }
-
-        .btn-cta {
-            display: inline-flex;
-            align-items: center;
-            padding: 14px 35px;
-            background: white;
-            color: var(--primary-purple);
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            color: var(--primary-purple);
-        }
-
-        /* === FOOTER (Copy từ index.html) === */
-        .footer {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: white;
-            padding: 25px 0 10px;
-        }
-
-        .footer-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .footer-brand i {
-            color: var(--primary-purple);
-        }
-
-        .footer-desc {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .footer h5 {
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: white;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer h5::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            border-radius: 2px;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .footer-contact p {
-            color: #94a3b8;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .footer-contact i {
-            color: var(--primary-purple);
-            width: 20px;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .social-icons a {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .social-icons a:hover {
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 25px;
-            margin-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        /* === SCROLL TO TOP === */
-        #scrollTopBtn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-purple), var(--secondary-purple));
-            color: white;
-            border: none;
-            font-size: 20px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        #scrollTopBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-        }
-
-        /* === ANIMATIONS === */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* === RESPONSIVE === */
+        /* RESPONSIVE */
         @media (max-width: 992px) {
-            .navbar-center {
-                display: none;
-            }
-            
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.6rem;
-                padding: 5px 0 5px 10px;
-            }
-            
-            .mobile-sidebar {
-                display: block;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-stats {
-                gap: 30px;
-            }
-
-            .timeline::before {
-                left: 30px;
-            }
-
-            .timeline-item {
-                width: 100%;
-                padding-left: 80px;
-                padding-right: 20px;
-                text-align: left !important;
-            }
-
-            .timeline-item.left,
-            .timeline-item.right {
-                left: 0;
-            }
-
-            .timeline-item.left .timeline-content::before,
-            .timeline-item.right .timeline-content::before {
-                left: -15px;
-                right: auto;
-                border-width: 10px 15px 10px 0;
-                border-color: transparent white transparent transparent;
-            }
-
-            .about-image-wrapper {
-                margin-bottom: 40px;
-            }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-stats { gap: 30px; }
+            .timeline::before { left: 30px; }
+            .timeline-item { width: 100%; padding-left: 80px; padding-right: 20px; text-align: left !important; }
+            .timeline-item.left, .timeline-item.right { left: 0; }
+            .timeline-item.left .timeline-content::before, .timeline-item.right .timeline-content::before { left: -15px; right: auto; border-width: 10px 15px 10px 0; border-color: transparent white transparent transparent; }
+            .about-image-wrapper { margin-bottom: 40px; }
         }
 
         @media (max-width: 768px) {
-            .navbar-right .auth-buttons,
-            .navbar-right .logout-header {
-                display: none !important;
-            }
-            
-            .mobile-sidebar {
-                width: 50%;
-                max-width: 320px;
-            }
-
-            .hero-section {
-                padding: 60px 0;
-            }
-
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content p {
-                font-size: 1rem;
-            }
-
-            .hero-stats {
-                gap: 20px;
-                justify-content: center;
-            }
-
-            .stat-number {
-                font-size: 2rem;
-            }
-
-            .section-header h2 {
-                font-size: 2rem;
-            }
-
-            .about-content h2 {
-                font-size: 2rem;
-            }
-
-            .about-section,
-            .mission-vision-section,
-            .values-section,
-            .timeline-section,
-            .team-section,
-            .cta-section {
-                padding: 60px 0;
-            }
-
-            .floating-element {
-                display: none;
-            }
-
-            .image-badge {
-                display: none;
-            }
-
-            .timeline-item {
-                padding-left: 60px;
-            }
-
-            .cta-content h2 {
-                font-size: 1.8rem;
-                margin-bottom: 20px;
-            }
-
-            .cta-content p {
-                font-size: 1rem;
-                margin-bottom: 25px;
-            }
-
-            .btn-cta {
-                width: 100%;
-                justify-content: center;
-            }
+            .hero-content h1 { font-size: 2rem; }
+            .hero-content p { font-size: 1rem; }
+            .hero-stats { gap: 20px; justify-content: center; }
+            .stat-number { font-size: 2rem; }
+            .section-header h2 { font-size: 1.8rem; }
+            .about-content h2 { font-size: 2rem; }
+            .about-section, .mission-vision-section, .values-section, .timeline-section, .team-section, .cta-section { padding: 60px 0; }
+            .floating-element { display: none; }
+            .image-badge { display: none; }
+            .timeline-item { padding-left: 60px; }
+            .cta-content h2 { font-size: 1.8rem; margin-bottom: 20px; }
+            .cta-content p { font-size: 1rem; margin-bottom: 25px; }
+            .btn-cta { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -1434,92 +433,9 @@
     ">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
     </div>
-    <div class="mobile-overlay" id="mobileOverlay"></div>
-    
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-        <div class="container">
-            <div class="navbar-left">
-                <a class="navbar-brand-header" href="index.html">
-                    <i class="fas fa-clinic-medical me-2"></i><span>Eden</span> Health
-                </a>
-            </div>
 
-            <div class="navbar-center" id="navbarNav">
-                <ul class="navbar-nav d-flex flex-row">
-                    <li class="nav-item"><a class="nav-link-header" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="danhsachchuyenkhoa.html">Chuyên khoa</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="danhsachbacsi.html">Bác sĩ</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="lichkham.html">Lịch khám</a></li>
-                    <li class="nav-item nav-item-loggedin"><a class="nav-link-header" href="hosobenhan.html">Hồ sơ</a></li>
-                    <li class="nav-item"><a class="nav-link-header" href="lienhe.html">Liên hệ</a></li>
-                </ul>
-            </div>
+    <div id="header-placeholder" class="sticky-top" style="z-index: 1020;"></div>
 
-            <div class="navbar-right ms-auto d-flex align-items-center gap-3">
-                <div class="auth-buttons" id="authButtons">
-                    <a href="/frontend/pages/auth/login.html" class="btn-auth btn-login"><i class="fas fa-sign-in-alt me-1"></i> Đăng nhập</a>
-                    <a href="/frontend/pages/auth/register.html" class="btn-auth btn-register"><i class="fas fa-user-plus me-1"></i> Đăng ký</a>
-                </div>
-
-                <div class="logout-header" id="logoutHeader">
-                    <div class="user-info-group" onclick="window.location.href='taikhoan.html'">
-                        <div class="user-avatar" id="userAvatar">K</div>
-                        <div class="header-user-name" id="headerUserName">Khách</div>
-                    </div>
-                    <button class="btn-logout-custom" id="btnDesktopLogout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
-                </div>
-
-                <button class="menu-toggle ms-2" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Sidebar -->
-    <div class="mobile-sidebar" id="mobileSidebar">
-        <div class="mobile-sidebar-header">
-            <h4><i class="fas fa-clinic-medical me-2"></i>Eden Health</h4>
-            <button class="close-sidebar" id="closeSidebar">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <ul class="mobile-menu">
-            <li><a href="index.html"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
-            <li><a href="danhsachkhoa.html"><i class="fas fa-hospital"></i><span>Chuyên khoa</span></a></li>
-            <li><a href="danhsachbacsi.html"><i class="fas fa-user-md"></i><span>Bác sĩ</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="lichkham.html"><i class="fas fa-calendar-check"></i><span>Lịch khám</span></a></li>
-            <li class="mobile-menu-loggedin"><a href="hosobenhan.html"><i class="fas fa-user-circle"></i><span>Hồ sơ cá nhân</span></a></li>
-            <li><a href="lienhe.html"><i class="fas fa-envelope"></i><span>Liên hệ</span></a></li>
-        </ul>
-
-        <div class="mobile-sidebar-footer">
-            <div class="mobile-auth-buttons" id="mobileAuthButtons">
-                <a href="/frontend/pages/auth/login.html" class="btn-mobile-login">
-                    <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
-                </a>
-                <a href="/frontend/pages/auth/register.html" class="btn-mobile-register">
-                    <i class="fas fa-user-plus me-2"></i>Đăng ký
-                </a>
-            </div>
-
-            <div class="mobile-user-info" id="mobileUserInfo">
-                <div class="mobile-user-details" onclick="window.location.href='taikhoan.html'">
-                    <div class="user-avatar" id="mobileUserAvatar">A</div>
-                    <div class="user-text">
-                        <div class="user-name" id="mobileUserName">Khách</div>
-                    </div>
-                </div>
-                <button class="btn-mobile-logout" onclick="logout()">
-                    <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Breadcrumb -->
     <div class="breadcrumb-section">
         <div class="container">
             <nav aria-label="breadcrumb">
@@ -1535,8 +451,7 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section reveal">
         <div class="hero-overlay"></div>
         <div class="container">
             <div class="row align-items-center">
@@ -1581,8 +496,7 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section">
+    <section class="about-section reveal">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
@@ -1650,8 +564,7 @@
         </div>
     </section>
 
-    <!-- Mission Vision Section -->
-    <section class="mission-vision-section">
+    <section class="mission-vision-section reveal">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-6">
@@ -1686,10 +599,9 @@
         </div>
     </section>
 
-    <!-- Timeline Section -->
     <section class="timeline-section">
         <div class="container">
-            <div class="section-header text-center">
+            <div class="section-header text-center reveal">
                 <span class="section-badge">
                     <i class="fas fa-history me-2"></i>Hành trình
                 </span>
@@ -1698,7 +610,7 @@
             </div>
 
             <div class="timeline">
-                <div class="timeline-item left">
+                <div class="timeline-item left reveal-left">
                     <div class="timeline-content">
                         <div class="timeline-year">Tháng 9</div>
                         <h4>Khởi Đầu</h4>
@@ -1706,7 +618,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item right">
+                <div class="timeline-item right reveal-right">
                     <div class="timeline-content">
                         <div class="timeline-year">Tháng 10</div>
                         <h4>Ra Mắt Chính Thức</h4>
@@ -1714,7 +626,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item left">
+                <div class="timeline-item left reveal-left">
                     <div class="timeline-content">
                         <div class="timeline-year">Tháng 11</div>
                         <h4>Dẫn Đầu Thị Trường</h4>
@@ -1722,7 +634,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item right">
+                <div class="timeline-item right reveal-right">
                     <div class="timeline-content">
                         <div class="timeline-year">Tháng 12</div>
                         <h4>Tương Lai Sáng</h4>
@@ -1733,8 +645,7 @@
         </div>
     </section>
 
-    <!-- Core Values Section -->
-    <section class="values-section">
+    <section class="values-section reveal">
         <div class="container">
             <div class="section-header text-center">
                 <span class="section-badge">
@@ -1786,8 +697,7 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="cta-section reveal">
         <div class="container">
             <div class="cta-content">
                 <div class="row align-items-center">
@@ -1805,365 +715,100 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="footer-brand"><i class="fas fa-clinic-medical me-2"></i>Eden Health</div>
-                    <p class="footer-desc">Hệ thống đặt lịch khám bệnh trực tuyến hàng đầu Việt Nam. Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất cho bạn và gia đình.</p>
-                    <div class="social-icons">
-                        <a href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://x.com/"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h5>Liên kết</h5>
-                    <ul class="footer-links">
-                        <li><a href="vechungtoi.html"><i class="fas fa-chevron-right"></i> Về chúng tôi</a></li>
-                        <li><a href="danhsachchuyenkhoa.html"><i class="fas fa-chevron-right"></i> Chuyên khoa</a></li>
-                        <li><a href="danhsachbacsi.html"><i class="fas fa-chevron-right"></i> Bác sĩ</a></li>
-                        <li><a href="lienhe.html"><i class="fas fa-chevron-right"></i> Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Chính sách</h5>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách hoạt động</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Chính sách bảo mật</a></li>
-                        <li><a href="#"><i class="fas fa-chevron-right"></i> Điều khoản sử dụng</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Liên hệ</h5>
-                    <div class="footer-contact">
-                        <p><i class="fas fa-phone-alt"></i> Hotline: <strong>1900 0091</strong></p>
-                        <p><i class="fas fa-envelope"></i> edenhealth@gmail.com</p>
-                        <p><i class="fas fa-clock"></i> 07:00 - 17:00 (T2 - CN)</p>
-                        <p><i class="fas fa-map-marker-alt"></i> TP. Cần Thơ, Việt Nam</p>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2025 Eden Health. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-chevron-up"></i></button>
+    <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // API Configuration
-        const API_BASE_AUTH = 'http://localhost/DO_AN_1/code_doan1/src/backend/api/auth';
+    
+<script src="../../assets/js/common.js"></script>
+<script>
+    // Load Header và Footer (nếu chưa có)
+    loadComponents();
 
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
-            setupMobileMenu();
-            setupScrollEffects();
-            setupScrollAnimations();
-            animateStats();
-        });
+    // === PHẦN BẠN CẦN THÊM VÀO ĐỂ HIỆN NỘI DUNG ===
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // 1. Kích hoạt Animation khi cuộn trang (QUAN TRỌNG NHẤT)
+        const observerOptions = {
+            threshold: 0.15 // Kích hoạt khi 15% phần tử xuất hiện
+        };
 
-        // === LOGIN STATUS CHECK ===
-        async function checkLoginStatus() {
-            try {
-                const response = await fetch(`${API_BASE_AUTH}/get-current-user.php`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                const data = await response.json();
-
-                // Desktop elements
-                const authButtons = document.getElementById('authButtons');
-                const logoutHeader = document.getElementById('logoutHeader');
-                const navLoggedInItems = document.querySelectorAll('.nav-item-loggedin');
-                const userAvatar = document.getElementById('userAvatar');
-                const headerUserName = document.getElementById('headerUserName');
-
-                // Mobile elements
-                const mobileAuthButtons = document.getElementById('mobileAuthButtons');
-                const mobileUserInfo = document.getElementById('mobileUserInfo');
-                const mobileMenuLoggedIn = document.querySelectorAll('.mobile-menu-loggedin');
-                const mobileUserAvatar = document.getElementById('mobileUserAvatar');
-                const mobileUserName = document.getElementById('mobileUserName');
-
-                if (data.success) {
-                    // LOGGED IN STATE
-                    const fullName = data.data.fullName;
-                    const firstLetter = fullName.charAt(0).toUpperCase();
-
-                    // Desktop
-                    if (authButtons) authButtons.style.display = 'none';
-                    if (logoutHeader) logoutHeader.classList.add('active');
-                    navLoggedInItems.forEach(item => item.style.display = 'block');
-                    
-                    if (userAvatar) userAvatar.textContent = firstLetter;
-                    if (headerUserName) headerUserName.textContent = fullName;
-
-                    // Mobile
-                    if (mobileAuthButtons) mobileAuthButtons.style.display = 'none';
-                    if (mobileUserInfo) mobileUserInfo.classList.add('active');
-                    mobileMenuLoggedIn.forEach(item => item.style.display = 'block');
-                    
-                    if (mobileUserAvatar) mobileUserAvatar.textContent = firstLetter;
-                    if (mobileUserName) mobileUserName.textContent = fullName;
-
-                    updateProfileLink(data.data.role);
-
-                } else {
-                    // LOGGED OUT STATE
-                    
-                    // Desktop
-                    if (authButtons) authButtons.style.display = 'flex';
-                    if (logoutHeader) logoutHeader.classList.remove('active');
-                    navLoggedInItems.forEach(item => item.style.display = 'none');
-
-                    // Mobile
-                    if (mobileAuthButtons) mobileAuthButtons.style.display = 'flex';
-                    if (mobileUserInfo) mobileUserInfo.classList.remove('active');
-                    mobileMenuLoggedIn.forEach(item => item.style.display = 'none');
-                }
-
-            } catch (error) {
-                console.error('Lỗi kiểm tra đăng nhập:', error);
-                
-                // Reset to logged out state
-                if (document.getElementById('authButtons')) 
-                    document.getElementById('authButtons').style.display = 'flex';
-                if (document.getElementById('logoutHeader')) 
-                    document.getElementById('logoutHeader').classList.remove('active');
-                if (document.getElementById('mobileAuthButtons'))
-                    document.getElementById('mobileAuthButtons').style.display = 'flex';
-                if (document.getElementById('mobileUserInfo'))
-                    document.getElementById('mobileUserInfo').classList.remove('active');
-            }
-            document.querySelector('.navbar').classList.remove('header-hidden');
-            setTimeout(() => {
-                document.getElementById("pageLoader").style.display = "none";
-                document.body.classList.add("loaded");
-            }, 10); // 400ms cho mượt (có thể chỉnh)
-        }
-
-        function updateProfileLink(role) {
-            const profileLinks = document.querySelectorAll('a[href="hosocanhan.html"]');
-            if (role === 'bacsi') {
-                profileLinks.forEach(link => link.href = '../doctor/dashboard.html');
-            } else if (role === 'quantri') {
-                profileLinks.forEach(link => link.href = '../admin/dashboard.html');
-            }
-        }
-
-        // === LOGOUT ===
-        async function logout() {
-            try {
-                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    localStorage.clear();
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Lỗi đăng xuất:', error);
-                alert('Có lỗi xảy ra khi đăng xuất');
-            }
-        }
-
-        // === MOBILE MENU ===
-        function setupMobileMenu() {
-            const menuToggle = document.getElementById('menuToggle');
-            const mobileSidebar = document.getElementById('mobileSidebar');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            const closeSidebar = document.getElementById('closeSidebar');
-
-            // Open sidebar
-            if (menuToggle) {
-                menuToggle.addEventListener('click', function() {
-                    mobileSidebar.classList.add('active');
-                    mobileOverlay.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
-            }
-
-            // Close sidebar
-            function closeMobileSidebar() {
-                mobileSidebar.classList.remove('active');
-                mobileOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-
-            if (closeSidebar) {
-                closeSidebar.addEventListener('click', closeMobileSidebar);
-            }
-
-            if (mobileOverlay) {
-                mobileOverlay.addEventListener('click', closeMobileSidebar);
-            }
-
-            // Close sidebar when clicking menu items
-            const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 992) {
-                        closeMobileSidebar();
-                    }
-                });
-            });
-        }
-
-        // === SCROLL EFFECTS ===
-        function setupScrollEffects() {
-            const scrollBtn = document.getElementById('scrollTopBtn');
-            
-            window.addEventListener('scroll', function() {
-                if (scrollBtn) {
-                    scrollBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Chỉ chạy 1 lần
                 }
             });
-        }
+        }, observerOptions);
 
-        // === SCROLL ANIMATIONS ===
-        function setupScrollAnimations() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+        // Chọn tất cả các phần tử cần hiệu ứng
+        const animatedElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        animatedElements.forEach(el => observer.observe(el));
 
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
+        // 2. Các hiệu ứng khác (Số nhảy, Parallax, v.v.)
+        initCounterAnimation();
+        setupParallaxEffect();
+        setupTeamCardEffect();
+    });
 
-            // Observe all animated elements
-            const animatedElements = document.querySelectorAll(`
-                .about-content,
-                .about-image-wrapper,
-                .mission-card,
-                .vision-card,
-                .value-card,
-                .timeline-item,
-                .team-card
-            `);
-
-            animatedElements.forEach(el => {
-                el.classList.add('fade-in');
-                observer.observe(el);
-            });
-        }
-
-        // === ANIMATE STATISTICS ===
-        function animateStats() {
-            const stats = [
-                { id: 'stat-years', target: 5, suffix: '+' },
-                { id: 'stat-doctors', target: 50, suffix: '+' },
-                { id: 'stat-patients', target: 10, suffix: 'K+' }
-            ];
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const statNumbers = document.querySelectorAll('.stat-number');
-                        
-                        statNumbers.forEach((element, index) => {
-                            if (index < stats.length) {
-                                animateNumber(element, stats[index].target, stats[index].suffix);
-                            }
-                        });
-                        
-                        observer.disconnect();
-                    }
-                });
-            }, { threshold: 0.5 });
-
-            const heroStats = document.querySelector('.hero-stats');
-            if (heroStats) {
-                observer.observe(heroStats);
-            }
-        }
-
-        function animateNumber(element, target, suffix) {
-            let current = 0;
-            const increment = target / 50;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    element.textContent = target + suffix;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current) + suffix;
-                }
-            }, 30);
-        }
-
-        // === SMOOTH SCROLL FOR ANCHOR LINKS ===
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+    // Hàm hiệu ứng số nhảy (Counter)
+    function initCounterAnimation() {
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const stats = [
+                        { target: 5, suffix: '+' },   // Kinh nghiệm
+                        { target: 50, suffix: '+' },  // Bác sĩ
+                        { target: 20, suffix: 'K+' }  // Bệnh nhân (Sửa lại target tùy ý)
+                    ];
+                    
+                    const numberElements = entry.target.querySelectorAll('.stat-number');
+                    numberElements.forEach((el, index) => {
+                        if (stats[index]) {
+                            animateNumber(el, stats[index].target, stats[index].suffix);
+                        }
                     });
+                    statsObserver.disconnect();
                 }
             });
-        });
+        }, { threshold: 0.5 });
 
-        // === TIMELINE ANIMATION ON SCROLL ===
-        function animateTimeline() {
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.style.opacity = '1';
-                            entry.target.style.transform = 'translateX(0)';
-                        }, index * 100);
-                    }
-                });
-            }, { threshold: 0.2 });
+        const heroStats = document.querySelector('.hero-stats');
+        if (heroStats) statsObserver.observe(heroStats);
+    }
 
-            timelineItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transition = 'all 0.6s ease';
-                
-                if (item.classList.contains('left')) {
-                    item.style.transform = 'translateX(-50px)';
-                } else {
-                    item.style.transform = 'translateX(50px)';
-                }
-                
-                observer.observe(item);
-            });
-        }
+    function animateNumber(element, target, suffix) {
+        let current = 0;
+        const duration = 2000; // 2 giây
+        const stepTime = 20;
+        const steps = duration / stepTime;
+        const increment = target / steps;
 
-        // Initialize timeline animation
-        animateTimeline();
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target + suffix;
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.ceil(current) + suffix;
+            }
+        }, stepTime);
+    }
 
-        // === PARALLAX EFFECT FOR HERO ===
+    // Hàm hiệu ứng Parallax (Trôi hình ảnh)
+    function setupParallaxEffect() {
         window.addEventListener('scroll', function() {
             const scrolled = window.pageYOffset;
             const heroIllustration = document.querySelector('.hero-illustration');
             
             if (heroIllustration && scrolled < 600) {
-                heroIllustration.style.transform = `translateY(${scrolled * 0.3}px)`;
+                heroIllustration.style.transform = `translateY(${scrolled * 0.1}px)`; // Giảm tốc độ trôi xuống 0.1 cho mượt
             }
         });
+    }
 
-        // === TEAM CARD TILT EFFECT ===
+    // Hàm hiệu ứng 3D cho thẻ Team (nếu có)
+    function setupTeamCardEffect() {
         document.querySelectorAll('.team-card').forEach(card => {
             card.addEventListener('mousemove', function(e) {
                 const rect = card.getBoundingClientRect();
@@ -2183,64 +828,7 @@
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
             });
         });
-
-        // === COUNTER ANIMATION FOR VALUES ===
-        function setupValueCounters() {
-            const valueCards = document.querySelectorAll('.value-card');
-            let hasAnimated = false;
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting && !hasAnimated) {
-                        hasAnimated = true;
-                        valueCards.forEach((card, index) => {
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'translateY(0)';
-                            }, index * 100);
-                        });
-                    }
-                });
-            }, { threshold: 0.2 });
-
-            valueCards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                card.style.transition = 'all 0.6s ease';
-            });
-
-            const valuesSection = document.querySelector('.values-section');
-            if (valuesSection) {
-                observer.observe(valuesSection);
-            }
-        }
-
-        function updateProfileLink(role) {
-            const profileLinks = document.querySelectorAll('a[href="taikhoan.html"]');
-            if (role === 'bacsi') {
-                profileLinks.forEach(link => link.href = '../doctor/dashboard.html');
-            } else if (role === 'quantri') {
-                profileLinks.forEach(link => link.href = '../admin/dashboard.html');
-            }
-        }
-        // ========== ĐĂNG XUẤT ==========
-        async function logout() {
-            try {
-                const response = await fetch(`${API_BASE_AUTH}/logout.php`, {
-                    method: 'POST',
-                    credentials: 'include'
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    localStorage.clear();
-                    window.location.reload();
-                }
-            } catch (error) {
-                console.error('Lỗi đăng xuất:', error);
-                alert('Có lỗi xảy ra khi đăng xuất');
-            }
-        }
-    </script>
+    }
+</script>
 </body>
 </html>
